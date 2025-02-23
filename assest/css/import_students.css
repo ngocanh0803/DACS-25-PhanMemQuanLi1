@@ -1,0 +1,101 @@
+.import-container {
+    background-color: #fdfdfd;
+    padding: 30px;
+    border-radius: 10px;
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+    max-width: 1489px;
+    height: 80vh;
+    margin: 0 auto;
+}
+
+.import-container h2 {
+    display: flex;
+    align-items: center;
+    color: #333;
+    font-size: 1.8em;
+    font-weight: 700;
+    margin-bottom: 25px;
+    text-align: center;
+}
+
+.import-container h2 i {
+    margin-right: 10px;
+    color: #007bff;
+}
+
+.import-form .form-group {
+    margin-bottom: 20px;
+}
+
+.import-form label {
+    display: block;
+    margin-bottom: 8px;
+    color: #555;
+    font-weight: 600;
+    font-size: 1em;
+}
+
+.import-form input[type="file"] {
+    width: 100%;
+    padding: 10px;
+    border: 2px solid #d1d3e2;
+    border-radius: 6px;
+    font-size: 0.95em;
+    cursor: pointer;
+    transition: border-color 0.3s ease;
+}
+
+.import-form input[type="file"]:focus {
+    border-color: #80bdff;
+    outline: none;
+}
+
+.import-btn {
+    background-color: #28a745;
+    color: #fff;
+    padding: 12px 18px;
+    border: none;
+    border-radius: 6px;
+    font-size: 1em;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.import-btn i {
+    margin-right: 8px;
+}
+
+.import-btn:hover {
+    background-color: #218838;
+    box-shadow: 0 4px 8px rgba(0, 123, 255, 0.2);
+    transform: translateY(-2px);
+}
+
+.note {
+    margin-top: 25px;
+    background-color: #f8f9fa;
+    padding: 15px;
+    border-left: 4px solid #007bff;
+    border-radius: 6px;
+    color: #495057;
+}
+
+.note p {
+    font-size: 1em;
+    font-weight: 600;
+    margin-bottom: 8px;
+}
+
+.note ul {
+    padding-left: 20px;
+    font-size: 0.95em;
+}
+
+.note ul li {
+    margin-bottom: 6px;
+    line-height: 1.5;
+}

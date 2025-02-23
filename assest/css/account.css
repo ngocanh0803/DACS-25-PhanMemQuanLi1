@@ -1,0 +1,250 @@
+/* account.css */
+
+/* Container chính cho danh sách tài khoản */
+.account-list-container {
+    margin: 0 auto; /* Căn giữa container */
+    padding: 20px; /* Thêm padding cho container */
+    background-color: #ffffff; /* Màu nền trắng */
+    border-radius: 8px; /* Bo góc cho container */
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1); /* Thêm bóng đổ */
+}
+
+/* Tiêu đề chính */
+.account-list-container h1 {
+    text-align: left; /* Căn giữa tiêu đề */
+    color: #333; /* Màu chữ cho tiêu đề */
+    margin-bottom: 20px; /* Khoảng cách dưới tiêu đề */
+}
+
+/* Nút thêm tài khoản */
+.add-btn {
+    display: block; /* Hiển thị nút dưới dạng khối */
+    /* margin: 0 auto 20px; Căn giữa và thêm khoảng cách dưới */
+    padding: 10px 20px; /* Thêm padding cho nút */
+    background-color: #4CAF50; /* Màu nền cho nút */
+    color: white; /* Màu chữ cho nút */
+    border: none; /* Bỏ viền cho nút */
+    border-radius: 5px; /* Bo góc cho nút */
+    cursor: pointer; /* Hiển thị con trỏ khi di chuột qua */
+    transition: background-color 0.3s; /* Hiệu ứng chuyển tiếp */
+}
+
+.add-btn:hover {
+    background-color: #45a049; /* Màu nền khi di chuột qua nút */
+}
+
+/* Bảng danh sách tài khoản */
+.account-list-container table {
+    width: 100%; /* Đặt chiều rộng bảng 100% */
+    border-collapse: collapse; /* Gộp viền bảng */
+    margin-top: 20px; /* Thêm khoảng cách trên bảng */
+}
+
+/* Các ô trong bảng */
+.account-list-container th, 
+.account-list-container td {
+    padding: 12px; /* Thêm padding cho các ô */
+    text-align: left; /* Căn trái cho nội dung */
+    border: 1px solid #ddd; /* Viền cho các ô */
+}
+
+/* Tiêu đề bảng */
+.account-list-container th {
+    background-color: #4CAF50; /* Màu nền cho tiêu đề bảng */
+    color: white; /* Màu chữ cho tiêu đề bảng */
+}
+
+/* Màu nền cho hàng chẵn */
+.account-list-container tr:nth-child(even) {
+    background-color: #f9f9f9; /* Màu nền cho hàng chẵn */
+}
+
+/* Màu nền khi di chuột qua hàng */
+.account-list-container tr:hover {
+    background-color: #f1f1f1; /* Màu nền khi di chuột qua hàng */
+}
+
+/* Nút trong bảng */
+.account-list-container .edit-btn,
+.account-list-container .approve-btn,
+.account-list-container .delete-btn {
+    padding: 5px 10px; /* Thêm padding cho nút */
+    border: none; /* Bỏ viền cho nút */
+    border-radius: 5px; /* Bo góc cho nút */
+    cursor: pointer; /* Hiển thị con trỏ khi di chuột qua */
+    transition: background-color 0.3s; /* Hiệu ứng chuyển tiếp */
+}
+
+.account-list-container .edit-btn {
+    background-color: #2196F3; /* Màu nền cho nút sửa */
+    color: white; /* Màu chữ cho nút sửa */
+}
+
+.account-list-container .edit-btn:hover {
+    background-color: #1976D2; /* Màu nền khi di chuột qua nút sửa */
+}
+
+.account-list-container .approve-btn {
+    background-color: #4CAF50; /* Màu nền cho nút phê duyệt */
+    color: white; /* Màu chữ cho nút phê duyệt */
+}
+
+.account-list-container .approve-btn:hover {
+    background-color: #45a049; /* Màu nền khi di chuột qua nút phê duyệt */
+}
+
+.account-list-container .delete-btn {
+    background-color: #f44336; /* Màu nền cho nút xóa */
+    color: white; /* Màu chữ cho nút xóa */
+}
+
+/* Nút xóa */
+.account-list-container .delete-btn:hover {
+    background-color: #d32f2f; /* Màu nền khi di chuột qua nút xóa */
+}
+
+/* Thông báo */
+.notification {
+    display: none; /* Ẩn thông báo mặc định */
+    margin-top: 20px; /* Thêm khoảng cách trên thông báo */
+    padding: 10px; /* Thêm padding cho thông báo */
+    border-radius: 5px; /* Bo góc cho thông báo */
+    color: white; /* Màu chữ cho thông báo */
+}
+
+/* Thông báo thành công */
+.notification.success {
+    background-color: #4CAF50; /* Màu nền cho thông báo thành công */
+}
+
+/* Thông báo lỗi */
+.notification.error {
+    background-color: #f44336; /* Màu nền cho thông báo lỗi */
+}
+
+/* Modal */
+.modal {
+    display: none; /* Ẩn modal mặc định */
+    position: fixed; /* Đặt modal ở vị trí cố định */
+    z-index: 1000; /* Đặt z-index cao để hiển thị trên các phần tử khác */
+    left: 0;
+    top: 0;
+    width: 100%; /* Chiều rộng 100% */
+    height: 100%; /* Chiều cao 100% */
+    overflow: auto; /* Thêm cuộn nếu cần */
+    background-color: rgba(0, 0, 0, 0.5); /* Màu nền mờ cho modal */
+}
+
+/* Nội dung modal */
+.modal-content {
+    background-color: #ffffff; /* Màu nền trắng cho nội dung modal */
+    margin: 15% auto; /* Căn giữa nội dung modal */
+    padding: 20px; /* Thêm padding cho nội dung modal */
+    border: 1px solid #888; /* Viền cho nội dung modal */
+    border-radius: 8px; /* Bo góc cho nội dung modal */
+    width: 80%; /* Chiều rộng modal */
+    max-width: 500px; /* Chiều rộng tối đa cho modal */
+}
+
+/* Nút đóng modal */
+.close {
+    color: #aaa; /* Màu chữ cho nút đóng */
+    float: right; /* Đặt nút đóng ở bên phải */
+    font-size: 28px; /* Kích thước chữ cho nút đóng */
+    font-weight: bold; /* Đậm chữ cho nút đóng */
+}
+
+.close:hover,
+.close:focus {
+    color: black; /* Màu chữ khi di chuột qua nút đóng */
+    text-decoration: none; /* Bỏ gạch chân cho nút đóng */
+    cursor: pointer; /* Hiển thị con trỏ khi di chuột qua nút đóng */
+}
+
+/* Các trường nhập trong modal */
+.modal-content input[type="text"],
+.modal-content input[type="password"],
+.modal-content select {
+    width: 100%; /* Chiều rộng 100% cho các trường nhập */
+    padding: 10px; /* Thêm padding cho các trường nhập */
+    margin: 10px 0; /* Thêm khoảng cách trên và dưới */
+    border: 1px solid #ccc; /* Viền cho các trường nhập */
+    border-radius: 5px; /* Bo góc cho các trường nhập */
+}
+
+/* Nút lưu trong modal */
+.submit-btn {
+    background-color: #4CAF50; /* Màu nền cho nút lưu */
+    color: white; /* Màu chữ cho nút lưu */
+    padding: 10px 20px; /* Thêm padding cho nút lưu */
+    border: none; /* Bỏ viền cho nút lưu */
+    border-radius: 5px; /* Bo góc cho nút lưu */
+    cursor: pointer; /* Hiển thị con trỏ khi di chuột qua */
+    transition: background-color 0.3s; /* Hiệu ứng chuyển tiếp */
+}
+
+.submit-btn:hover {
+    background-color: #45a049; /* Màu nền khi di chuột qua nút lưu */
+}
+
+/* Nút đóng modal */
+.close {
+    color: #aaa; /* Màu chữ cho nút đóng */
+    float: right; /* Đặt nút đóng ở bên phải */
+    font-size: 28px; /* Kích thước chữ cho nút đóng */
+    font-weight: bold; /* Đậm chữ cho nút đóng */
+}
+
+.close:hover,
+.close:focus {
+    color: black; /* Màu chữ khi di chuột qua nút đóng */
+    text-decoration: none; /* Bỏ gạch chân cho nút đóng */
+    cursor: pointer; /* Hiển thị con trỏ khi di chuột qua nút đóng */
+}
+
+/* Các trường nhập trong modal */
+.modal-content input[type="text"],
+.modal-content input[type="password"],
+.modal-content select {
+    width: 100%; /* Chiều rộng 100% cho các trường nhập */
+    padding: 10px; /* Thêm padding cho các trường nhập */
+    margin: 10px 0; /* Thêm khoảng cách trên và dưới */
+    border: 1px solid #ccc; /* Viền cho các trường nhập */
+    border-radius: 5px; /* Bo góc cho các trường nhập */
+    box-sizing: border-box; /* Đảm bảo padding không làm tăng chiều rộng */
+}
+
+/* Nút lưu trong modal */
+.submit-btn {
+    background-color: #4CAF50; /* Màu nền cho nút lưu */
+    color: white; /* Màu chữ cho nút lưu */
+    padding: 10px 20px; /* Thêm padding cho nút lưu */
+    border: none; /* Bỏ viền cho nút lưu */
+    border-radius: 5px; /* Bo góc cho nút lưu */
+    cursor: pointer; /* Hiển thị con trỏ khi di chuột qua */
+    transition: background-color 0.3s; /* Hiệu ứng chuyển tiếp */
+}
+
+.submit-btn:hover {
+    background-color: #45a049; /* Màu nền khi di chuột qua nút lưu */
+}
+
+/* Định dạng cho các thông báo trong modal */
+.modal-content .notification {
+    margin-top: 10px; /* Thêm khoảng cách trên thông báo */
+    padding: 10px; /* Thêm padding cho thông báo */
+    border-radius: 5px; /* Bo góc cho thông báo */
+    display: none; /* Ẩn thông báo mặc định */
+}
+
+/* Thông báo thành công trong modal */
+.modal-content .notification.success {
+    background-color: #4CAF50; /* Màu nền cho thông báo thành công */
+    color: white; /* Màu chữ cho thông báo thành công */
+}
+
+/* Thông báo lỗi trong modal */
+.modal-content .notification.error {
+    background-color: #f44336; /* Màu nền cho thông báo lỗi */
+    color: white; /* Màu chữ cho thông báo lỗi */
+}

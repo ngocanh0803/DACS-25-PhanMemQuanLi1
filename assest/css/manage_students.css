@@ -1,0 +1,238 @@
+/* Định dạng chung */
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f4f6f9;
+    margin: 0;
+    padding: 0;
+}
+
+.container {
+    display: flex;
+}
+
+.content {
+    flex: 1;
+    padding: 20px;
+}
+
+h2 {
+    margin-top: 0;
+    color: #333;
+}
+
+.add-student-container, .edit-student-container {
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 5px;
+}
+
+.students-list-container {
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 5px;
+}
+
+.add-btn {
+    display: inline-block;
+    margin-bottom: 15px;
+    padding: 8px 12px;
+    background-color: #007bff;
+    color: #fff;
+    text-decoration: none;
+    border-radius: 3px;
+}
+
+.add-btn:hover {
+    background-color: #0056b3;
+}
+
+.form-group {
+    margin-bottom: 15px;
+}
+
+.form-group label {
+    display: block;
+    font-weight: bold;
+    margin-bottom: 5px;
+}
+
+.form-group input[type="text"],
+.form-group input[type="email"] {
+    width: 100%;
+    padding: 8px;
+    border-radius: 3px;
+    border: 1px solid #ccc;
+}
+
+.submit-btn {
+    padding: 10px 15px;
+    background-color: #28a745;
+    color: #fff;
+    border: none;
+    border-radius: 3px;
+    cursor: pointer;
+}
+
+.submit-btn:hover {
+    background-color: #218838;
+}
+
+/* Bảng danh sách sinh viên */
+table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+table th, table td {
+    padding: 8px;
+    border: 1px solid #ddd;
+    text-align: center;
+}
+
+table th {
+    background-color: #f2f2f2;
+    font-weight: bold;
+}
+
+table tr:nth-child(even) {
+    background-color: #f9f9f9;
+}
+
+table tr:hover {
+    background-color: #f1f1f1;
+}
+
+.edit-btn, .delete-btn {
+    padding: 5px 10px;
+    text-decoration: none;
+    border-radius: 3px;
+    color: #fff;
+    margin: 0 5px;
+}
+
+.edit-btn {
+    background-color: #ffc107;
+}
+
+.edit-btn:hover {
+    background-color: #e0a800;
+}
+
+.delete-btn {
+    background-color: #dc3545;
+}
+
+.delete-btn:hover {
+    background-color: #c82333;
+}
+
+
+/* manage_students.css */
+
+/* Modal container */
+.modal {
+    display: none; /* Ẩn mặc định */
+    position: fixed; 
+    z-index: 1000; 
+    left: 0;
+    top: 0;
+    width: 100%; 
+    height: 100%; 
+    overflow: auto; 
+    background-color: rgba(0,0,0,0.5); /* Nền mờ */
+}
+
+/* Nội dung modal */
+.modal-content {
+    background-color: #fefefe;
+    margin: 15% auto; /* Căn giữa modal */
+    padding: 20px;
+    border: 1px solid #888;
+    width: 400px; /* Chiều rộng modal */
+    border-radius: 8px;
+    text-align: center;
+}
+
+/* Nút đóng modal */
+.close {
+    color: #aaa;
+    float: right;
+    font-size: 24px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.close:hover,
+.close:focus {
+    color: black;
+    text-decoration: none;
+}
+
+/* Nút trong modal */
+.modal-button {
+    padding: 10px 20px;
+    margin: 10px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.confirm-btn {
+    background-color: #28a745;
+    color: white;
+}
+
+.cancel-btn {
+    background-color: #dc3545;
+    color: white;
+}
+
+/* Thông báo */
+.notification {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    background-color: #28a745;
+    color: white;
+    padding: 15px 20px;
+    border-radius: 4px;
+    display: none;
+    z-index: 1001;
+}
+
+.notification.error {
+    background-color: #dc3545;
+}
+
+/* Trường tìm kiếm */
+.search-container {
+    margin-bottom: 15px;
+}
+
+#search-input {
+    width: 100%;
+    padding: 8px;
+    border-radius: 3px;
+    border: 1px solid #ccc;
+}
+
+/* Phân trang */
+.pagination-container {
+    margin-top: 15px;
+    text-align: center;
+}
+
+.pagination-container .page-btn {
+    padding: 8px 12px;
+    margin: 0 5px;
+    border: none;
+    background-color: #007bff;
+    color: #fff;
+    border-radius: 3px;
+    cursor: pointer;
+}
+
+.pagination-container .page-btn.active,
+.pagination-container .page-btn:hover {
+    background-color: #0056b3;
+}

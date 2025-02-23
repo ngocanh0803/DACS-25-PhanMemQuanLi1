@@ -1,0 +1,359 @@
+/* manage_facilities.css */
+
+/* Đặt kiểu chữ chung cho trang */
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f4f6f9;
+    margin: 0;
+    padding: 0;
+}
+
+/* Container chính */
+.container {
+    display: flex;
+}
+
+/* Nội dung chính */
+.content {
+    flex: 1;
+    padding: 20px;
+}
+
+/* Tiêu đề bảng điều khiển */
+.dashboard-header h2 {
+    margin-top: 0;
+    color: #333;
+}
+
+.dashboard-header .subtitle {
+    color: #666;
+    font-size: 14px;
+}
+
+/* Bảng điều khiển */
+.control-panel {
+    background-color: #fff;
+    padding: 15px;
+    margin-bottom: 20px;
+    border-radius: 5px;
+}
+
+/* Nhóm lựa chọn */
+.selector-group {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+}
+
+.selector-group .select-wrapper {
+    margin-right: 20px;
+    margin-bottom: 10px;
+}
+
+.selector-group label {
+    display: block;
+    margin-bottom: 5px;
+    color: #333;
+    font-weight: bold;
+}
+
+.selector-group .custom-select {
+    width: 200px;
+    padding: 5px;
+    border-radius: 3px;
+    border: 1px solid #ccc;
+}
+
+.load-btn {
+    background-color: #28a745;
+    color: #fff;
+    padding: 8px 12px;
+    border: none;
+    border-radius: 3px;
+    cursor: pointer;
+}
+
+.load-btn i {
+    margin-right: 5px;
+}
+
+.load-btn:hover {
+    background-color: #218838;
+}
+
+/* Danh sách cơ sở vật chất */
+.facilities-list {
+    background-color: #fff;
+    padding: 15px;
+    border-radius: 5px;
+}
+
+.facilities-list h3 {
+    margin-top: 0;
+    color: #333;
+}
+
+.facilities-list .highlight {
+    color: #007bff;
+}
+
+.add-btn {
+    background-color: #007bff;
+    color: #fff;
+    padding: 8px 12px;
+    border: none;
+    border-radius: 3px;
+    cursor: pointer;
+    float: right;
+    margin-top: -40px;
+}
+
+.add-btn i {
+    margin-right: 5px;
+}
+
+.add-btn:hover {
+    background-color: #0069d9;
+}
+
+/* Bảng cơ sở vật chất */
+#facilities-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+}
+
+#facilities-table th, #facilities-table td {
+    border: 1px solid #ddd;
+    padding: 8px;
+    text-align: center;
+}
+
+#facilities-table th {
+    background-color: #f2f2f2;
+    color: #333;
+    font-weight: bold;
+}
+
+#facilities-table tr:nth-child(even) {
+    background-color: #f9f9f9;
+}
+
+#facilities-table tr:hover {
+    background-color: #f1f1f1;
+}
+
+#facilities-table .edit-btn, #facilities-table .delete-btn {
+    background-color: transparent;
+    border: none;
+    cursor: pointer;
+    color: #007bff;
+    font-size: 16px;
+}
+
+#facilities-table .delete-btn {
+    color: #dc3545;
+}
+
+#facilities-table .edit-btn:hover {
+    color: #0056b3;
+}
+
+#facilities-table .delete-btn:hover {
+    color: #c82333;
+}
+
+/* Modal */
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 999;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgba(0, 0, 0, 0.5);
+}
+
+.modal-content {
+    background-color: #fff;
+    margin: 5% auto;
+    padding: 20px 30px;
+    border: 1px solid #888;
+    width: 400px;
+    border-radius: 5px;
+    position: relative;
+}
+
+.close-btn {
+    color: #aaa;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+    position: absolute;
+    right: 15px;
+    top: 10px;
+    cursor: pointer;
+}
+
+.close-btn:hover,
+.close-btn:focus {
+    color: #000;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+/* Form trong modal */
+#facility-form .form-group {
+    margin-bottom: 15px;
+}
+
+#facility-form label {
+    display: block;
+    margin-bottom: 5px;
+    color: #333;
+    font-weight: bold;
+}
+
+#facility-form input[type="text"],
+#facility-form input[type="number"],
+#facility-form select {
+    width: 100%;
+    padding: 8px;
+    border-radius: 3px;
+    border: 1px solid #ccc;
+}
+
+.save-btn {
+    background-color: #28a745;
+    color: #fff;
+    padding: 10px 15px;
+    border: none;
+    border-radius: 3px;
+    cursor: pointer;
+}
+
+.save-btn:hover {
+    background-color: #218838;
+}
+
+/* Thông báo */
+.notification {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    background: #3498db;
+    color: white;
+    padding: 15px 20px;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    font-size: 1em;
+    opacity: 0;
+    transform: translateY(20px);
+    transition: opacity 0.4s, transform 0.4s;
+}
+
+.notification.show {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.notification.success {
+    background: #2ecc71;
+}
+
+.notification.error {
+    background: #e74c3c;
+}
+.notification.success { background-color: #28a745; }
+.notification.error { background-color: #dc3545; }
+
+/* Nền tối cho popup */
+.popup-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+}
+
+/* Khung nội dung của popup */
+.popup-content {
+    background-color: #fff;
+    padding: 20px 30px;
+    width: 90%;
+    max-width: 400px;
+    border-radius: 10px;
+    text-align: center;
+    position: absolute;
+    top: 45%;
+    left: 45%;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+    animation: fadeIn 0.3s ease-in-out;
+}
+
+/* Animation khi xuất hiện popup */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: scale(0.8);
+    }
+    to {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+
+/* Tiêu đề của popup */
+.popup-content h3 {
+    font-size: 1.6em;
+    color: #333;
+    margin-top: 0;
+    margin-bottom: 15px;
+}
+
+/* Nội dung văn bản trong popup */
+.popup-content p {
+    color: #555;
+    font-size: 1em;
+    margin-bottom: 20px;
+}
+
+/* Nút trong popup */
+.popup-content button {
+    padding: 10px 20px;
+    font-size: 1em;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background-color 0.3s, transform 0.2s;
+    margin: 5px;
+}
+
+/* Nút xác nhận */
+#confirm-delete-btn {
+    background-color: #e74c3c;
+    color: #fff;
+}
+
+#confirm-delete-btn:hover {
+    background-color: #c0392b;
+    transform: scale(1.05);
+}
+
+/* Nút hủy */
+#cancel-delete-btn {
+    background-color: #95a5a6;
+    color: #fff;
+}
+
+#cancel-delete-btn:hover {
+    background-color: #7f8c8d;
+    transform: scale(1.05);
+}

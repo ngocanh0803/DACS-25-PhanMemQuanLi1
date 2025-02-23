@@ -1,0 +1,447 @@
+/* Styles cho container chính */
+.floor-plan-container {
+    padding: 2rem;
+    background: #ffffff;
+    border-radius: 15px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+}
+
+/* Dashboard header */
+.dashboard-header {
+    margin-bottom: 2rem;
+    text-align: center;
+}
+
+.dashboard-header h2 {
+    color: #2c3e50;
+    font-size: 2rem;
+    margin-bottom: 0.5rem;
+}
+
+.dashboard-header h2 i {
+    color: #3498db;
+    margin-right: 10px;
+}
+
+.subtitle {
+    color: #7f8c8d;
+    font-size: 1.1rem;
+}
+
+/* Control Panel */
+.control-panel {
+    background: #f8f9fa;
+    padding: 1.5rem;
+    border-radius: 12px;
+    margin-bottom: 2rem;
+}
+
+.selector-group {
+    display: flex;
+    gap: 1.5rem;
+    align-items: flex-end;
+    flex-wrap: wrap;
+}
+
+.select-wrapper {
+    flex: 1;
+    min-width: 200px;
+}
+
+.select-wrapper label {
+    display: block;
+    margin-bottom: 0.5rem;
+    color: #34495e;
+    font-weight: 500;
+}
+
+.custom-select {
+    width: 100%;
+    padding: 12px;
+    border: 2px solid #e0e0e0;
+    border-radius: 8px;
+    background: #fff;
+    font-size: 1rem;
+    transition: all 0.3s ease;
+}
+
+.custom-select:focus {
+    border-color: #3498db;
+    box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.1);
+    outline: none;
+}
+
+.load-btn {
+    padding: 12px 24px;
+    background: linear-gradient(135deg, #3498db, #2980b9);
+    color: white;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    font-weight: 500;
+    transition: transform 0.2s ease;
+}
+
+.load-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(52, 152, 219, 0.2);
+}
+
+/* Floor Map */
+.floor-info {
+    margin-bottom: 1.5rem;
+    padding: 1rem;
+    background: #f8f9fa;
+    border-radius: 8px;
+    text-align: center;
+}
+
+.floor-info h3 {
+    color: #2c3e50;
+    font-size: 1.3rem;
+}
+
+.highlight {
+    color: #3498db;
+    font-weight: 600;
+}
+
+/* Rooms Container */
+.rooms-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 1.5rem;
+    padding: 1.5rem;
+    background: #f8f9fa;
+    border-radius: 12px;
+}
+
+/* Room Legend */
+.room-legend {
+    margin-top: 2rem;
+    padding: 1.5rem;
+    background: #f8f9fa;
+    border-radius: 12px;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+}
+
+.room-legend h4 {
+    color: #2c3e50;
+    font-size: 1.1rem;
+    margin-bottom: 1rem;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.room-legend h4 i {
+    color: #3498db;
+}
+
+.legend-items {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1.5rem;
+    justify-content: center;
+}
+
+.legend-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 8px 16px;
+    background: white;
+    border-radius: 8px;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.04);
+}
+
+.room-indicator {
+    width: 24px;
+    height: 24px;
+    border-radius: 6px;
+}
+
+.room-indicator.available {
+    background: linear-gradient(135deg, #2ecc71, #27ae60);
+    box-shadow: 0 2px 8px rgba(46, 204, 113, 0.2);
+}
+
+.room-indicator.occupied {
+    background: linear-gradient(135deg, #e74c3c, #c0392b);
+    box-shadow: 0 2px 8px rgba(231, 76, 60, 0.2);
+}
+
+.room-indicator.maintenance {
+    background: linear-gradient(135deg, #f1c40f, #f39c12);
+    box-shadow: 0 2px 8px rgba(241, 196, 15, 0.2);
+}
+
+/* Room Cards */
+.room-info {
+    /* background: white; */
+    border-radius: 12px;
+    padding: 1.5rem;
+    /* box-shadow: 0 4px 15px rgba(0,0,0,0.05); */
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.room-info:hover {
+    transform: translateY(-3px);
+    /* box-shadow: 0 6px 20px rgba(0,0,0,0.1); */
+}
+
+.room-info h4 {
+    color: #2c3e50;
+    font-size: 1.2rem;
+    margin-bottom: 1rem;
+    padding-bottom: 0.5rem;
+    border-bottom: 2px solid #f0f0f0;
+}
+
+/* .status-select {
+    width: 100%;
+    padding: 12px;
+    border: 2px solid #e0e0e0;
+    border-radius: 8px;
+    margin-bottom: 1rem;
+    margin-top: 10px;
+    font-size: 0.95rem;
+    transition: border-color 0.3s ease;
+}
+
+.status-select:focus {
+    border-color: #3498db;
+    outline: none;
+} */
+
+.status-select {
+    width: 100%;
+    padding: 12px 40px 12px 12px; /* Thêm khoảng trống ở bên phải để dành chỗ cho mũi tên tùy chỉnh */
+    border: 2px solid #ffffff; /* Viền màu trắng */
+    border-radius: 8px;
+    margin-bottom: 1rem;
+    margin-top: 10px;
+    font-size: 0.95rem;
+    color: #ffffff; /* Màu chữ trắng */
+    background: transparent; /* Nền trong suốt */
+    appearance: none; /* Ẩn mũi tên mặc định */
+    background-image: url('data:image/svg+xml;charset=US-ASCII,%3Csvg xmlns=\'http://www.w3.org/2000/svg\' width=\'10\' height=\'5\' viewBox=\'0 0 10 5\'%3E%3Cpath fill=\'%23ffffff\' d=\'M0 0l5 5 5-5z\'/%3E%3C/svg%3E'); /* Mũi tên tùy chỉnh màu trắng */
+    background-repeat: no-repeat;
+    background-position: right 12px center;
+    background-size: 10px 5px;
+    cursor: pointer;
+    transition: border-color 0.3s ease, background-color 0.3s ease;
+}
+
+/* Thay đổi màu viền khi focus */
+.status-select:focus {
+    /* border-color: #3498db; */
+    outline: none;
+    /* Bạn có thể thêm nền màu nhẹ khi focus nếu muốn */
+    background-color: rgba(255, 255, 255, 0.1);
+}
+
+/* Tùy chỉnh các tùy chọn */
+.status-select option[value="available"] {
+    background: rgba(113, 255, 168, 0.76);
+}
+
+.status-select option[value="occupied"] {
+background: rgba(252, 104, 104, 0.763);
+}
+
+.status-select option[value="maintenance"] {
+background: rgba(255, 184, 91, 0.826);
+}
+
+.status-select option[value="available"]:hover {
+    cursor: pointer;
+    background: rgba(113, 255, 167, 0.598);
+}
+
+.status-select option[value="occupied"]:hover {
+    cursor: pointer;
+    background: rgba(252, 104, 104, 0.549); 
+}
+
+.status-select option[value="maintenance"]:hover {
+    cursor: pointer;
+    background: rgba(255, 184, 91, 0.572);
+}
+
+.update-status {
+    width: 100%;
+    padding: 12px;
+    /* background: linear-gradient(135deg, #3498db, #2980b9); */
+    background-color: transparent;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: rgba(50, 50, 93, 0.25) 0px 50px 100px -20px, rgba(0, 0, 0, 0.3) 0px 30px 60px -30px, rgba(10, 37, 64, 0.35) 0px -2px 6px 0px inset;
+}
+
+.update-status:hover {
+    transform: translateY(-2px);
+    /* box-shadow: 0 4px 12px rgba(52, 152, 219, 0.2); */
+}
+
+/* Notification */
+.notification {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    padding: 1rem 1.5rem;
+    border-radius: 10px;
+    color: white;
+    font-weight: 500;
+    opacity: 0;
+    transform: translateX(100%);
+    transition: all 0.3s ease;
+    z-index: 1000;
+}
+
+.notification.show {
+    opacity: 1;
+    transform: translateX(0);
+}
+
+.notification.success {
+    background: linear-gradient(135deg, #2ecc71, #27ae60);
+    box-shadow: 0 4px 15px rgba(46, 204, 113, 0.3);
+}
+
+.notification.error {
+    background: linear-gradient(135deg, #e74c3c, #c0392b);
+    box-shadow: 0 4px 15px rgba(231, 76, 60, 0.3);
+}
+
+/* Responsive Design */
+@media screen and (max-width: 768px) {
+    .floor-plan-container {
+        padding: 1rem;
+    }
+
+    .selector-group {
+        flex-direction: column;
+        gap: 1rem;
+    }
+
+    .select-wrapper {
+        width: 100%;
+    }
+
+    .rooms-container {
+        grid-template-columns: 1fr;
+        gap: 1rem;
+        padding: 1rem;
+    }
+
+    .legend-items {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .notification {
+        width: 90%;
+        right: 5%;
+        top: 10px;
+    }
+}
+
+/* Loading Animation */
+.load-btn.loading {
+    position: relative;
+    color: transparent;
+}
+
+.load-btn.loading::after {
+    content: '';
+    position: absolute;
+    width: 20px;
+    height: 20px;
+    top: 50%;
+    left: 50%;
+    border: 2px solid #fff;
+    border-radius: 50%;
+    border-top-color: transparent;
+    animation: spin 0.8s linear infinite;
+    transform: translate(-50%, -50%);
+}
+
+@keyframes spin {
+    to {
+        transform: translate(-50%, -50%) rotate(360deg);
+    }
+}
+
+/* Custom Scrollbar */
+::-webkit-scrollbar {
+    width: 8px;
+}
+
+::-webkit-scrollbar-track {
+    background: #f1f1f1;
+    border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb {
+    background: #3498db;
+    border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: #2980b9;
+}
+
+/* Thêm các lớp trạng thái cho phòng */
+.room.available {
+    background: linear-gradient(135deg, #2ecc71, #27ae60); /* Màu xanh lá cho phòng trống */
+    color: white;
+}
+
+.room.occupied {
+    background: linear-gradient(135deg, #e74c3c, #c0392b); /* Màu đỏ cho phòng đã có người */
+    color: white;
+}
+
+.room.maintenance {
+    background: linear-gradient(135deg, #f1c40f, #f39c12); /* Màu vàng cho phòng đang sửa chữa */
+    color: white;
+}
+
+/* Thêm hiệu ứng chuyển đổi cho màu nền phòng */
+.room {
+    transition: background 0.5s ease;
+}
+/* Notification */
+.notification {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    padding: 1rem 1.5rem;
+    border-radius: 10px;
+    color: white;
+    font-weight: 500;
+    opacity: 0;
+    transform: translateX(100%);
+    transition: all 0.3s ease;
+    z-index: 1000;
+}
+
+.notification.show {
+    opacity: 1;
+    transform: translateX(0);
+}
+
+.notification.success {
+    background: linear-gradient(135deg, #2ecc71, #27ae60);
+    box-shadow: 0 4px 15px rgba(46, 204, 113, 0.3);
+}
+
+.notification.error {
+    background: linear-gradient(135deg, #e74c3c, #c0392b);
+    box-shadow: 0 4px 15px rgba(231, 76, 60, 0.3);
+}

@@ -1,0 +1,110 @@
+body {
+    font-family: 'Roboto', sans-serif;
+    background-image: url('../img/phenikaa3.jpg'); /* Thay đổi đường dẫn đến hình ảnh của bạn */
+    background-size: cover;
+    background-position: center;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    margin: 0;
+    color: #333;
+}
+
+.login-container {
+    background-color: rgba(255, 255, 255, 0.9); /* Thêm độ trong suốt cho background */
+    padding: 2rem;
+    border-radius: 8px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+    width: 100%;
+    max-width: 350px;
+
+    background-color: rgba(255, 255, 255, 0.4);
+    backdrop-filter: blur(10px);
+    border: 2px solid rgba(255, 255, 255, 0.1);
+    box-shadow: 0 0 40px rgba(8, 7, 16, 0.6);
+}
+
+.login-container h2 {
+    margin-bottom: 1.5rem;
+    font-weight: 700;
+    text-align: center;
+}
+
+.login-container .input-group {
+    margin-bottom: 1rem;
+    position: relative;
+}
+
+.login-container .input-group label {
+    display: block;
+    margin-bottom: 0.5rem;
+    font-weight: 500;
+}
+
+.login-container .input-group input,
+.login-container .input-group select {
+    width: 100%;
+    padding: 0.75rem;
+    padding-right: 40px; /* Thêm không gian cho biểu tượng */
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box;
+    transition: border-color 0.3s ease;
+}
+
+.login-container .input-group input:focus,
+.login-container .input-group select:focus {
+    border-color: #007bff; /* Thay đổi màu viền khi focus */
+}
+
+.login-container .input-group .fa {
+    position: absolute;
+    margin-left: -30px;
+    margin-top: 15px;
+    color: #aaa;
+}
+
+.login-container .btn {
+    width: 100%;
+    padding: 0.75rem;
+    background-color: #007bff;
+    border: none;
+    border-radius: 4px;
+    color: #fff;
+    font-weight: 700;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.login-container .btn:hover {
+    background-color: #0056b3;
+}
+
+.login-container .links {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 1rem;
+}
+
+.login-container .links a {
+    color: #007bff;
+    text-decoration: none;
+    font-weight: 500;
+}
+
+.login-container .links a:hover {
+    text-decoration: underline;
+}
+
+.error {
+    color: red;
+    text-align: center;
+    margin-top: 1rem;
+}
+
+.success {
+    color: green;
+    text-align: center;
+    margin-top: 1rem;
+}
