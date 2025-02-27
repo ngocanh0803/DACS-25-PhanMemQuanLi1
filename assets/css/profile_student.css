@@ -1,0 +1,63 @@
+/* profile_student.css */
+.profile-container {
+    background: #fff;
+    padding: 20px;
+    margin-top: 20px;
+    border-radius: 6px;
+    box-shadow: 0 0 8px rgba(0, 0, 0, 0.1);
+    max-width: 700px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.profile-container h2 {
+    text-align: center;
+    margin-bottom: 20px;
+    color: #333;
+}
+
+form#profile-form {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+}
+
+.form-group {
+    width: 48%;
+    margin-bottom: 15px;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 5px;
+    color: #555;
+    font-weight: bold;
+}
+
+.form-group input {
+    width: 100%;
+    padding: 8px 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-size: 14px;
+    color: #333;
+}
+
+.form-group button.btn {
+    width: 100%;
+    padding: 10px;
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+    border-radius: 4px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.form-group button.btn:hover {
+    background-color: #0056b3;
+}
+
+/* Nếu muốn hiển thị form theo 100% cho các trường lớn, bạn có thể điều chỉnh:
+   .form-group.full { width: 100%; } */
