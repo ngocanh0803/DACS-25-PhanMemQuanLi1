@@ -20,8 +20,13 @@ if (isset($_GET['payment_id']) && isset($_GET['room_id'])) {
         exit();
     }
 
-    // Cập nhật trạng thái hóa đơn
-    $sql_update = "UPDATE Payments SET payment_status = ? WHERE payment_id = ?";
+    // Cập nhật trạng thái và payment_date tùy theo trạng thái thanh toán
+    if ($status === 'paid') {
+        $sql_update = "UPDATE Payments SET payment_status = ?, payment_date = NOW() WHERE payment_id = ?";
+    } else {
+        $sql_update = "UPDATE Payments SET payment_status = ?, payment_date = NULL WHERE payment_id = ?";
+    }
+    
     $stmt_update = $conn->prepare($sql_update);
     $stmt_update->bind_param("si", $status, $payment_id);
 

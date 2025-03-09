@@ -1,6 +1,5 @@
 <?php
 session_start();
-
 // Kiểm tra đăng nhập và role: chỉ cho phép sinh viên truy cập
 if (!isset($_SESSION['username']) || $_SESSION['role'] !== 'student') {
     header("Location: ../php/login.php");

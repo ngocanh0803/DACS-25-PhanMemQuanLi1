@@ -80,11 +80,7 @@ while ($row = $result_floor->fetch_assoc()) {
                         Danh sách Cơ sở Vật chất 
                         <span id="current-room" class="highlight"></span>
                     </h3>
-
-                    <button id="add-facility-btn" class="add-btn">
-                        <i class="fas fa-plus"></i> Thêm Cơ sở Vật chất
-                    </button>
-
+                    <button id="add-facility-btn" class="add-btn"><i class="fas fa-plus"></i> Thêm Cơ sở Vật chất</button>
                     <table id="facilities-table">
                         <thead>
                             <tr>
@@ -92,6 +88,7 @@ while ($row = $result_floor->fetch_assoc()) {
                                 <th>Tên thiết bị</th>
                                 <th>Số lượng</th>
                                 <th>Trạng thái</th>
+                                <th>Loại</th>
                                 <th>Hành động</th>
                             </tr>
                         </thead>
@@ -103,6 +100,34 @@ while ($row = $result_floor->fetch_assoc()) {
             </div>
         </main>
     </div>
+
+    <!-- Popup thu hồi/xóa thiết bị (cho thiết bị của sinh viên) -->
+    <!-- Popup thu hồi/xóa thiết bị (cho thiết bị của sinh viên) -->
+    <div id="revoke-modal" class="modal" style="display: none;">
+        <div class="modal-content">
+            <span class="close-revoke">&times;</span>
+            <h3>Thu hồi/Xóa thiết bị của sinh viên</h3>
+            <!-- Thông tin chủ thiết bị -->
+            <div class="owner-info">
+                <p><strong>Tên chủ thiết bị:</strong> <span id="owner-name"></span></p>
+                <p><strong>Mã SV:</strong> <span id="owner-code"></span></p>
+                <p><strong>Loại thiết bị:</strong> <span id="device-type"></span></p>
+            </div>
+            <form id="revoke-form">
+                <input type="hidden" id="revoke-facility-id" name="facility_id">
+                <div class="form-group">
+                    <label for="revoke-reason">Lý do thu hồi/xóa:</label>
+                    <textarea id="revoke-reason" name="revoke_reason" rows="3" required></textarea>
+                </div>
+                <div class="form-group">
+                    <label for="revoke-evidence">Bằng chứng (URL hoặc mô tả):</label>
+                    <input type="text" id="revoke-evidence" name="revoke_evidence" required>
+                </div>
+                <button type="submit" class="btn">Gửi yêu cầu thu hồi</button>
+            </form>
+        </div>
+    </div>
+
 
     <!-- Modal Thêm/Sửa Cơ sở Vật chất -->
     <div id="facility-modal" class="modal">
@@ -134,6 +159,7 @@ while ($row = $result_floor->fetch_assoc()) {
             </form>
         </div>
     </div>
+
     <div id="confirm-delete-popup" class="popup-overlay" style="display: none;">
         <div class="popup-content">
             <h3>Xác nhận Xóa</h3>
@@ -151,3 +177,4 @@ while ($row = $result_floor->fetch_assoc()) {
     <script src="../../assets/js/manage_facilities.js"></script>
 </body>
 </html>
+<?php $conn->close(); ?>

@@ -1,11 +1,12 @@
 <?php
 // process_import.php
-require '../vendor/autoload.php';
+require '../../vendor/autoload.php';
 use PhpOffice\PhpSpreadsheet\IOFactory;
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
 
 // Kết nối cơ sở dữ liệu
 include '../config/db_connect.php';
+
 
 if (isset($_POST['import'])) {
     if (isset($_FILES['excel_file']) && $_FILES['excel_file']['error'] === 0) {
@@ -21,14 +22,16 @@ if (isset($_POST['import'])) {
                 $sheet = $spreadsheet->getActiveSheet();
                 $rows = $sheet->toArray(null, true, true, true);
 
+                // Lấy header (hàng đầu tiên) và chuyển thành chữ thường
                 $header = array_map('strtolower', $rows[1]);
                 unset($rows[1]);
 
-                // Các trường cần thiết (khớp với cấu trúc bảng `Students`)
+                // Các cột bắt buộc cho Students và Users
                 $required_columns = [
                     'student_code', 'full_name', 'email', 'phone', 
                     'gender', 'date_of_birth', 'address', 'nationality', 
-                    'major', 'year_of_study', 'gpa', 'room_id', 'status'
+                    'major', 'year_of_study', 'gpa', 'room_id', 'status',
+                    'username', 'password'
                 ];
 
                 foreach ($required_columns as $column) {
@@ -37,10 +40,20 @@ if (isset($_POST['import'])) {
                     }
                 }
 
-                $sql = "INSERT INTO Students (student_code, full_name, email, phone, gender, date_of_birth, address, nationality, major, year_of_study, gpa, room_id, status) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
-                $stmt = $conn->prepare($sql);
-                if (!$stmt) {
-                    throw new Exception("Lỗi trong việc chuẩn bị câu lệnh SQL: " . $conn->error);
+                // Chuẩn bị SQL chèn vào bảng Students (13 trường)
+                $sql_student = "INSERT INTO Students (student_code, full_name, email, phone, gender, date_of_birth, address, nationality, major, year_of_study, gpa, room_id, status) 
+                                VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+                $stmt_student = $conn->prepare($sql_student);
+                if (!$stmt_student) {
+                    throw new Exception("Lỗi chuẩn bị câu lệnh SQL (Students): " . $conn->error);
+                }
+
+                // Chuẩn bị SQL chèn vào bảng Users (3 trường từ Excel: username, password, email – bạn có thể dùng email để liên kết hoặc để hiển thị, role, is_approved, activation_token được tự động thiết lập)
+                // Ở đây, chúng ta sẽ lấy username và password từ file Excel, còn role sẽ đặt là 'student'
+                $sql_user = "INSERT INTO Users (username, password, role, is_approved, activation_token) VALUES (?, ?, 'student', 1, ?)";
+                $stmt_user = $conn->prepare($sql_user);
+                if (!$stmt_user) {
+                    throw new Exception("Lỗi chuẩn bị câu lệnh SQL (Users): " . $conn->error);
                 }
 
                 $inserted = 0;
@@ -48,30 +61,36 @@ if (isset($_POST['import'])) {
                 $errors = [];
 
                 foreach ($rows as $index => $row) {
-                    $student_code = trim($row[array_search('student_code', $header)]);
-                    $full_name = trim($row[array_search('full_name', $header)]);
-                    $email = trim($row[array_search('email', $header)]);
-                    $phone = trim($row[array_search('phone', $header)]);
-                    $gender = trim($row[array_search('gender', $header)]);
-                    $date_of_birth = trim($row[array_search('date_of_birth', $header)]);
-                    $address = trim($row[array_search('address', $header)]);
-                    $nationality = trim($row[array_search('nationality', $header)]);
-                    $major = trim($row[array_search('major', $header)]);
-                    $year_of_study = trim($row[array_search('year_of_study', $header)]);
-                    $gpa = trim($row[array_search('gpa', $header)]);
-                    $status = trim($row[array_search('status', $header)]);
-                    $room_id = trim($row[array_search('room_id', $header)]);
+                    // Lấy dữ liệu cho bảng Students
+                    $student_code   = trim($row[array_search('student_code', $header)]);
+                    $full_name      = trim($row[array_search('full_name', $header)]);
+                    $email          = trim($row[array_search('email', $header)]);
+                    $phone          = trim($row[array_search('phone', $header)]);
+                    $gender         = trim($row[array_search('gender', $header)]);
+                    $date_of_birth  = trim($row[array_search('date_of_birth', $header)]);
+                    $address        = trim($row[array_search('address', $header)]);
+                    $nationality    = trim($row[array_search('nationality', $header)]);
+                    $major          = trim($row[array_search('major', $header)]);
+                    $year_of_study  = trim($row[array_search('year_of_study', $header)]);
+                    $gpa            = trim($row[array_search('gpa', $header)]);
+                    $status         = trim($row[array_search('status', $header)]);
+                    $room_id        = trim($row[array_search('room_id', $header)]);
 
-                    if (empty($student_code) || empty($full_name) || empty($email)) {
+                    // Lấy dữ liệu cho bảng Users
+                    $username       = trim($row[array_search('username', $header)]);
+                    $password       = trim($row[array_search('password', $header)]); // Lưu plain text theo yêu cầu
+
+                    // Kiểm tra dữ liệu bắt buộc
+                    if (empty($student_code) || empty($full_name) || empty($email) || empty($username) || empty($password)) {
                         $errors[] = "Dòng " . ($index + 2) . ": Thiếu dữ liệu bắt buộc.";
                         continue;
                     }
-
                     if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
                         $errors[] = "Dòng " . ($index + 2) . ": Email không hợp lệ.";
                         continue;
                     }
 
+                    // Kiểm tra phòng (nếu có)
                     if (!empty($room_id)) {
                         $room_id = intval($room_id);
                         $sql_room = "SELECT room_id FROM Rooms WHERE room_id = ?";
@@ -86,16 +105,26 @@ if (isset($_POST['import'])) {
                             }
                             $stmt_room->close();
                         } else {
-                            $errors[] = "Dòng " . ($index + 2) . ": Lỗi khi kiểm tra phòng.";
+                            $errors[] = "Dòng " . ($index + 2) . ": Lỗi kiểm tra phòng.";
                             $room_id = NULL;
                         }
                     } else {
                         $room_id = NULL;
                     }
 
-                    $stmt->bind_param("sssssssssidis", $student_code, $full_name, $email, $phone, $gender, $date_of_birth, $address, $nationality, $major, $year_of_study, $gpa, $room_id, $status);
-                    if ($stmt->execute()) {
+                    // Chèn vào bảng Students
+                    $stmt_student->bind_param("sssssssssidis", $student_code, $full_name, $email, $phone, $gender, $date_of_birth, $address, $nationality, $major, $year_of_study, $gpa, $room_id, $status);
+                    if ($stmt_student->execute()) {
                         $inserted++;
+
+                        // Tạo tài khoản cho sinh viên vào bảng Users
+                        // Ở đây sử dụng username và password lấy từ Excel,
+                        // activation_token được tạo ngẫu nhiên.
+                        $activation_token = bin2hex(random_bytes(16));
+                        $stmt_user->bind_param("sss", $username, $password, $activation_token);
+                        if (!$stmt_user->execute()) {
+                            $errors[] = "Dòng " . ($index + 2) . ": Không thể tạo tài khoản User.";
+                        }
                     } else {
                         if ($conn->errno === 1062) {
                             $duplicates++;
@@ -105,7 +134,8 @@ if (isset($_POST['import'])) {
                     }
                 }
 
-                $stmt->close();
+                $stmt_student->close();
+                $stmt_user->close();
                 $conn->close();
 
                 echo "<!DOCTYPE html>

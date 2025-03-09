@@ -110,6 +110,7 @@ body {
     display: flex;
     align-items: center;
     width: 250px;
+    margin-right: 4px;
 }
 
 .search-bar input {
@@ -125,7 +126,7 @@ body {
     align-items: center;
     cursor: pointer;
     position: relative;
-    margin-left: 30px;
+    margin-left: 13px;
 }
 
 .user-profile img {
@@ -292,3 +293,127 @@ body {
         grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
     }
 }
+
+/* Quả chuông */
+.notification-wrapper{
+    position: relative;
+    margin: 0 15px;
+    margin-top: 10px;
+}
+#notification-bell{
+    font-size: 24px;
+    cursor: pointer;
+}
+#notification-count{
+    position: absolute;
+    top: -5px;
+    right: -5px;
+    background-color: red;
+    color: #fff;
+    border-radius: 50%;
+    padding: 2px 6px;
+    font-size: 12px;
+    display: none;
+}
+#notification-dropdown.dropdown{
+    display: none;
+    position: absolute;
+    right: 0;
+    top: 30px;
+    background: #fff;
+    border: 1px solid #ccc;
+    width: 300px;
+    max-height: 400px;
+    overflow-y: auto;
+    box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    z-index: 100;
+}
+
+#notification-dropdown.dropdown.active {
+    display: block;
+}
+
+/* 
+   1) Vùng chứa cho chuông và dropdown 
+   - Tùy chỉnh position nếu bạn muốn dropdown xuất hiện cạnh chuông. 
+*/
+.notification-wrapper {
+    position: relative; 
+    display: inline-block;
+}
+
+/* 
+   2) Kiểu dáng chung của dropdown
+   - .dropdown.active sẽ display: block 
+   - .dropdown { display: none } ẩn mặc định 
+*/
+.dropdown {
+    position: absolute;
+    top: 40px;   /* Căn chỉnh theo vị trí icon chuông */
+    right: 0;    /* Canh phải */
+    width: 300px; /* Độ rộng vùng dropdown */
+    max-height: 400px; /* Chiều cao tối đa, nếu dài thì scroll */
+    overflow-y: auto;
+    display: none; 
+    background-color: #fff;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+    z-index: 9999;
+}
+
+.dropdown.active {
+    display: block;
+}
+
+/* 
+   4) Mỗi thông báo (notification-item)
+   - Có gạch phân tách, padding. 
+   - .unread để hiển thị màu nền nhạt hơn hoặc highlight. 
+*/
+.notification-item {
+    padding: 10px;
+    border-bottom: 1px solid #eee;
+    font-size: 14px;
+    color: #333;
+    cursor: pointer;
+}
+
+/* Bỏ gạch cuối cùng ở item cuối */
+.notification-item:last-child {
+    border-bottom: none;
+}
+
+/* Nếu chưa đọc (unread) thì cho nền hơi khác, font đậm hơn, v.v. */
+.notification-item.unread {
+    background-color: #f3f9ff;
+    font-weight: 600;
+}
+
+/* Tiêu đề thông báo */
+.notification-item strong {
+    display: block;
+    margin-bottom: 4px;
+    font-weight: 600;
+    color: #222;
+}
+
+/* Nội dung chính (message) 
+   - Dùng text-overflow: ellipsis cho 1 dòng hoặc multiline
+   - Ở đây demo single line, ẩn phần dư 
+*/
+.notification-item p {
+    margin: 0;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+}
+
+/* Thời gian, để font-size nhỏ, màu xám */
+.notification-item small {
+    display: block;
+    margin-top: 6px;
+    font-size: 12px;
+    color: #999;
+}
+

@@ -25,8 +25,8 @@
                     <p><strong>Ghi chú:</strong></p>
                     <ul>
                         <li>File Excel phải có định dạng <code>.xlsx</code> hoặc <code>.xls</code>.</li>
-                        <li>Cấu trúc cột trong Excel phải tương ứng với cấu trúc bảng <code>Students</code> trong cơ sở dữ liệu.</li>
-                        <li>Ví dụ: <code>Mã sinh viên</code>, <code>tên sinh viên</code>, <code>email</code>, <code>phone</code>, <code>giới tính</code>, <code>ngày sinh</code>, <code>địa chỉ</code>, <code>quốc gia</code>, <code>môn học</code>, <code>sinh viên năm</code>, <code>GPA</code>, <code>Phòng</code>, <code>Trạng thái</code>.</li>
+                        <li>Cấu trúc cột trong Excel phải tương ứng với cấu trúc của bảng <code>Students</code> và <code>Users</code> trong cơ sở dữ liệu.</li>
+                        <li>Ví dụ các cột cần có: <code>student_code</code>, <code>full_name</code>, <code>email</code>, <code>phone</code>, <code>gender</code>, <code>date_of_birth</code>, <code>address</code>, <code>nationality</code>, <code>major</code>, <code>year_of_study</code>, <code>gpa</code>, <code>room_id</code>, <code>status</code>, <code>username</code>, <code>password</code>.</li>
                     </ul>
                 </div>
             </div>

@@ -17,7 +17,7 @@
             </div>
         <?php endif; ?>
 
-                <!-- Quản lý hợp đồng -->
+        <!-- Quản lý hợp đồng -->
         <?php if ($role == 'manager' || $role == 'admin' || $role == 'student_manager' || $role == 'accountant'): ?>
             <div class="menu-item">
                 <div class="menu-title">
@@ -28,6 +28,8 @@
                 <ul class="submenu">
                     <li><a href="./contracts_list.php"><i class="fas fa-list"></i> Danh sách Hợp đồng</a></li>
                     <li><a href="./create_contract.php"><i class="fas fa-plus"></i> Thêm Hợp đồng</a></li>
+                    <li><a href="./registration_requests.php"><i class="fas fa-plus"></i> Yêu cầu xét duyệt vào KTX</a></li>
+                    <li><a href="./departure_requests.php"><i class="fas fa-plus"></i> Yêu cầu rời KTX</a></li>
                 </ul>
             </div>
         <?php endif; ?>
@@ -42,6 +44,8 @@
                 <ul class="submenu">
                     <li><a href="./view_facilities.php"><i class="fas fa-list"></i>Xem cơ sở vật chất</a></li>
                     <li><a href="./manage_facilities.php"><i class="fas fa-tools"></i>Thiết lập cơ sở vật chất</a></li>
+                    <li><a href="./equipment_reports.php"><i class="fas fa-tools"></i>Quản lí báo cáo cơ sở vật chất</a></li>
+                    <li><a href="./equipment_requests.php"><i class="fas fa-tools"></i>Quản lí yêu cầu cơ sở vật chất</a></li>
                 </ul>
             </div>
         <?php endif; ?>

@@ -291,3 +291,240 @@
     border-radius: 5px;
     display: none; /* Ẩn thông báo mặc định */
 }
+
+
+/* Vùng bao quanh nội dung hợp đồng */
+.contracts-list-container {
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 6px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+/* Tiêu đề chính */
+.contracts-list-container h2 {
+    margin-top: 0;
+    margin-bottom: 16px;
+    font-size: 22px;
+    color: #333;
+    font-weight: 600;
+}
+
+/* Nút thêm Hợp Đồng */
+.add-btn {
+    display: inline-block;
+    background-color: #28a745;
+    color: #fff;
+    padding: 8px 14px;
+    border-radius: 4px;
+    text-decoration: none;
+    margin-bottom: 16px;
+    transition: background-color 0.3s;
+}
+.add-btn:hover {
+    background-color: #218838;
+}
+
+/* Form tìm kiếm */
+.search-form {
+    display: flex;
+    margin-bottom: 16px;
+}
+.search-form input[type="text"] {
+    flex: 1;
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 4px 0 0 4px;
+    outline: none;
+    font-size: 14px;
+}
+.search-form button {
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+    outline: none;
+    padding: 8px 14px;
+    border-radius: 0 4px 4px 0;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+.search-form button:hover {
+    background-color: #0056b3;
+}
+
+/* Bảng danh sách hợp đồng */
+#contracts-table {
+    width: 100%;
+    border-collapse: collapse;
+    background-color: #fff;
+    margin-bottom: 20px;
+    font-size: 14px;
+}
+#contracts-table thead th {
+    background-color: #f7f7f7;
+    color: #333;
+    font-weight: 600;
+    padding: 12px 10px;
+    border-bottom: 2px solid #ddd;
+    text-align: left;
+}
+#contracts-table tbody td {
+    padding: 10px;
+    border-bottom: 1px solid #eee;
+    vertical-align: middle;
+    color: #555;
+}
+
+/* Dòng hover */
+#contracts-table tbody tr:hover {
+    background-color: #fafafa;
+}
+
+/* Khi không có dữ liệu */
+#contracts-table .no-data {
+    text-align: center;
+    color: #999;
+    font-style: italic;
+}
+
+/* Cột trạng thái */
+.status {
+    display: inline-block;
+    padding: 4px 8px;
+    border-radius: 4px;
+    color: #fff;
+    font-size: 12px;
+    text-transform: capitalize;
+}
+.status.active {
+    background-color: #28a745; /* xanh lá */
+}
+.status.terminated {
+    background-color: #dc3545; /* đỏ */
+}
+.status.expired {
+    background-color: #6c757d; /* xám */
+}
+.status.unknown {
+    background-color: #999;
+}
+
+/* Nút hành động */
+.edit-btn, .terminate-btn, .renew-btn {
+    display: inline-block;
+    text-decoration: none;
+    padding: 6px 10px;
+    border-radius: 4px;
+    margin-right: 5px;
+    color: #fff;
+    font-size: 13px;
+    transition: background-color 0.3s;
+}
+.edit-btn {
+    background-color: #007bff; /* xanh dương */
+}
+.edit-btn:hover {
+    background-color: #0056b3;
+}
+.terminate-btn {
+    background-color: #dc3545; /* đỏ */
+}
+.terminate-btn:hover {
+    background-color: #c82333;
+}
+.renew-btn {
+    background-color: #ffc107; /* vàng */
+    color: #333;
+}
+.renew-btn:hover {
+    background-color: #e0a800;
+}
+
+/* Phân trang */
+.pagination-container {
+    text-align: center;
+    margin: 20px 0;
+}
+.pagination-btn {
+    display: inline-block;
+    margin: 0 3px;
+    padding: 6px 10px;
+    background-color: #f0f0f0;
+    color: #333;
+    text-decoration: none;
+    border-radius: 4px;
+    transition: background-color 0.3s;
+}
+.pagination-btn:hover {
+    background-color: #ddd;
+}
+.pagination-btn.active {
+    background-color: #007bff;
+    color: #fff;
+}
+
+/* Modal xác nhận chấm dứt */
+.modal {
+    display: none; /* Ẩn mặc định, hiển thị qua JS */
+    position: fixed;
+    z-index: 9999;
+    left: 0; 
+    top: 0;
+    width: 100%; 
+    height: 100%;
+    overflow: auto;
+    background-color: rgba(0,0,0,0.4);
+}
+.modal-content {
+    background-color: #fff;
+    margin: 10% auto; 
+    padding: 20px;
+    width: 400px; 
+    border-radius: 6px;
+    position: relative;
+}
+.modal-content .close {
+    position: absolute;
+    top: 12px;
+    right: 12px;
+    font-size: 20px;
+    cursor: pointer;
+}
+.modal-button {
+    display: inline-block;
+    margin-right: 5px;
+    padding: 8px 14px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+.confirm-btn {
+    background-color: #dc3545;
+    color: #fff;
+}
+.confirm-btn:hover {
+    background-color: #c82333;
+}
+.cancel-btn {
+    background-color: #6c757d;
+    color: #fff;
+}
+.cancel-btn:hover {
+    background-color: #5a6268;
+}
+
+/* Thông báo nổi */
+.notification {
+    display: none;
+    position: fixed;
+    top: 80px; /* tuỳ chỉnh cho vừa header */
+    right: 20px;
+    background-color: #4caf50; /* xanh lá */
+    color: #fff;
+    padding: 12px 16px;
+    border-radius: 4px;
+    z-index: 99999;
+}
+.notification.error {
+    background-color: #dc3545; /* đỏ */
+}

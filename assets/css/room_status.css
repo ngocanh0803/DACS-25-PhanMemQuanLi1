@@ -1,0 +1,112 @@
+/* room_status.css */
+
+.content h2 {
+    text-align: center;
+    margin-bottom: 20px;
+    color: #333;
+}
+
+/* Timeline container */
+.timeline {
+    position: relative;
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 20px 0;
+}
+
+/* The vertical timeline line */
+.timeline::after {
+    content: '';
+    position: absolute;
+    width: 4px;
+    background-color: #007bff;
+    top: 0;
+    bottom: 0;
+    left: 50%;
+    margin-left: -2px;
+}
+
+/* Container around content */
+.timeline-item {
+    padding: 20px 30px;
+    position: relative;
+    background-color: inherit;
+    width: 50%;
+}
+
+/* Left timeline items */
+.timeline-item.left {
+    left: 0;
+}
+
+/* Right timeline items */
+.timeline-item.right {
+    left: 50%;
+}
+
+/* Add arrows to the left container (pointing right) */
+.timeline-item.left::after {
+    content: " ";
+    position: absolute;
+    top: 15px;
+    right: -15px;
+    border-width: 10px;
+    border-style: solid;
+    border-color: transparent transparent transparent #fff;
+}
+
+/* Add arrows to the right container (pointing left) */
+.timeline-item.right::after {
+    content: " ";
+    position: absolute;
+    top: 15px;
+    left: -15px;
+    border-width: 10px;
+    border-style: solid;
+    border-color: transparent #fff transparent transparent;
+}
+
+/* Circle icon */
+.timeline-icon {
+    position: absolute;
+    top: 15px;
+    left: 50%;
+    transform: translateX(-50%);
+    background-color: #007bff;
+    color: #fff;
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    text-align: center;
+    line-height: 30px;
+    font-size: 16px;
+    z-index: 1;
+}
+
+/* Timeline content */
+.timeline-content {
+    padding: 20px;
+    background-color: #fff;
+    position: relative;
+    border-radius: 6px;
+    box-shadow: 0 0 8px rgba(0,0,0,0.1);
+}
+
+/* Responsive adjustments */
+@media screen and (max-width: 768px) {
+    .timeline-item {
+        width: 100%;
+        padding-left: 70px;
+        padding-right: 25px;
+    }
+    .timeline-item.right {
+        left: 0%;
+    }
+    .timeline-item.left::after, .timeline-item.right::after {
+        left: 60px;
+        border: medium none;
+    }
+    .timeline-icon {
+        left: 30px;
+    }
+}

@@ -2,6 +2,7 @@
 include '../config/db_connect.php';
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    // Làm sạch và xác thực dữ liệu đầu vào
     $student_code = trim($_POST['student_code']);
     $full_name    = trim($_POST['full_name']);
     $email        = trim($_POST['email']);
@@ -76,7 +77,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
         // Nếu có room_id, cập nhật Room_Status và trạng thái phòng nếu cần
         if ($room_id !== NULL) {
-            // Kiểm tra nếu phòng đang ở trạng thái 'available', chuyển thành 'occupied'
+            // Nếu phòng đang ở trạng thái 'available', chuyển thành 'occupied'
             if ($room['status'] === 'available') {
                 $sql_update_room = "UPDATE Rooms SET status = 'occupied' WHERE room_id = ?";
                 $stmt_update_room = $conn->prepare($sql_update_room);
@@ -92,6 +93,27 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $stmt_insert_room_status->bind_param("iis", $room_id, $student_id, $start_date);
             $stmt_insert_room_status->execute();
             $stmt_insert_room_status->close();
+
+            // Gửi thông báo đến sinh viên vừa được thêm vào phòng
+            // Lấy user_id từ bảng Users (với username == student_code)
+            $sqlUser = "SELECT user_id FROM Users WHERE username = ?";
+            $stmtUser = $conn->prepare($sqlUser);
+            $stmtUser->bind_param("s", $student_code);
+            $stmtUser->execute();
+            $resultUser = $stmtUser->get_result();
+            if ($resultUser->num_rows > 0) {
+                $user = $resultUser->fetch_assoc();
+                $user_id = $user['user_id'];
+                $notif_title = "Cập nhật phòng";
+                $notif_message = "Chúc mừng! Bạn đã được thêm vào phòng " . $room['room_code'] . ".";
+                $notif_type = "room";
+                $sqlNotif = "INSERT INTO Notifications (user_id, title, message, notification_type) VALUES (?, ?, ?, ?)";
+                $stmtNotif = $conn->prepare($sqlNotif);
+                $stmtNotif->bind_param("isss", $user_id, $notif_title, $notif_message, $notif_type);
+                $stmtNotif->execute();
+                $stmtNotif->close();
+            }
+            $stmtUser->close();
         }
 
         header("Location: students_list.php?message=Thêm sinh viên thành công.");
@@ -99,10 +121,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         header("Location: add_student.php?message=Lỗi khi thêm sinh viên.&type=error");
     }
 
-    // Đóng các statement và kết nối
     $stmt_check->close();
     $stmt_insert->close();
-    if (isset($stmt_room)) $stmt_room->close();
+    if (isset($stmt_room)) {
+        $stmt_room->close();
+    }
     $conn->close();
 } else {
     header("Location: students_list.php?message=Phương thức không hợp lệ.&type=error");

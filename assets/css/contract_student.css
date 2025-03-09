@@ -1,0 +1,44 @@
+/* contract_student.css */
+
+.content h2 {
+    text-align: center;
+    margin-bottom: 20px;
+    color: #333;
+}
+
+.contract-container {
+    background: #fff;
+    padding: 20px;
+    margin: 0 auto 20px auto;
+    border-radius: 6px;
+    box-shadow: 0 0 8px rgba(0, 0, 0, 0.1);
+    max-width: 700px;
+}
+
+.contract-detail {
+    display: flex;
+    padding: 10px 0;
+    border-bottom: 1px solid #eee;
+}
+
+.contract-detail:last-child {
+    border-bottom: none;
+}
+
+.contract-detail .label {
+    width: 180px;
+    font-weight: bold;
+    color: #555;
+}
+
+.contract-detail .value {
+    color: #333;
+    word-break: break-word;
+}
+
+.no-contract {
+    text-align: center;
+    color: #b00;
+    font-size: 16px;
+    margin-top: 20px;
+}

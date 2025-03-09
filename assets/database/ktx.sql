@@ -53,6 +53,7 @@ CREATE TABLE Facilities (
     facility_name VARCHAR(255) NOT NULL,
     quantity INT NOT NULL,
     status ENUM('good', 'broken') DEFAULT 'good',
+    is_student_device TINYINT(1) DEFAULT 0;
     FOREIGN KEY (room_id) REFERENCES Rooms(room_id) ON DELETE CASCADE
 );
 
@@ -65,7 +66,8 @@ CREATE TABLE Payments (
     water_usage DECIMAL(10,2) DEFAULT 0.00,
     total_amount DECIMAL(10,2) NOT NULL,
     payment_status ENUM('unpaid', 'paid') DEFAULT 'unpaid',
-    payment_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    payment_date TIMESTAMP NULL DEFAULT NULL,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     FOREIGN KEY (room_id) REFERENCES Rooms(room_id) ON DELETE CASCADE
 );
 
@@ -146,6 +148,58 @@ CREATE TABLE Activity_Log (
     FOREIGN KEY (user_id) REFERENCES Users(user_id) ON DELETE CASCADE
 );
 
+CREATE TABLE Equipment_Reports (
+    report_id INT AUTO_INCREMENT PRIMARY KEY,
+    facility_id INT NOT NULL,
+    student_id INT NOT NULL,
+    reported_quantity INT NOT NULL,
+    reported_condition TEXT,
+    report_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    status ENUM('pending', 'resolved') DEFAULT 'pending',
+    FOREIGN KEY (facility_id) REFERENCES Facilities(facility_id) ON DELETE CASCADE,
+    FOREIGN KEY (student_id) REFERENCES Students(student_id) ON DELETE CASCADE
+);
+
+CREATE TABLE Equipment_Requests (
+    request_id INT AUTO_INCREMENT PRIMARY KEY,
+    student_id INT NOT NULL,
+    room_id INT NOT NULL,
+    request_type ENUM('additional', 'personal') NOT NULL, -- 'additional' cho yêu cầu thêm thiết bị chung, 'personal' cho yêu cầu chuyển thêm thiết bị cá nhân
+    facility_name VARCHAR(255) NOT NULL,
+    quantity INT NOT NULL,
+    description TEXT,
+    status ENUM('pending', 'approved', 'rejected') DEFAULT 'pending',
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (student_id) REFERENCES Students(student_id) ON DELETE CASCADE,
+    FOREIGN KEY (room_id) REFERENCES Rooms(room_id) ON DELETE CASCADE
+);
+
+CREATE TABLE Applications (
+    application_id INT AUTO_INCREMENT PRIMARY KEY,
+    student_id INT NOT NULL,
+    desired_start_date DATE,           -- Ngày dự kiến nhận phòng
+    desired_end_date DATE,             -- Ngày dự kiến kết thúc thuê
+    deposit DECIMAL(10,2) DEFAULT 0.00,  -- Số tiền đặt cọc dự kiến
+    documents TEXT,                    -- Đường dẫn file scan (nếu có)
+    status ENUM('pending', 'approved', 'rejected') DEFAULT 'pending',
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (student_id) REFERENCES Students(student_id) ON DELETE CASCADE
+);
+
+CREATE TABLE Departure_Requests (
+    departure_id INT AUTO_INCREMENT PRIMARY KEY,
+    student_id INT NOT NULL,
+    contract_id INT, -- Nếu đã có hợp đồng được tạo, liên kết với bảng Contracts
+    reason TEXT,
+    documents TEXT, -- Đường dẫn file hoặc JSON chứa danh sách file
+    request_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    status ENUM('pending', 'approved', 'rejected') DEFAULT 'pending',
+    processed_date TIMESTAMP NULL,
+    FOREIGN KEY (student_id) REFERENCES Students(student_id) ON DELETE CASCADE,
+    FOREIGN KEY (contract_id) REFERENCES Contracts(contract_id) ON DELETE CASCADE
+);
+
+
 -- Chèn dữ liệu cho Quản lý phòng
 INSERT INTO Menuitems (id, name, url, icon, description, created_at) VALUES
 (1, 'Xem sơ đồ', './view_floor_plan.php', 'fa-map', 'Xem sơ đồ tòa nhà', '2024-10-27 07:29:57'),
@@ -166,7 +220,7 @@ INSERT INTO Users (username, password, role, is_approved) VALUES
 ('admin', 'admin', 'admin', 1),
 ('quanli', '123', 'manager', 1),
 ('ketoan', '123', 'student_manager', 0),
-('sinvientest', '123', 'student', 1);
+('22010001', '123', 'student', 1);
 
 -- Thêm dữ liệu mẫu vào bảng Rooms
 INSERT INTO Rooms (building, room_code, floor, room_number, capacity, status, price) VALUES
@@ -477,16 +531,16 @@ INSERT INTO Facilities (facility_code, room_id, facility_name, quantity, status)
 
 
 -- Thêm thanh toán cho các phòng, sử dụng room_id từ bảng Rooms
-INSERT INTO payments (payment_id, payment_code, room_id, electricity_usage, water_usage, total_amount, payment_status, payment_date) VALUES
-(1, 'HD2_1_2025', 2, 100.50, 30.20, 1500000.00, 'paid', '2025-01-30 15:51:16'),
-(2, 'HD3_1_2025', 3, 134.00, 12.00, 2782000.00, 'unpaid', '2025-01-30 17:00:00'),
-(3, 'HD4_1_2025', 4, 234.00, 5.00, 2977000.00, 'unpaid', '2025-01-30 17:00:00'),
-(4, 'HD5_1_2025', 5, 123.00, 4.00, 2629000.00, 'unpaid', '2025-01-30 17:00:00'),
-(5, 'HD7_1_2025', 7, 342.00, 12.00, 3406000.00, 'unpaid', '2025-01-30 17:00:00'),
-(6, 'HD42_1_2025', 42, 123.00, 43.00, 2614000.00, 'unpaid', '2025-01-30 17:00:00'),
-(7, 'HD45_1_2025', 45, 123.00, 12.00, 2149000.00, 'unpaid', '2025-01-30 17:00:00'),
-(8, 'HD82_1_2025', 82, 214.00, 11.00, 2507000.00, 'unpaid', '2025-01-30 17:00:00'),
-(9, 'HD85_1_2025', 85, 435.00, 12.00, 3185000.00, 'unpaid', '2025-01-30 17:00:00');
+INSERT INTO payments (payment_id, payment_code, room_id, electricity_usage, water_usage, total_amount, payment_status, payment_date, created_at) VALUES
+(1, 'HD2_1_2025', 2, 100.50, 30.20, 1500000.00, 'unpaid', 'NULL', '2025-01-30 15:51:16'),
+(2, 'HD3_1_2025', 3, 134.00, 12.00, 2782000.00, 'unpaid', 'NULL', '2025-01-30 17:00:00'),
+(3, 'HD4_1_2025', 4, 234.00, 5.00, 2977000.00, 'unpaid', 'NULL', '2025-01-30 17:00:00'),
+(4, 'HD5_1_2025', 5, 123.00, 4.00, 2629000.00, 'unpaid', 'NULL', '2025-01-30 17:00:00'),
+(5, 'HD7_1_2025', 7, 342.00, 12.00, 3406000.00, 'unpaid', 'NULL', '2025-01-30 17:00:00'),
+(6, 'HD42_1_2025', 42, 123.00, 43.00, 2614000.00, 'unpaid', 'NULL', '2025-01-30 17:00:00'),
+(7, 'HD45_1_2025', 45, 123.00, 12.00, 2149000.00, 'unpaid', 'NULL', '2025-01-30 17:00:00'),
+(8, 'HD82_1_2025', 82, 214.00, 11.00, 2507000.00, 'unpaid', 'NULL', '2025-01-30 17:00:00'),
+(9, 'HD85_1_2025', 85, 435.00, 12.00, 3185000.00, 'unpaid', 'NULL', '2025-01-30 17:00:00');
 
 -- Insert thông tin vào bảng Contracts
 -- Hợp đồng cho SV20240001 - Nguyen Van A

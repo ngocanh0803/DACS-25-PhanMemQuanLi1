@@ -1,0 +1,102 @@
+/* Bố cục chung cho container1: 
+   menu phía trái và content phía phải. 
+   Nếu menu đã set width, ta cho content giãn ra. */
+   .container1 {
+    display: flex;
+    min-height: 100vh; /* chiếm toàn bộ chiều cao màn hình */
+  }
+  
+  /* Vùng nội dung (content) */
+  .content {
+    flex: 1;                /* Chiếm hết phần còn lại */
+    padding: 20px;          /* Khoảng cách lề */
+    background-color: #f5f6fa; /* Nền xám nhạt */
+  }
+  
+  /* Tiêu đề trang */
+  .content h2 {
+    font-size: 24px;
+    margin-bottom: 20px;
+    color: #333;    
+    font-weight: 600;
+  }
+  
+  /* Bảng hiển thị báo cáo (reports-table) */
+  .reports-table {
+    width: 100%;
+    border-collapse: collapse;
+    background-color: #fff;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1); /* đổ bóng nhẹ */
+    margin-bottom: 20px;                  /* khoảng dưới bảng */
+  }
+  
+  /* Phần header của bảng */
+  .reports-table thead th {
+    background-color: #f0f0f0;
+    font-weight: 600;
+    padding: 12px;
+    text-align: left;
+    border-bottom: 2px solid #ddd;
+  }
+  
+  /* Dòng bảng thông thường */
+  .reports-table tbody td {
+    padding: 10px;
+    border-bottom: 1px solid #eee;
+    vertical-align: middle; /* canh giữa theo chiều dọc */
+  }
+  
+  /* Hiệu ứng hover cho dòng */
+  .reports-table tbody tr:hover {
+    background-color: #f9f9f9; 
+  }
+  
+  /* Button chung */
+  .btn {
+    padding: 8px 12px;
+    border: none;
+    cursor: pointer;
+    border-radius: 4px;
+    margin: 2px;
+    font-size: 14px;
+    transition: background-color 0.3s;
+  }
+  
+  /* Button xác nhận hỏng */
+  .btn.verify-btn {
+    background-color: #ffc107; /* vàng */
+    color: #212529;
+  }
+  .btn.verify-btn:hover {
+    background-color: #ffca2c; 
+  }
+  
+  /* Button đã xử lý */
+  .btn.processed-btn {
+    background-color: #28a745; /* xanh lá */
+    color: #fff;
+  }
+  .btn.processed-btn:hover {
+    background-color: #218838;
+  }
+  
+  /* Nếu muốn thêm style cho cột "Chờ xử lý" hay "Đã xử lý" tùy ý
+     Ví dụ tô màu chữ: 
+  */
+  /* .content td:nth-child(8) { 
+     font-weight: 600; 
+     color: #ff0000;
+  } */
+  
+  /* Bạn cũng có thể thêm media query để responsive khi màn hình nhỏ
+     @media (max-width: 768px) {
+       .reports-table {
+         font-size: 13px;
+       }
+       .btn {
+         font-size: 12px;
+         padding: 6px 8px;
+       }
+     }
+  */
+  

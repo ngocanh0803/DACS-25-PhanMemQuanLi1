@@ -357,3 +357,97 @@ body {
     background-color: #7f8c8d;
     transform: scale(1.05);
 }
+
+/* CSS cho modal thu hồi/xóa thiết bị */
+#revoke-modal {
+    display: none; /* Ẩn mặc định */
+    position: fixed;
+    z-index: 1000;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgba(0, 0, 0, 0.4);
+}
+
+#revoke-modal .modal-content {
+    background-color: #fefefe;
+    margin: 10% auto;
+    padding: 20px;
+    border: 1px solid #888;
+    width: 90%;
+    max-width: 500px;
+    border-radius: 6px;
+    position: relative;
+}
+
+.close-revoke {
+    color: #aaa;
+    position: absolute;
+    top: 10px;
+    right: 15px;
+    font-size: 28px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.close-revoke:hover,
+.close-revoke:focus {
+    color: #000;
+    text-decoration: none;
+}
+
+#revoke-modal h3 {
+    margin-top: 0;
+    text-align: center;
+}
+
+#revoke-modal .owner-info {
+    background-color: #e9f7ef;
+    border: 1px solid #c3e6cb;
+    padding: 10px;
+    border-radius: 4px;
+    margin-bottom: 15px;
+}
+
+#revoke-modal .owner-info p {
+    margin: 5px 0;
+    font-size: 14px;
+}
+
+#revoke-modal .form-group {
+    margin-bottom: 15px;
+}
+
+#revoke-modal label {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: bold;
+    color: #555;
+}
+
+#revoke-modal input[type="text"],
+#revoke-modal textarea {
+    width: 100%;
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-size: 14px;
+}
+
+#revoke-modal button.btn {
+    width: 100%;
+    padding: 10px;
+    background-color: #28a745;
+    border: none;
+    color: #fff;
+    font-size: 16px;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+#revoke-modal button.btn:hover {
+    background-color: #218838;
+}
+    

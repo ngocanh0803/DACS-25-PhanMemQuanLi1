@@ -77,12 +77,45 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $payment_code = 'HD' . $room_id . '_' . $month_number . '_' . $year_number;
 
     // Thêm hóa đơn vào bảng Payments
-    $sql_insert = "INSERT INTO Payments (payment_code, room_id, electricity_usage, water_usage, total_amount, payment_status, payment_date) VALUES (?, ?, ?, ?, ?, 'unpaid', ?)";
+    $sql_insert = "INSERT INTO Payments (payment_code, room_id, electricity_usage, water_usage, total_amount, payment_status) VALUES (?, ?, ?, ?, ?, 'unpaid')";
     $stmt_insert = $conn->prepare($sql_insert);
-    $stmt_insert->bind_param("siidds", $payment_code, $room_id, $electricity_usage, $water_usage, $total_amount, $month);
-
+    $stmt_insert->bind_param("siidd", $payment_code, $room_id, $electricity_usage, $water_usage, $total_amount);
+    
     if ($stmt_insert->execute()) {
-        $_SESSION['success'] = "Tạo hóa đơn thành công.";
+        // Lưu thông báo cho các sinh viên trong phòng
+        $message = "Hóa đơn tháng $month_input cho phòng " . $room['room_code'] . " đã được tạo. Tổng tiền: " . number_format($total_amount, 2, ',', '.') . " VNĐ. Vui lòng kiểm tra và thanh toán đúng hạn.";
+        $title = "Hóa đơn mới";
+        $notification_type = "payment";
+
+        // Lấy danh sách sinh viên trong phòng
+        $sqlStudents = "SELECT s.student_code FROM Students s WHERE s.room_id = ?";
+        $stmtStudents = $conn->prepare($sqlStudents);
+        $stmtStudents->bind_param("i", $room_id);
+        $stmtStudents->execute();
+        $resultStudents = $stmtStudents->get_result();
+        while ($student = $resultStudents->fetch_assoc()) {
+            $student_code = $student['student_code'];
+            // Lấy user_id từ bảng Users (với username == student_code)
+            $sqlUser = "SELECT user_id FROM Users WHERE username = ?";
+            $stmtUser = $conn->prepare($sqlUser);
+            $stmtUser->bind_param("s", $student_code);
+            $stmtUser->execute();
+            $resultUser = $stmtUser->get_result();
+            if ($resultUser->num_rows > 0) {
+                $user = $resultUser->fetch_assoc();
+                $user_id = $user['user_id'];
+                // INSERT thông báo
+                $sqlNotif = "INSERT INTO Notifications (user_id, title, message, notification_type) VALUES (?, ?, ?, ?)";
+                $stmtNotif = $conn->prepare($sqlNotif);
+                $stmtNotif->bind_param("isss", $user_id, $title, $message, $notification_type);
+                $stmtNotif->execute();
+                $stmtNotif->close();
+            }
+            $stmtUser->close();
+        }
+        $stmtStudents->close();
+
+        $_SESSION['success'] = "Tạo hóa đơn thành công và thông báo đã được gửi đến sinh viên.";
         header('Location: view_payments.php?room_id=' . urlencode($room_id));
     } else {
         $_SESSION['error'] = "Lỗi khi tạo hóa đơn.";

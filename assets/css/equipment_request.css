@@ -1,0 +1,67 @@
+.container1 {
+    display: flex;
+    min-height: calc(100vh - 70px);
+}
+.container1{
+    --bs-gutter-x: 1.5rem;
+    --bs-gutter-y: 0;
+    width: 100%;
+    display: flex;
+    min-height: calc(100vh - 70px);
+    padding: 0 !important;
+    margin: 0 !important;
+}
+/* equipment_request.css */
+
+.content h2 {
+    text-align: center;
+    margin-bottom: 20px;
+    color: #333;
+}
+
+form#requestForm {
+    background: #fff;
+    padding: 20px;
+    margin: 0 auto;
+    max-width: 600px;
+    border-radius: 6px;
+    box-shadow: 0 0 8px rgba(0,0,0,0.1);
+}
+
+.form-group {
+    margin-bottom: 15px;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: bold;
+    color: #555;
+}
+
+.form-group input[type="text"],
+.form-group input[type="number"],
+.form-group select,
+.form-group textarea {
+    width: 100%;
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-size: 14px;
+}
+
+form#requestForm button.btn {
+    width: 100%;
+    padding: 10px;
+    background-color: #007bff;
+    border: none;
+    color: #fff;
+    font-size: 16px;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+form#requestForm button.btn:hover {
+    background-color: #0056b3;
+}
