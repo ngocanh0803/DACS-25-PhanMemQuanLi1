@@ -172,7 +172,10 @@ $conn->close();
             <button class="btn-confirm" id="confirmReject">Xác nhận từ chối</button>
         </div>
     </div>
-
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="../../assets/js/main.js"></script>
+    <script src="../../assets/js/search.js"></script>>
+    <script src="../../assets/js/main.js"></script>
     <script>
         // Xử lý modal duyệt và từ chối
         document.addEventListener('DOMContentLoaded', function() {

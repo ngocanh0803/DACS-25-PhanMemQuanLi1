@@ -30,6 +30,7 @@
                     <li><a href="./create_contract.php"><i class="fas fa-plus"></i> Thêm Hợp đồng</a></li>
                     <li><a href="./registration_requests.php"><i class="fas fa-plus"></i> Yêu cầu xét duyệt vào KTX</a></li>
                     <li><a href="./departure_requests.php"><i class="fas fa-plus"></i> Yêu cầu rời KTX</a></li>
+                    <li><a href="./departure_requests_expired.php"><i class="fas fa-plus"></i> Yêu cầu rời KTX</a></li>
                 </ul>
             </div>
         <?php endif; ?>
@@ -60,6 +61,8 @@
                 <ul class="submenu">
                     <li><a href="./import_students.php"><i class="fas fa-plus"></i>Thêm sinh viên vào danh sách cư trú</a></li>
                     <li><a href="./students_list.php"><i class="fas fa-edit"></i>Thêm, sửa, xóa sinh viên theo phòng</a></li>
+                    <li><a href="./admin_late_requests.php"><i class="fas fa-edit"></i>Xử lí sinh viên về muộn</a></li>
+                    <li><a href="./admin_chat_combined.php"><i class="fas fa-edit"></i>Chat với sinh viên</a></li>
                 </ul>
             </div>
         <?php endif; ?>

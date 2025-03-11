@@ -20,6 +20,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     // Kiểm tra kết quả truy vấn
     if ($result->num_rows > 0) {
         $user = $result->fetch_assoc();
+        $_SESSION["user_id"] = $user["user_id"]; 
         $_SESSION["username"] = $username;
         $_SESSION["role"] = $user["role"];
         $_SESSION["is_approved"] = $user["is_approved"];

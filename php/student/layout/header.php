@@ -23,6 +23,9 @@ if($result->num_rows > 0) {
     $fullName = $row['full_name'];
 } 
 
+$studentId = $_SESSION['user_id'];
+$adminId =1;
+
 $stmt->close();
 $conn->close();
 ?>

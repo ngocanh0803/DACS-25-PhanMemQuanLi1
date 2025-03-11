@@ -1,5 +1,12 @@
 <?php
+session_start();
+
 include '../config/db_connect.php';
+if (!isset($_SESSION['user_id'])) {
+    echo json_encode(['success' => false, 'message' => 'Bạn chưa đăng nhập.']);
+    exit();
+}
+// var_dump($_SESSION['user_id']);
 
 // Lấy giá phòng theo từng loại capacity
 $sql = "SELECT DISTINCT capacity, price FROM Rooms GROUP BY capacity ORDER BY capacity";

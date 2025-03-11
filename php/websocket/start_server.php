@@ -1,11 +1,15 @@
 <?php
 require __DIR__ . '/../../vendor/autoload.php';
 
+use Ratchet\Http\HttpServer;
+use Ratchet\WebSocket\WsServer;
+use Ratchet\Server\IoServer;
+// use MyApp\NotificationServer;
+
+// namespace MyApp;
+
 use Ratchet\MessageComponentInterface;
 use Ratchet\ConnectionInterface;
-use Ratchet\Http\HttpServer;
-use Ratchet\Server\IoServer;
-use Ratchet\WebSocket\WsServer;
 use PDO;
 
 class NotificationServer implements MessageComponentInterface {
@@ -24,11 +28,11 @@ class NotificationServer implements MessageComponentInterface {
 
     public function onOpen(ConnectionInterface $conn) {
         $this->clients->attach($conn);
-        echo "onOpen triggered, resourceId={$conn->resourceId}\n";
+        echo "New connection: (#{$conn->resourceId})\n";
     }
 
     public function onMessage(ConnectionInterface $from, $msg) {
-        echo "onMessage triggered from #{$from->resourceId}: $msg\n";
+        echo "Received message from #{$from->resourceId}: $msg\n";
         $data = json_decode($msg, true);
         if (!$data) return;
 
@@ -45,23 +49,16 @@ class NotificationServer implements MessageComponentInterface {
                 $senderId = $from->userId ?? 0;
                 $receiverId = $data['receiver_id'] ?? 0;
                 $content = $data['content'] ?? '';
-
-                // Lấy hoặc tạo conversation_id cho cuộc chat 1-1
-                $convId = $this->getOrCreateConversationId($senderId, $receiverId);
-
                 // Lưu tin nhắn vào DB
-                $msgId = $this->saveMessage($convId, $senderId, $receiverId, $content);
-                // Chuẩn bị gói tin chat để gửi
+                $msgId = $this->saveMessage($senderId, $receiverId, $content);
+                // Chuẩn bị gói tin chat
                 $chatMsg = [
-                    'type'            => 'CHAT',
-                    'conversation_id' => $convId,
-                    'sender_id'       => $senderId,
-                    'receiver_id'     => $receiverId,
-                    'content'         => $content,
-                    'message_type'    => 'text',
-                    'is_read'         => 0,
-                    'created_at'      => date('Y-m-d H:i:s'),
-                    'message_id'      => $msgId
+                    'type' => 'CHAT',
+                    'sender_id' => $senderId,
+                    'receiver_id' => $receiverId,
+                    'content' => $content,
+                    'created_at' => date('Y-m-d H:i:s'),
+                    'message_id' => $msgId
                 ];
                 // Gửi lại cho chính người gửi
                 $from->send(json_encode($chatMsg));
@@ -93,57 +90,20 @@ class NotificationServer implements MessageComponentInterface {
         $conn->close();
     }
 
-    // Hàm lấy hoặc tạo conversation_id cho chat 1-1
-    protected function getOrCreateConversationId($sender, $receiver) {
-        // Sử dụng công thức: conversation_key = "Chat: min(sender, receiver)-max(sender, receiver)"
-        $min = min($sender, $receiver);
-        $max = max($sender, $receiver);
-        $title = "Chat: {$min}-{$max}";
-        
-        // Kiểm tra nếu cuộc trò chuyện đã tồn tại
-        $sql = "SELECT conversation_id FROM Conversations WHERE title = :title LIMIT 1";
-        $stmt = $this->pdo->prepare($sql);
-        $stmt->execute([':title' => $title]);
-        $row = $stmt->fetch(PDO::FETCH_ASSOC);
-        if ($row) {
-            return $row['conversation_id'];
-        } else {
-            // Nếu chưa tồn tại, tạo mới cuộc trò chuyện
-            $sqlInsert = "INSERT INTO Conversations (title, is_group) VALUES (:title, 0)";
-            $stmtInsert = $this->pdo->prepare($sqlInsert);
-            $stmtInsert->execute([':title' => $title]);
-            return $this->pdo->lastInsertId();
-        }
-    }
-
     // Lưu tin nhắn vào DB, trả về message_id
-    protected function saveMessage($convId, $sender, $receiver, $content) {
-        $sql = "INSERT INTO Messages 
-                (conversation_id, sender_id, receiver_id, content, message_type, is_read)
-                VALUES (:conv, :s, :r, :c, 'text', 0)";
+    protected function saveMessage($sender, $receiver, $content) {
+        $sql = "INSERT INTO Messages (sender_id, receiver_id, content) VALUES (:s, :r, :c)";
         $stmt = $this->pdo->prepare($sql);
         $stmt->execute([
-            ':conv' => $convId,
-            ':s'    => $sender,
-            ':r'    => $receiver,
-            ':c'    => $content
+            ':s' => $sender,
+            ':r' => $receiver,
+            ':c' => $content
         ]);
         return $this->pdo->lastInsertId();
     }
-
-    // (Tùy chọn) Hàm gửi notification broadcast
-    public function sendNotification($data) {
-        $msg = json_encode([
-            'type' => 'NOTIFICATION',
-            'data' => $data
-        ]);
-        foreach ($this->clients as $client) {
-            $client->send($msg);
-        }
-    }
 }
 
-$port = 8080;
+$port = 8081;
 $server = IoServer::factory(
     new HttpServer(
         new WsServer(

@@ -42,7 +42,8 @@ $conn->close();
     <link rel="stylesheet" href="../../assets/css/main_student.css">
     <style>
         .dashboard-container {
-            max-width: 900px;
+            max-width: 960px;
+            margin-top: 100px;
             margin: 0 auto;
             background: #fff;
             padding: 30px;
@@ -66,12 +67,43 @@ $conn->close();
             background-color: #007bff;
             color: #fff;
         }
+        h2 {
+            text-align: center;
+            margin-bottom: 20px;
+            font-family: 'Times New Roman', serif;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        table th, table td {
+            padding: 10px;
+            text-align: center;
+            border: 1px solid #ddd;
+        }
+        table th {
+            background-color: #007bff;
+            color: #fff;
+        }
+        .no-request {
+            text-align: center;
+            font-size: 18px;
+            margin-top: 20px;
+            font-family: 'Times New Roman', serif;
+        }
+        a {
+            color: #007bff;
+            text-decoration: none;
+        }
+        a:hover {
+            text-decoration: underline;
+        }
     </style>
 </head>
 <body>
     <?php include 'layout/sidebar.php'; ?>
     <?php include 'layout/header.php'; ?>
-    <div class="dashboard-container">
+    <div style="margin-top: 100px" class="dashboard-container">
         <h2>Trạng thái đơn đăng ký</h2>
         <?php if (count($applications) > 0): ?>
             <table>

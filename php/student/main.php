@@ -68,6 +68,7 @@ if (!isset($_SESSION['username']) || $_SESSION['role'] !== 'student') {
             </div>
         </div>
     </div>
-
+    <!-- Include Chatbox -->
+    <?php include 'chatbox.php'; ?>
 </body>
 </html>

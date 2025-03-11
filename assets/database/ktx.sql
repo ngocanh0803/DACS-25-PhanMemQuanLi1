@@ -107,16 +107,23 @@ CREATE TABLE Contracts (
     FOREIGN KEY (room_id) REFERENCES Rooms(room_id) ON DELETE CASCADE
 );
 
-CREATE TABLE Messages (
-    message_id INT AUTO_INCREMENT PRIMARY KEY,
-    sender_id INT NOT NULL,
-    receiver_id INT NOT NULL,
-    content TEXT NOT NULL,
-    sent_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    is_read TINYINT(1) DEFAULT 0,
-    FOREIGN KEY (sender_id) REFERENCES Users(user_id) ON DELETE CASCADE,
-    FOREIGN KEY (receiver_id) REFERENCES Users(user_id) ON DELETE CASCADE
+CREATE TABLE IF NOT EXISTS Messages (
+  message_id INT AUTO_INCREMENT PRIMARY KEY,
+  conversation_id INT NOT NULL,
+  sender_id INT NOT NULL,
+  receiver_id INT DEFAULT NULL,
+  content TEXT,
+  message_type ENUM('text', 'file') DEFAULT 'text',
+  is_read TINYINT(1) DEFAULT 0,
+  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  is_deleted TINYINT(1) DEFAULT 0,
+  FOREIGN KEY (conversation_id) REFERENCES Conversations(conversation_id) ON DELETE CASCADE,
+  FOREIGN KEY (sender_id) REFERENCES Users(user_id) ON DELETE CASCADE,
+  FOREIGN KEY (receiver_id) REFERENCES Users(user_id) ON DELETE CASCADE
 );
+
+
 
 CREATE TABLE Notifications (
     notification_id INT AUTO_INCREMENT PRIMARY KEY,
@@ -199,7 +206,17 @@ CREATE TABLE Departure_Requests (
     FOREIGN KEY (contract_id) REFERENCES Contracts(contract_id) ON DELETE CASCADE
 );
 
-
+CREATE TABLE LateRequests (
+    late_request_id INT AUTO_INCREMENT PRIMARY KEY,
+    student_id INT NOT NULL,
+    reason TEXT,
+    request_time TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    status ENUM('pending','approved','rejected') DEFAULT 'pending',
+    processed_time TIMESTAMP NULL DEFAULT NULL,
+    is_violation TINYINT(1) DEFAULT 0,
+    note TEXT,
+    FOREIGN KEY (student_id) REFERENCES Students(student_id) ON DELETE CASCADE
+);
 -- Chèn dữ liệu cho Quản lý phòng
 INSERT INTO Menuitems (id, name, url, icon, description, created_at) VALUES
 (1, 'Xem sơ đồ', './view_floor_plan.php', 'fa-map', 'Xem sơ đồ tòa nhà', '2024-10-27 07:29:57'),

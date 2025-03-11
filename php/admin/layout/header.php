@@ -4,13 +4,14 @@ if (session_status() == PHP_SESSION_NONE) {
 }
 
 // Kiểm tra nếu người dùng chưa đăng nhập
-if (!isset($_SESSION['username']) || !isset($_SESSION['role'])) {
+if (!isset($_SESSION['username']) || !isset($_SESSION['role']) || !isset($_SESSION['user_id']) ) {
     header("Location: login.php");
     exit();
 }
 
 // Thông tin người dùng từ session
 $username = $_SESSION['username'];
+$user_id = $_SESSION['user_id'];
 $role = $_SESSION['role'];
 
 // Xử lý đăng xuất
