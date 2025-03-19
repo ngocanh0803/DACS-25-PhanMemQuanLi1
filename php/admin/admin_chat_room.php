@@ -33,179 +33,8 @@ $conn->close();
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
     <!-- Bootstrap CSS -->
     <!-- <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"> -->
-
     <link rel="stylesheet" href="../../assets/css/main.css">
-    <style>
-    /* ... (CSS giữ nguyên như trước) ... */
-       /* Giao diện chat room giống Telegram/Messenger/WhatsApp */
-    body {
-        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-        background-color: #e5ddd5; /* Màu nền WhatsApp */
-/* Đảm bảo full chiều cao */
-    }
-    .chat-container {
-        width: 90%;
-        max-width: 800px; /* Giới hạn độ rộng */
-        background: #fff;
-        border-radius: 10px;
-        overflow: hidden; /* Ẩn các phần tử tràn */
-        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-        display: flex; /* Dùng flexbox */
-        flex-direction: column; /* Xếp các phần tử theo chiều dọc */
-        height: 90vh; /* Chiều cao 90% viewport */
-
-
-    }
-
-    .chat-header {
-        background-color: #f0f0f0;
-        padding: 15px;
-        display: flex; /* Flexbox */
-        align-items: center; /* Căn giữa theo chiều dọc */
-        border-bottom: 1px solid #ddd;
-
-    }
-
-    .chat-header-avatar {
-        width: 40px;
-        height: 40px;
-        border-radius: 50%;
-        overflow: hidden;
-        margin-right: 15px;
-        display: flex; /* Dùng flex cho avatar */
-        justify-content: center;
-        align-items: center;
-    }
-    .chat-header-avatar img {
-         max-width: 100%;
-         max-height: 100%;
-         object-fit: cover;
-    }
-    .chat-header-avatar i{
-       font-size: 20px;
-       color: #888;
-    }
-
-    .chat-header-info {
-        flex: 1; /* Chiếm phần còn lại */
-    }
-
-    .chat-header-name {
-        font-weight: bold;
-    }
-
-    .chat-header-status {
-        font-size: 0.9em;
-        color: #777;
-         /* Thêm "Đang hoạt động" - cập nhật bằng JS nếu có trạng thái online */
-    }
-
-    .chat-messages {
-        flex: 1; /* Chiếm phần lớn diện tích */
-        overflow-y: auto; /* Cuộn khi tin nhắn dài */
-        padding: 20px;
-        background-image: url('path/to/your/chat-background.png'); /* Thay bằng ảnh nền chat của bạn */
-        background-repeat: repeat; /* Lặp lại ảnh nền */
-
-    }
-
-    .message {
-        margin-bottom: 15px;
-        clear: both;
-        padding: 10px 15px;
-        border-radius: 18px;
-        max-width: 70%; /* Giới hạn độ rộng */
-        word-wrap: break-word; /* Cho phép ngắt từ */
-        overflow-wrap: break-word; /* Xử lý ngắt từ (chuẩn hơn) */
-        hyphens: auto; /* Tự động thêm dấu gạch nối (nếu cần) */
-    }
-    /* Thêm các thuộc tính sau để xuống dòng */
-    .message p {
-      white-space: pre-wrap; /* Xử lý xuống dòng, giữ khoảng trắng */
-      word-break: break-word; /* Ngắt từ để tránh tràn */
-    }
-    .message-admin {
-        float: right; /* Tin nhắn của admin bên phải */
-        background-color: #dcf8c6; /* Màu nền tin nhắn admin */
-         text-align: right; /* Canh phải nội dung */
-
-    }
-
-    .message-user {
-        float: left; /* Tin nhắn của user bên trái */
-        background-color: #fff; /* Màu nền tin nhắn user */
-        text-align: left;
-    }
-
-    .message-time {
-        display: block; /* Thời gian xuống dòng */
-        font-size: 0.8em;
-        color: #888;
-        margin-top: 5px; /* Khoảng cách với nội dung tin nhắn */
-    }
-     /* Căn phải thời gian cho tin nhắn admin */
-    .message-admin .message-time {
-         text-align: right;
-    }
-      /* Căn trái thời gian cho tin nhắn user */
-    .message-user .message-time{
-       text-align: left;
-    }
-
-    .chat-input-area {
-        display: flex; /* Flexbox */
-        padding: 10px 15px;
-        border-top: 1px solid #ddd;
-        background-color: #f0f0f0;
-    }
-
-    .chat-input {
-        flex: 1; /* Chiếm phần còn lại */
-        padding: 10px;
-        border: none; /* Loại bỏ border */
-        border-radius: 20px; /* Bo tròn */
-        outline: none; /* Loại bỏ viền khi focus */
-        margin-right: 10px;
-
-    }
-
-    .chat-send-button {
-         background-color: #128c7e; /* Màu xanh WhatsApp */
-        color: #fff;
-        border: none;
-        border-radius: 50%; /* Hình tròn */
-        width: 45px;
-        height: 45px;
-        font-size: 20px;
-        cursor: pointer;
-         display: flex; /* Dùng flex để căn giữa icon */
-        justify-content: center;
-        align-items: center;
-        /* transition: background-color: 0.2s; */
-    }
-    .chat-send-button:hover{
-         background-color: #075e54; /* Màu đậm hơn khi hover */
-    }
-    .content {
-         width: 100%;
-         padding: 0; /* Loại bỏ padding mặc định của .content */
-    }
-
-    /* Thêm một số responsive */
-    @media (max-width: 768px) {
-      .chat-container {
-         width: 100%; /* Full chiều rộng trên mobile */
-         height: 100vh; /* Full chiều cao */
-         border-radius: 0; /* Loại bỏ bo tròn */
-
-      }
-      .message {
-        max-width: 90%; /* Tin nhắn chiếm phần lớn hơn trên mobile */
-      }
-    }
-
-
-    </style>
+    <link rel="stylesheet" href="../../assets/css/admin_chat_room.css">
 </head>
 <body>
 <?php include 'layout/header.php'; ?>
@@ -235,12 +64,10 @@ $conn->close();
         </main>
     </div>
 
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <!-- Bootstrap JS (optional) -->
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 
-<script src="../../assets/js/main.js"></script>
-<script src="../../assets/js/search.js"></script>
+<?php include 'layout/js.php'; ?>
 <script>
 // ... (JavaScript giữ nguyên như trước) ...
 let ws;

@@ -13,7 +13,7 @@ include '../config/db_connect.php';
 
 // Truy vấn lấy thông tin cá nhân của sinh viên
 $sql = "SELECT student_id, student_code, full_name, email, phone, gender, date_of_birth, address, nationality, major, year_of_study, gpa, room_id, status
-        FROM Students 
+        FROM Students
         WHERE student_code = ?";
 $stmt = $conn->prepare($sql);
 $stmt->bind_param("s", $student_code);
@@ -39,7 +39,7 @@ $conn->close();
     <!-- Link file CSS chung cho giao diện sinh viên -->
     <link rel="stylesheet" href="../../assets/css/main_student.css">
     <!-- File CSS riêng cho trang profile -->
-    <link rel="stylesheet" href="../../assets/css/profile_student.css">
+    <link rel="stylesheet" href="../../assets/css/profile_student.css">    
 </head>
 <body>
 
@@ -52,8 +52,10 @@ $conn->close();
         <?php include 'layout/header.php'; ?>
 
         <div class="content">
-            <h2>Thông tin cá nhân</h2>
+            <h2 style="padding-bottom: 20px;"><center>Thông tin cá nhân</center></h2>
             <div class="profile-container">
+                 <!-- Thêm ảnh đại diện -->
+                <img src="../../assets/img/default-avatar.png" alt="Avatar" class="profile-avatar">
                 <form id="profile-form">
                     <div class="form-group">
                         <label for="student_code">Mã sinh viên:</label>
@@ -83,6 +85,10 @@ $conn->close();
                         <label for="address">Địa chỉ:</label>
                         <input type="text" id="address" name="address" value="<?php echo htmlspecialchars($student['address']); ?>" readonly>
                     </div>
+                     <div class="form-group">
+                        <label for="nationality">Quốc tịch:</label>
+                        <input type="text" id="nationality" name="nationality" value="<?php echo htmlspecialchars($student['nationality']); ?>" readonly>
+                    </div>
                     <div class="form-group">
                         <label for="major">Ngành học:</label>
                         <input type="text" id="major" name="major" value="<?php echo htmlspecialchars($student['major']); ?>" readonly>
@@ -103,7 +109,8 @@ $conn->close();
             </div>
         </div>
     </div>
-
+      <!-- Include Chatbox -->
+    <?php include 'chatbox.php'; ?>
     <!-- File JS dành cho trang profile -->
     <script src="../../assets/js/profile_student.js"></script>
 </body>

@@ -173,9 +173,7 @@ if (isset($_GET['room_id'])) {
         <div id="student-popup" style="display: none;"></div>
     </div>
 
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <script src="../../assets/js/main.js"></script>
-    <script src="../../assets/js/search.js"></script>
+    <?php include 'layout/js.php'; ?>
     <script src="../../assets/js/room_students.js"></script>
 </body>
 </html>

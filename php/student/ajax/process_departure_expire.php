@@ -38,7 +38,7 @@ $stmt_insert->close();
 $conn->close();
 
 // Chuyển hướng sang trang xem trạng thái
-header("Location: ../departure_status2.php");
+header("Location: ../departure_status.php");
 
 exit();
 ?>

@@ -33,102 +33,7 @@ $conn->close();
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
     <link rel="stylesheet" href="../../assets/css/main_student.css">
-    <style>
-        /* Kiểu dáng hợp đồng giấy */
-
-        .contract-container {
-            max-width: 900px;
-            margin: 0 auto;
-            background: #fff;
-            padding: 40px;
-            border: 1px solid #ccc;
-            box-shadow: 0 0 10px rgba(0,0,0,0.1);
-            position: relative;
-        }
-        .formal-header {
-            text-align: center;
-            font-size: 16px;
-            margin-bottom: 20px;
-        }
-        .formal-header p {
-            margin: 3px 0;
-        }
-        .contract-header {
-            text-align: center;
-            margin-bottom: 30px;
-        }
-        .contract-header h1 {
-            margin: 0;
-            font-size: 28px;
-            text-transform: uppercase;
-        }
-        .contract-header p {
-            font-style: italic;
-            margin-top: 5px;
-        }
-        .section {
-            margin-bottom: 30px;
-        }
-        .section h2 {
-            font-size: 20px;
-            border-bottom: 1px solid #ccc;
-            padding-bottom: 5px;
-            margin-bottom: 15px;
-        }
-        .form-group {
-            margin-bottom: 15px;
-            display: flex;
-            flex-direction: column;
-        }
-        .form-group label {
-            font-weight: bold;
-            margin-bottom: 5px;
-        }
-        .form-group input,
-        .form-group select,
-        .form-group textarea {
-            padding: 8px;
-            font-size: 16px;
-            border: 1px solid #999;
-            border-radius: 4px;
-        }
-        .form-group input[type="date"],
-        .form-group input[type="number"],
-        .form-group input[type="text"],
-        .form-group input[type="email"],
-        .form-group input[type="file"] {
-            width: 100%;
-        }
-        .signature {
-            margin-top: 40px;
-            display: flex;
-            justify-content: space-between;
-        }
-        .signature div {
-            width: 45%;
-            text-align: center;
-            border-top: 1px solid #000;
-            padding-top: 5px;
-            font-style: italic;
-        }
-        .btn-group {
-            text-align: center;
-            margin-top: 30px;
-        }
-        .btn-submit, .btn-export {
-            padding: 10px 20px;
-            background-color: #007bff;
-            color: #fff;
-            font-size: 18px;
-            border: none;
-            border-radius: 4px;
-            cursor: pointer;
-            margin: 0 10px;
-        }
-        .btn-submit:hover, .btn-export:hover {
-            background-color: #0056b3;
-        }
-    </style>
+    <link rel="stylesheet" href="../../assets/css/registration_request.css">
 </head>
 <body>
     <!-- Include Sidebar -->
@@ -192,10 +97,10 @@ $conn->close();
                     </div>
                     <div class="form-group">
                         <label for="deposit">Số tiền đặt cọc (VNĐ):</label>
-                        <input type="number" id="deposit" name="deposit" min="0" required>
+                        <input type="number" id="deposit" name="deposit" min="0" required readonly value="1000000">
                     </div>
                     <div class="form-group">
-                        <label for="documents">Giấy tờ kèm theo (Upload file scan):</label>
+                        <label for="documents">Giấy tờ kèm theo (Ảnh CCCD) (Upload file scan):</label>
                         <input type="file" id="documents" name="documents[]" multiple>
                     </div>
                 </div>
@@ -232,66 +137,6 @@ $conn->close();
                 </div>
             </div>
         </div>
-
-    <script>
-        // Xuất PDF sử dụng jsPDF và html2canvas
-        document.getElementById('exportPDF').addEventListener('click', function() {
-            const { jsPDF } = window.jspdf;
-            const doc = new jsPDF('p', 'pt', 'a4');
-            const content = document.getElementById('contract-content') || document.getElementById('contract-content');
-            // Sử dụng html2canvas để đảm bảo chuyển đổi đúng HTML sang canvas
-            html2canvas(content, { scale: 0.7 }).then(function(canvas) {
-                const imgData = canvas.toDataURL('image/png');
-                const imgProps = doc.getImageProperties(imgData);
-                const pdfWidth = doc.internal.pageSize.getWidth() - 40;
-                const pdfHeight = (imgProps.height * pdfWidth) / imgProps.width;
-                doc.addImage(imgData, 'PNG', 20, 20, pdfWidth, pdfHeight);
-                doc.save('don_dang_ky.pdf');
-            }).catch(function(error) {
-                console.error("Lỗi xuất PDF:", error);
-            });
-        });
-
-        // Gửi đơn đăng ký: Sử dụng AJAX gửi dữ liệu đến process_registration_request.php
-        document.getElementById('submitRequest').addEventListener('click', function() {
-            // Thu thập dữ liệu từ form, bao gồm cả file nếu có
-            const formData = new FormData();
-            formData.append('student_code', document.getElementById('student_code').value);
-            formData.append('full_name', document.getElementById('full_name').value);
-            formData.append('email', document.getElementById('email').value);
-            formData.append('phone', document.getElementById('phone').value);
-            formData.append('address', document.getElementById('address').value);
-            formData.append('start_date', document.getElementById('start_date').value);
-            formData.append('end_date', document.getElementById('end_date').value);
-            formData.append('deposit', document.getElementById('deposit').value);
-            // Lấy các file upload
-            const files = document.getElementById('documents').files;
-            for (let i = 0; i < files.length; i++) {
-                formData.append('documents[]', files[i]);
-            }
-
-            fetch('ajax/process_registration_request.php', {
-                method: 'POST',
-                body: formData
-            })
-            .then(response => response.json())
-            .then(data => {
-                alert(data.message);
-                if (data.success) {
-                    window.location.href = 'status_dashboard.php';
-                }
-            })
-            .catch(error => {
-                console.error('Error submitting request:', error);
-                alert('Lỗi khi gửi đơn đăng ký.');
-            });
-        });
-        // Gửi đơn đăng ký: bạn có thể thay đổi hành động này để thực hiện AJAX gửi đến file xử lý
-        document.getElementById('submitRequest').addEventListener('click', function() {
-            alert("Đơn đăng ký đã được gửi. Vui lòng chờ phản hồi từ Ban Công tác Sinh viên.");
-            // Ví dụ: window.location.href = "dashboard.php";
-        });
-
-    </script>
+    <script src="../../assets/js/student_registration_request.js"></script>
 </body>
 </html>

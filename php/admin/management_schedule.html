@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lịch Phân Công Trực - Ký Túc Xá</title>
+    <style>
+        body {
+            font-family: "Times New Roman", Times, serif;
+            font-size: 14pt;
+            line-height: 1.5;
+            margin: 2cm; /* Canh lề như trang A4 */
+            color: #000;
+            background-color: #fff;
+        }
+
+        h1, h2, h3 {
+            font-family: "Times New Roman", Times, serif;
+            font-weight: bold;
+            margin-top: 1em;
+            margin-bottom: 0.5em;
+            text-align: center; /* Căn giữa tiêu đề */
+        }
+
+        h1 {
+            font-size: 18pt;
+        }
+
+        h2 {
+            font-size: 16pt;
+        }
+
+        p {
+            margin-top: 0.5em;
+            margin-bottom: 0.5em;
+            text-align: justify;
+            text-indent: 1.27cm; /* Thụt đầu dòng */
+        }
+
+        .center {
+            text-align: center;
+        }
+
+        .bold {
+            font-weight: bold;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse; /* Gộp đường viền */
+            margin-top: 1em;
+            margin-bottom: 1em;
+        }
+
+        th, td {
+            border: 1px solid #000; /* Đường viền đen */
+            padding: 8px; /* Khoảng cách trong ô */
+            text-align: left; /* Căn trái nội dung */
+        }
+
+        th {
+            background-color: #f0f0f0; /* Màu nền cho header */
+            font-weight: bold;
+        }
+
+        .signature {
+            margin-top: 2em;
+            text-align: right;
+            font-style: italic;
+        }
+
+        .signature p {
+            margin: 0; /* Loại bỏ margin mặc định của <p> */
+            text-indent: 0;
+        }
+        .read-button-container {
+          position: fixed; /* Cố định vị trí */
+          bottom: 20px; /* Cách đáy 20px */
+          right: 20px; /* Cách lề phải 20px */
+          z-index: 999; /* Đảm bảo nổi lên trên */
+      }
+
+      .read-button {
+          display: inline-block; /* Để có thể đặt padding, margin */
+          padding: 10px 20px; /* Kích thước nút */
+          background-color:rgb(76, 104, 175); /* Màu xanh lá */
+          color: white; /* Chữ trắng */
+          text-decoration: none; /* Bỏ gạch chân */
+          border-radius: 27px; /* Bo tròn góc */
+          font-weight: bold;
+          transition: background-color 0.3s ease; /* Hiệu ứng hover */
+          box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2); /* Đổ bóng */
+          cursor: pointer;
+      }
+
+      .read-button:hover {
+          background-color:rgb(54, 57, 124); /* Màu xanh đậm hơn khi hover */
+      }
+        /* Để số trang */
+        @page {
+            size: A4;
+            margin: 2cm;
+
+            @bottom-right {
+                content: counter(page);
+                font-size: 12pt;
+            }
+        }
+         /* Thêm dòng kẻ ngang */
+        hr {
+          border: none; /* Loại bỏ border mặc định */
+          border-top: 1px solid black; /* Đường kẻ ngang */
+          margin: 1em 0; /* Khoảng cách trên và dưới */
+        }
+              /* Tạo kiểu cho phần quốc hiệu, tiêu ngữ */
+          .header {
+            text-align: center;
+            margin-bottom: 1.5em;
+        }
+
+        .header p {
+            margin: 0.2em 0; /* Khoảng cách nhỏ giữa các dòng */
+            text-indent: 0;
+
+        }
+
+        .header .doc-lap {
+            font-weight: bold;
+        }
+        .title-time{
+            font-style: italic;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <p>CỘNG HÒA XÃ HỘI CHỦ NGHĨA VIỆT NAM</p>
+        <p class="doc-lap">Độc lập – Tự do – Hạnh phúc</p>
+        <hr width="30%">  <!-- Đường kẻ ngang ngắn hơn -->
+    </div>
+    <h1>LỊCH PHÂN CÔNG TRỰC</h1>
+    <h2>KÝ TÚC XÁ \[TÊN KÝ TÚC XÁ]</h2>
+    <h3 class = "title-time">Tháng ... Năm ...</h3>  <!-- Thay tháng và năm -->
+
+    <p>Ban Quản lý Ký túc xá \[Tên Ký túc xá] thông báo lịch phân công trực cho cán bộ quản lý như sau:</p>
+
+    <table>
+        <thead>
+            <tr>
+                <th>Ngày</th>
+                <th>Thứ</th>
+                <th>Ca trực</th>
+                <th>Cán bộ trực</th>
+                <th>Chức vụ</th>
+                <th>Ghi chú</th>
+            </tr>
+        </thead>
+        <tbody>
+            <!-- Dòng ví dụ (lặp lại và thay đổi cho mỗi ca trực) -->
+            <tr>
+                <td>01/10/2024</td>
+                <td>Thứ Ba</td>
+                <td>Sáng (7:00 - 11:30)</td>
+                <td>Nguyễn Văn A</td>
+                <td>Quản lý khu A</td>
+                <td></td>
+            </tr>
+            <tr>
+                <td>01/10/2024</td>
+                <td>Thứ Ba</td>
+                <td>Chiều (13:30 - 17:00)</td>
+                <td>Trần Thị B</td>
+                <td>Quản lý khu B</td>
+                <td></td>
+            </tr>
+              <tr>
+                <td>01/10/2024</td>
+                <td>Thứ Ba</td>
+                <td>Tối (17:00 - 22:00)</td>
+                <td>Lê Văn C</td>
+                <td>Quản lý khu C</td>
+                <td></td>
+              </tr>
+            <tr>
+                <td>02/10/2024</td>
+                <td>Thứ Tư</td>
+                <td>Sáng (7:00 - 11:30)</td>
+                <td>Phạm Văn D</td>
+                <td>Quản lý khu D</td>
+                <td></td>
+            </tr>
+            <tr>
+                <td>02/10/2024</td>
+                <td>Thứ tư</td>
+                <td>Chiều (13:30 - 17:00)</td>
+                <td>Nguyễn Văn A</td>
+                <td>Quản lý khu A</td>
+                <td></td>
+            </tr>
+            <tr>
+                <td>02/10/2024</td>
+                <td>Thứ Tư</td>
+                <td>Tối (17:00 - 22:00)</td>
+                <td>Trần Thị B</td>
+                <td>Quản lý khu B</td>
+                <td></td>
+            </tr>
+
+            <!-- Thêm các dòng khác cho các ngày/ca trực còn lại -->
+             <!-- Thêm các dòng khác cho các ngày/ca trực còn lại -->
+            <tr>
+                <td colspan="6" style="text-align: center;">...</td>
+            </tr>
+              <tr>
+                <td>30/10/2024</td>
+                <td>Thứ Tư</td>
+                <td>Sáng (7:00 - 11:30)</td>
+                <td>Nguyễn Văn A</td>
+                <td>Quản lý khu A</td>
+                <td></td>
+            </tr>
+             <tr>
+                <td>31/10/2024</td>
+                <td>Thứ năm</td>
+                <td>Chiều (13:30 - 17:00)</td>
+                <td>Nguyễn Văn A</td>
+                <td>Quản lý khu A</td>
+                <td></td>
+            </tr>
+            <tr>
+                <td>31/10/2024</td>
+                <td>Thứ năm</td>
+                <td>Tối (17:00 - 22:00)</td>
+                <td>Trần Thị B</td>
+                <td>Quản lý khu B</td>
+                <td></td>
+            </tr>
+        </tbody>
+    </table>
+
+    <p>
+        **Yêu cầu:**
+    </p>
+    <ul>
+        <li>Cán bộ trực có mặt đúng giờ, thực hiện nghiêm túc nhiệm vụ được phân công.</li>
+        <li>Trong ca trực, cán bộ trực phải thường xuyên kiểm tra, giám sát tình hình an ninh, trật tự, vệ sinh, PCCC,... trong khu vực được phân công.</li>
+        <li>Kịp thời xử lý các tình huống phát sinh và báo cáo cho Ban Quản lý KTX.</li>
+        <li>Bàn giao ca trực đầy đủ, rõ ràng cho ca trực tiếp theo.</li>
+    </ul>
+
+    <div class="signature">
+        <p>BAN QUẢN LÝ KÝ TÚC XÁ</p>
+        <p>(Ký tên, đóng dấu)</p>
+    </div>
+    <div class="read-button-container">
+        <a href="main.php" class="read-button">Đã đọc</a>
+    </div>
+</body>
+</html>

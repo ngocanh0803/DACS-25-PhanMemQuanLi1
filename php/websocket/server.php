@@ -18,7 +18,11 @@ class NotificationServer implements MessageComponentInterface {
         $this->userConnections = [];
         // Kết nối MySQL bằng PDO
         $dsn = "mysql:host=localhost;dbname=dormitory_management;charset=utf8";
-        $this->pdo = new PDO($dsn, "root", "", [PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION]);
+        // Sử dụng kết nối persistent
+        $this->pdo = new PDO($dsn, "root", "", [
+            PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,
+            PDO::ATTR_PERSISTENT => true
+        ]);
         echo "WebSocket server started\n";
     }
 

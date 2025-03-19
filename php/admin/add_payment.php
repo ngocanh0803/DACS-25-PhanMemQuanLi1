@@ -1,13 +1,4 @@
 <?php
-// include '../db_connect.php';
-
-// // // Kiểm tra quyền truy cập
-// // if (!isset($_SESSION['role']) || !in_array($_SESSION['role'], ['manager', 'student_manager', 'accountant', 'admin'])) {
-// //     $_SESSION['error'] = "Bạn không có quyền truy cập.";
-// //     header('Location: login.php');
-// //     exit();
-// // }
-
 session_start(); // Khởi động session
 include '../config/db_connect.php';
 
@@ -93,11 +84,8 @@ $room_price = $room['price']; // Lấy từ bảng Rooms
             </div>
         </main>
     </div>
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script> -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
-    <script src="../../assets/js/main.js"></script>
-    <script src="../../assets/js/search.js"></script>
+    <?php include 'layout/js.php'; ?>
     <script>
         <?php if (isset($_SESSION['success'])): ?>
             toastr.success("<?php echo htmlspecialchars($_SESSION['success']); ?>");

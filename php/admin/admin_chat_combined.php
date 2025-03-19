@@ -373,13 +373,8 @@ $conn->close();
         </main>
   </div>
 
-
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <!-- Bootstrap JS (optional) -->
-    <!-- <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script> -->
-    <script src="../../assets/js/main.js"></script>
-    <script src="../../assets/js/search.js"></script>
-    <script>
+<?php include 'layout/js.php'; ?>
+<script>
     let ws;
     let adminId = <?php echo $adminId; ?>;
     let currentReceiverId = <?php echo $receiver_id; ?>; // Sử dụng biến toàn cục
@@ -508,6 +503,6 @@ $conn->close();
         }
     });
   });
-    </script>
+</script>
 </body>
 </html>

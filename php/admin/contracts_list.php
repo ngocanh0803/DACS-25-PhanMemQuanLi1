@@ -260,9 +260,7 @@ $stmt_main->close();
     <div id="notification" class="notification"></div>
 
     <!-- JS -->
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <script src="../../assets/js/search.js"></script>
-    <script src="../../assets/js/main.js"></script>
+    <?php include 'layout/js.php'; ?>
     <script src="../../assets/js/manage_contracts.js"></script>
     <script>
         $(document).ready(function() {
@@ -294,7 +292,7 @@ $stmt_main->close();
                 // vì `this` là nút #confirmTerminate (không chứa data).
                 // Nên ta dùng biến `currentContractId`:
                 if (currentContractId) {
-                    $.post('process_terminate_contract.php',
+                    $.post('ajax/process_terminate_contract.php',
                     { contract_id: currentContractId },
                     function(response) {
                         // Xử lý JSON trả về

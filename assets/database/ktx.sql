@@ -53,7 +53,7 @@ CREATE TABLE Facilities (
     facility_name VARCHAR(255) NOT NULL,
     quantity INT NOT NULL,
     status ENUM('good', 'broken') DEFAULT 'good',
-    is_student_device TINYINT(1) DEFAULT 0;
+    is_student_device TINYINT(1) DEFAULT 0,
     FOREIGN KEY (room_id) REFERENCES Rooms(room_id) ON DELETE CASCADE
 );
 
@@ -107,6 +107,16 @@ CREATE TABLE Contracts (
     FOREIGN KEY (room_id) REFERENCES Rooms(room_id) ON DELETE CASCADE
 );
 
+CREATE TABLE IF NOT EXISTS Conversations (
+    conversation_id INT AUTO_INCREMENT PRIMARY KEY,
+    title VARCHAR(255),
+    is_group TINYINT(1) DEFAULT 0,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+-- INSERT INTO Conversations (conversation_id, title, is_group) VALUES 
+-- (1, 'Chat: 1-2', 0);
+
 CREATE TABLE IF NOT EXISTS Messages (
   message_id INT AUTO_INCREMENT PRIMARY KEY,
   conversation_id INT NOT NULL,
@@ -123,7 +133,10 @@ CREATE TABLE IF NOT EXISTS Messages (
   FOREIGN KEY (receiver_id) REFERENCES Users(user_id) ON DELETE CASCADE
 );
 
-
+-- Bảng Messages (Tin nhắn) - Ví dụ tin nhắn giữa sinh viên và admin (giả sử admin có user_id = 1)
+-- INSERT INTO Messages (conversation_id, sender_id, receiver_id, content, message_type, is_read) VALUES
+-- (1, 2, 1, 'Chào admin, tôi muốn hỏi về hóa đơn phòng tháng này.', 'text', 0),
+-- (1, 1, 2, 'Chào bạn, bạn cần hỗ trợ gì về hóa đơn phòng?', 'text', 0);
 
 CREATE TABLE Notifications (
     notification_id INT AUTO_INCREMENT PRIMARY KEY,
@@ -136,6 +149,11 @@ CREATE TABLE Notifications (
     FOREIGN KEY (user_id) REFERENCES Users(user_id) ON DELETE CASCADE
 );
 
+-- Bảng Notifications (Thông báo)
+-- INSERT INTO Notifications (user_id, title, message, notification_type, is_read) VALUES
+-- (2, 'Thông báo về hóa đơn', 'Hóa đơn tháng 03/2025 của bạn đã được tạo. Vui lòng kiểm tra chi tiết.', 'payment', 0),
+-- (2, 'Thông báo chung', 'Ký túc xá sẽ tổ chức buổi họp mặt sinh viên vào cuối tuần này.', 'general', 0);
+
 CREATE TABLE Feedbacks (
     feedback_id INT AUTO_INCREMENT PRIMARY KEY,
     user_id INT NOT NULL,
@@ -147,6 +165,10 @@ CREATE TABLE Feedbacks (
     FOREIGN KEY (user_id) REFERENCES Users(user_id) ON DELETE CASCADE
 );
 
+-- Bảng Feedbacks (Phản hồi)
+-- INSERT INTO Feedbacks (user_id, subject, message, status) VALUES
+-- (2, 'Vấn đề về cơ sở vật chất', 'Đèn học trong phòng của tôi bị hỏng, mong được sửa chữa.', 'pending');
+
 CREATE TABLE Activity_Log (
     log_id INT AUTO_INCREMENT PRIMARY KEY,
     user_id INT NOT NULL,
@@ -154,6 +176,11 @@ CREATE TABLE Activity_Log (
     activity_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     FOREIGN KEY (user_id) REFERENCES Users(user_id) ON DELETE CASCADE
 );
+
+-- Bảng Activity_Log (Nhật ký hoạt động)
+-- INSERT INTO Activity_Log (user_id, activity) VALUES
+-- (2, 'Đăng nhập vào hệ thống.'),
+-- (2, 'Xem thông tin hóa đơn.');
 
 CREATE TABLE Equipment_Reports (
     report_id INT AUTO_INCREMENT PRIMARY KEY,
@@ -166,6 +193,10 @@ CREATE TABLE Equipment_Reports (
     FOREIGN KEY (facility_id) REFERENCES Facilities(facility_id) ON DELETE CASCADE,
     FOREIGN KEY (student_id) REFERENCES Students(student_id) ON DELETE CASCADE
 );
+
+-- -- Bảng Equipment_Reports (Báo cáo thiết bị hỏng hóc)
+-- INSERT INTO Equipment_Reports (facility_id, student_id, reported_quantity, reported_condition, status) VALUES
+-- ((SELECT facility_id FROM Facilities WHERE facility_code = 'TB001' AND room_id = 2 LIMIT 1), 2, 1, 'Bàn học bị lung lay.', 'pending');
 
 CREATE TABLE Equipment_Requests (
     request_id INT AUTO_INCREMENT PRIMARY KEY,
@@ -181,6 +212,11 @@ CREATE TABLE Equipment_Requests (
     FOREIGN KEY (room_id) REFERENCES Rooms(room_id) ON DELETE CASCADE
 );
 
+-- Bảng Equipment_Requests (Yêu cầu thiết bị)
+-- INSERT INTO Equipment_Requests (student_id, room_id, request_type, facility_name, quantity, description, status) VALUES
+-- (2, 2, 'additional', 'Quạt trần', 1, 'Phòng hơi nóng, cần thêm quạt trần.', 'pending'),
+-- (2, 2, 'personal', 'Đèn học', 1, 'Đèn học cá nhân bị hỏng.', 'pending');
+
 CREATE TABLE Applications (
     application_id INT AUTO_INCREMENT PRIMARY KEY,
     student_id INT NOT NULL,
@@ -192,6 +228,10 @@ CREATE TABLE Applications (
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     FOREIGN KEY (student_id) REFERENCES Students(student_id) ON DELETE CASCADE
 );
+
+-- -- Bảng Applications (Đơn đăng ký)
+-- INSERT INTO Applications (student_id, desired_start_date, desired_end_date, deposit, documents, status) VALUES
+-- (2, '2025-01-15', '2025-07-15', 1000000, '["/path/to/document1.pdf", "/path/to/document2.jpg"]', 'approved');
 
 CREATE TABLE Departure_Requests (
     departure_id INT AUTO_INCREMENT PRIMARY KEY,
@@ -206,6 +246,10 @@ CREATE TABLE Departure_Requests (
     FOREIGN KEY (contract_id) REFERENCES Contracts(contract_id) ON DELETE CASCADE
 );
 
+-- Bảng Departure_Requests (Đơn xin rời phòng)
+-- INSERT INTO Departure_Requests (student_id, contract_id, reason, documents, status) VALUES
+-- (1, (SELECT contract_id FROM Contracts WHERE student_id = 1 LIMIT 1), 'Hết hạn hợp đồng.', '["/path/to/departure_document.pdf"]', 'pending');
+
 CREATE TABLE LateRequests (
     late_request_id INT AUTO_INCREMENT PRIMARY KEY,
     student_id INT NOT NULL,
@@ -217,6 +261,12 @@ CREATE TABLE LateRequests (
     note TEXT,
     FOREIGN KEY (student_id) REFERENCES Students(student_id) ON DELETE CASCADE
 );
+
+-- Bảng LateRequests (Đơn xin về muộn)
+-- INSERT INTO LateRequests (student_id, reason, is_violation, note, status) VALUES
+-- (1, 'Tham gia hoạt động ngoại khóa của trường.', 0, 'Có giấy xác nhận của CLB.', 'approved'),
+-- (1, 'Lý do cá nhân.', 1, 'Không có lý do chính đáng.', 'rejected');
+
 -- Chèn dữ liệu cho Quản lý phòng
 INSERT INTO Menuitems (id, name, url, icon, description, created_at) VALUES
 (1, 'Xem sơ đồ', './view_floor_plan.php', 'fa-map', 'Xem sơ đồ tòa nhà', '2024-10-27 07:29:57'),
@@ -233,11 +283,27 @@ INSERT INTO Menuitems (id, name, url, icon, description, created_at) VALUES
 (12, 'Quản lí người dùng', './manage_user.php', 'fa-user-cog', 'Quản lí người dùng', '2024-10-27 07:29:57');
 
 -- Thêm dữ liệu mẫu vào bảng Users
-INSERT INTO Users (username, password, role, is_approved) VALUES
-('admin', 'admin', 'admin', 1),
-('quanli', '123', 'manager', 1),
-('ketoan', '123', 'student_manager', 0),
-('22010001', '123', 'student', 1);
+INSERT INTO Users (user_id, username, password, role, is_approved) VALUES
+(1, 'admin', 'admin', 'admin', 1),
+(2, '22010001', '123', 'student', 1),
+(3, '22010002', '123', 'student', 1),
+(4, '22010003', '123', 'student', 1),
+(5, '22010004', '123', 'student', 1),
+(6, '22010005', '123', 'student', 1),
+(7, '22010006', '123', 'student', 1),
+(8, '22010007', '123', 'student', 1),
+(9, '22010008', '123', 'student', 1),
+(10, '22010009', '123', 'student', 1),
+(11, '22010010', '123', 'student', 1),
+(12, '22010011', '123', 'student', 1),
+(13, '22010012', '123', 'student', 1),
+(14, '22010013', '123', 'student', 1),
+(15, '22010014', '123', 'student', 1),
+(16, '22010015', '123', 'student', 1),
+(17, '22010016', '123', 'student', 1),
+(18, '22010017', '123', 'student', 1),
+(19, '22010018', '123', 'student', 1),
+(20, '22010019', '123', 'student', 1);
 
 -- Thêm dữ liệu mẫu vào bảng Rooms
 INSERT INTO Rooms (building, room_code, floor, room_number, capacity, status, price) VALUES
@@ -549,15 +615,7 @@ INSERT INTO Facilities (facility_code, room_id, facility_name, quantity, status)
 
 -- Thêm thanh toán cho các phòng, sử dụng room_id từ bảng Rooms
 INSERT INTO payments (payment_id, payment_code, room_id, electricity_usage, water_usage, total_amount, payment_status, payment_date, created_at) VALUES
-(1, 'HD2_1_2025', 2, 100.50, 30.20, 1500000.00, 'unpaid', 'NULL', '2025-01-30 15:51:16'),
-(2, 'HD3_1_2025', 3, 134.00, 12.00, 2782000.00, 'unpaid', 'NULL', '2025-01-30 17:00:00'),
-(3, 'HD4_1_2025', 4, 234.00, 5.00, 2977000.00, 'unpaid', 'NULL', '2025-01-30 17:00:00'),
-(4, 'HD5_1_2025', 5, 123.00, 4.00, 2629000.00, 'unpaid', 'NULL', '2025-01-30 17:00:00'),
-(5, 'HD7_1_2025', 7, 342.00, 12.00, 3406000.00, 'unpaid', 'NULL', '2025-01-30 17:00:00'),
-(6, 'HD42_1_2025', 42, 123.00, 43.00, 2614000.00, 'unpaid', 'NULL', '2025-01-30 17:00:00'),
-(7, 'HD45_1_2025', 45, 123.00, 12.00, 2149000.00, 'unpaid', 'NULL', '2025-01-30 17:00:00'),
-(8, 'HD82_1_2025', 82, 214.00, 11.00, 2507000.00, 'unpaid', 'NULL', '2025-01-30 17:00:00'),
-(9, 'HD85_1_2025', 85, 435.00, 12.00, 3185000.00, 'unpaid', 'NULL', '2025-01-30 17:00:00');
+(1, 'HD1_1_2025', 1, 100.50, 30.20, 1500000.00, 'unpaid', '2025-01-01', '2025-01-30 15:51:16');
 
 -- Insert thông tin vào bảng Contracts
 -- Hợp đồng cho SV20240001 - Nguyen Van A
@@ -790,27 +848,13 @@ VALUES
 
 -- Thêm tình trạng phòng cho các sinh viên, sử dụng room_id và student_id từ bảng Rooms và Students
 INSERT INTO Room_Status (room_id, student_id, start_date, end_date) VALUES
-((SELECT room_id FROM Rooms WHERE room_code = 'A102'), (SELECT student_id FROM Students WHERE student_code = 'SV20240001'), '2024-01-15', NULL),
-((SELECT room_id FROM Rooms WHERE room_code = 'A201'), (SELECT student_id FROM Students WHERE student_code = 'SV20240002'), '2024-01-15', NULL),
-((SELECT room_id FROM Rooms WHERE room_code = 'A301'), (SELECT student_id FROM Students WHERE student_code = 'SV20240003'), '2024-01-15', NULL),
-((SELECT room_id FROM Rooms WHERE room_code = 'B102'), (SELECT student_id FROM Students WHERE student_code = 'SV20240004'), '2024-01-15', NULL),
-((SELECT room_id FROM Rooms WHERE room_code = 'B201'), (SELECT student_id FROM Students WHERE student_code = 'SV20240005'), '2024-01-15', NULL),
-((SELECT room_id FROM Rooms WHERE room_code = 'B301'), (SELECT student_id FROM Students WHERE student_code = 'SV20240006'), '2024-01-15', NULL),
-((SELECT room_id FROM Rooms WHERE room_code = 'C102'), (SELECT student_id FROM Students WHERE student_code = 'SV20240007'), '2024-01-15', NULL),
-((SELECT room_id FROM Rooms WHERE room_code = 'C202'), (SELECT student_id FROM Students WHERE student_code = 'SV20240008'), '2024-01-15', NULL),
-((SELECT room_id FROM Rooms WHERE room_code = 'C303'), (SELECT student_id FROM Students WHERE student_code = 'SV20240009'), '2024-01-15', NULL);
+((SELECT room_id FROM Rooms WHERE room_code = 'A102'), (SELECT student_id FROM Students WHERE student_code = 'SV20240001'), '2024-01-15', 2024-08-15),
+((SELECT room_id FROM Rooms WHERE room_code = 'A201'), (SELECT student_id FROM Students WHERE student_code = 'SV20240002'), '2024-01-15', 2024-08-15),
+((SELECT room_id FROM Rooms WHERE room_code = 'A301'), (SELECT student_id FROM Students WHERE student_code = 'SV20240003'), '2024-01-15', 2024-08-15),
+((SELECT room_id FROM Rooms WHERE room_code = 'B102'), (SELECT student_id FROM Students WHERE student_code = 'SV20240004'), '2024-01-15', 2024-08-15),
+((SELECT room_id FROM Rooms WHERE room_code = 'B201'), (SELECT student_id FROM Students WHERE student_code = 'SV20240005'), '2024-01-15', 2024-08-15),
+((SELECT room_id FROM Rooms WHERE room_code = 'B301'), (SELECT student_id FROM Students WHERE student_code = 'SV20240006'), '2024-01-15', 2024-08-15),
+((SELECT room_id FROM Rooms WHERE room_code = 'C102'), (SELECT student_id FROM Students WHERE student_code = 'SV20240007'), '2024-01-15', 2024-08-15),
+((SELECT room_id FROM Rooms WHERE room_code = 'C202'), (SELECT student_id FROM Students WHERE student_code = 'SV20240008'), '2024-01-15', 2024-08-15),
+((SELECT room_id FROM Rooms WHERE room_code = 'C303'), (SELECT student_id FROM Students WHERE student_code = 'SV20240009'), '2024-01-15', 2024-08-15);
 
-
--- 2. Ảnh hưởng của hợp đồng đến các chức năng hiện có
--- Quản lý sinh viên (R4):
-
--- Khi thêm sinh viên, có thể yêu cầu tạo hợp đồng mới đi kèm.
--- Khi sinh viên rời ký túc xá, cập nhật trạng thái hợp đồng là đã kết thúc và cập nhật lại tình trạng phòng.
--- Quản lý phòng (R2):
-
--- Khi thiết lập tình trạng phòng, cần kiểm tra hợp đồng liên quan để không cho thuê phòng đã có hợp đồng hiện hành.
--- Tình trạng phòng có thể tự động cập nhật khi hợp đồng kết thúc.
--- Quản lý thanh toán (R6):
-
--- Các khoản thanh toán có thể liên kết với hợp đồng, ví dụ: tính tiền thuê theo kỳ, điện nước theo thời gian hợp đồng.
--- Tạo hóa đơn dựa trên thông tin trong hợp đồng (giá thuê, tiền đặt cọc, các chi phí phát sinh theo điều khoản).

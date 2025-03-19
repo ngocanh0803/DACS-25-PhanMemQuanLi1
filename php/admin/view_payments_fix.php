@@ -91,8 +91,6 @@ if (isset($_GET['room_id'])) {
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <script src="../../assets/js/main.js"></script>
-    <script src="../../assets/js/search.js"></script>
+    <?php include 'layout/js.php'; ?>
 </body>
 </html>

@@ -86,9 +86,7 @@ $result = $conn->query($sql);
     <!-- Thông báo -->
     <div id="notification" class="notification"></div>
 
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <script src="../../assets/js/main.js"></script>
-    <script src="../../assets/js/search.js"></script>
+    <?php include 'layout/js.php'; ?>
     <script src="../../assets/js/manage_students.js"></script>
     <script>
         $(document).ready(function() {

@@ -45,7 +45,7 @@ $conn->close();
             <table class="requests-table">
                 <thead>
                     <tr>
-                        <th>Mã yêu cầu</th>
+                        <th>STT</th>
                         <th>Sinh viên</th>
                         <th>Phòng</th>
                         <th>Loại yêu cầu</th>
@@ -66,7 +66,7 @@ $conn->close();
                         <td><?php echo $req['request_type'] === 'additional' ? 'Thêm chung' : 'Cá nhân'; ?></td>
                         <td><?php echo htmlspecialchars($req['facility_name']); ?></td>
                         <td><?php echo htmlspecialchars($req['quantity']); ?></td>
-                        <td><?php echo nl2br(htmlspecialchars($req['description'])); ?></td>
+                        <td style="word-wrap: break-word; max-width: 200px"><?php echo nl2br(htmlspecialchars($req['description'])); ?></td>
                         <td><?php echo htmlspecialchars($req['created_at']); ?></td>
                         <td>
                             <?php 

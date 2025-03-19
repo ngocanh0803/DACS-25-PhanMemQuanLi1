@@ -1,0 +1,97 @@
+
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background-color: #f2f2f2;
+}
+
+.form-container {
+    max-width: 600px;
+    margin: 20px auto; /* Căn giữa, thêm khoảng cách top */
+    padding: 30px;
+    background-color: #fff;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.form-container h2 {
+    color: #333;
+    margin-bottom: 20px;
+    border-bottom: 2px solid #ddd;
+    padding-bottom: 10px;
+}
+/* style tin nhăn */
+.success-message {
+    color: green;
+    background-color: #d4edda;
+    border: 1px solid #c3e6cb;
+    padding: 10px;
+    margin-bottom: 15px;
+    border-radius: 4px;
+}
+
+.error-message {
+    color: red;
+    background-color: #f8d7da;
+    border: 1px solid #f5c6cb;
+    padding: 10px;
+    margin-bottom: 15px;
+    border-radius: 4px;
+}
+
+.form-container p {
+    margin-bottom: 10px;
+}
+
+.form-container label {
+    display: block; /* Để label xuống dòng */
+    margin-bottom: 5px;
+    font-weight: bold;
+}
+
+.form-container textarea {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box;
+    resize: vertical; /* Cho phép resize theo chiều dọc */
+    min-height: 100px; /* Chiều cao tối thiểu */
+    font-size: 16px; /* Tăng kích thước chữ */
+}
+  /* Style cho nút */
+.btn-group button, .btn-group a {
+    display: inline-block; /* Để các nút trên cùng hàng */
+    padding: 10px 20px;
+    background-color: #007bff;
+    color: #fff;
+    text-decoration: none; /* Bỏ gạch chân nếu là thẻ <a> */
+    border-radius: 5px;
+    border: none;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    margin-right: 10px; /* Khoảng cách giữa các nút */
+    font-size: 16px; /* Kích thước chữ */
+}
+
+.btn-group button:last-child, .btn-group a:last-child {
+    margin-right: 0; /* Loại bỏ margin ở nút cuối */
+}
+ .btn-group a{
+    text-align: center;
+ }
+
+.btn-group button:hover,.btn-group a:hover {
+    background-color: #0056b3;
+}
+  /* Responsive */
+@media (max-width: 768px) {
+    .form-container {
+        padding: 20px;
+    }
+
+    .btn-group button, .btn-group a {
+        display: block; /* Các nút xếp chồng lên nhau trên mobile */
+        width: 100%; /* Chiếm toàn bộ chiều rộng */
+        margin-bottom: 10px; /* Khoảng cách giữa các nút */
+    }
+}

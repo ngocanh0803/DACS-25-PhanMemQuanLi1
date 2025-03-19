@@ -188,7 +188,7 @@ if (!$contract) {
 
                 <div class="btn-group">
                     <button type="submit">Gửi đơn rời phòng</button>
-                    <button type="button" class="status-btn" onclick="window.location.href='departure_status2.php'">Xem trạng thái đơn</button>
+                    <button type="button" class="status-btn" onclick="window.location.href='departure_status.php'">Xem trạng thái</button>
                 </div>
             </form>
         <?php endif; ?>

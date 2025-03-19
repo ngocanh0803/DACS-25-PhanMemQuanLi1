@@ -7,7 +7,7 @@ ini_set('display_startup_errors', 1);
 error_reporting(E_ALL);
 
 include __DIR__ . '/../config/db_connect.php';
-require '../vendor/autoload.php';
+require '../../vendor/autoload.php';
 
 // Bỏ dòng use TCPDF; nếu không cần thiết, vì TCPDF không sử dụng namespace như vậy
 // use TCPDF;

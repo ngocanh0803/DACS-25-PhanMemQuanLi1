@@ -1,3 +1,4 @@
+<?php if(session_status() === PHP_SESSION_NONE) session_start(); ?>
 <!DOCTYPE html>
 <html lang="vi">
 <head>
@@ -11,10 +12,10 @@
     <?php include 'layout/header.php'; ?>  <!-- Include phần header -->
     <div class="container">
         <?php include 'layout/menu.php'; ?>  <!-- Include phần menu -->
-
         <main class="content">
-            <h1>Chào mừng đến với phần mềm quản lý ký túc xá</h1>
-            <img src="../../assets/img/welcome2.webp" alt="Welcome" class="welcome-image">
+            <!-- <h1>Chào mừng đến với phần mềm quản lý ký túc xá</h1> -->
+            <!-- <img src="../../assets/img/welcome2.webp" alt="Welcome" class="welcome-image"> -->
+            <?php include 'layout/management_schedule.html'; ?>  <!-- Include phần menu -->
         </main>
     </div>
 

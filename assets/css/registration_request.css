@@ -1,0 +1,95 @@
+
+/* Kiểu dáng hợp đồng giấy */
+
+.contract-container {
+    max-width: 900px;
+    margin: 0 auto;
+    background: #fff;
+    padding: 40px;
+    border: 1px solid #ccc;
+    box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    position: relative;
+}
+.formal-header {
+    text-align: center;
+    font-size: 16px;
+    margin-bottom: 20px;
+}
+.formal-header p {
+    margin: 3px 0;
+}
+.contract-header {
+    text-align: center;
+    margin-bottom: 30px;
+}
+.contract-header h1 {
+    margin: 0;
+    font-size: 28px;
+    text-transform: uppercase;
+}
+.contract-header p {
+    font-style: italic;
+    margin-top: 5px;
+}
+.section {
+    margin-bottom: 30px;
+}
+.section h2 {
+    font-size: 20px;
+    border-bottom: 1px solid #ccc;
+    padding-bottom: 5px;
+    margin-bottom: 15px;
+}
+.form-group {
+    margin-bottom: 15px;
+    display: flex;
+    flex-direction: column;
+}
+.form-group label {
+    font-weight: bold;
+    margin-bottom: 5px;
+}
+.form-group input,
+.form-group select,
+.form-group textarea {
+    padding: 8px;
+    font-size: 16px;
+    border: 1px solid #999;
+    border-radius: 4px;
+}
+.form-group input[type="date"],
+.form-group input[type="number"],
+.form-group input[type="text"],
+.form-group input[type="email"],
+.form-group input[type="file"] {
+    width: 100%;
+}
+.signature {
+    margin-top: 40px;
+    display: flex;
+    justify-content: space-between;
+}
+.signature div {
+    width: 45%;
+    text-align: center;
+    border-top: 1px solid #000;
+    padding-top: 5px;
+    font-style: italic;
+}
+.btn-group {
+    text-align: center;
+    margin-top: 30px;
+}
+.btn-submit, .btn-export {
+    padding: 10px 20px;
+    background-color: #007bff;
+    color: #fff;
+    font-size: 18px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    margin: 0 10px;
+}
+.btn-submit:hover, .btn-export:hover {
+    background-color: #0056b3;
+}

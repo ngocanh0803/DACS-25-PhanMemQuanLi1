@@ -28,102 +28,7 @@ $conn->close();
     <!-- Bootstrap CSS -->
     <!-- <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"> -->
     <link rel="stylesheet" href="../../assets/css/main.css">
-    <style>
-    /* ... (CSS giữ nguyên như trước) ... */
-     /* Giao diện danh sách chat giống Telegram/Messenger/WhatsApp */
-    body {
-        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-        background-color: #f0f2f5; /* Nền nhạt */
-    }
-
-    .user-list-container {
-      /* Thêm container bao quanh danh sách */
-       border-radius: 10px; /* Bo tròn */
-       overflow: hidden; /* Đảm bảo các phần tử con không tràn ra ngoài */
-    }
-
-    .user-list {
-        list-style: none; /* Loại bỏ dấu chấm đầu dòng */
-        padding: 0;
-        margin: 0;
-    }
-
-    .user-item {
-        display: flex; /* Flexbox cho item */
-        align-items: center; /* Căn giữa theo chiều dọc */
-        padding: 10px 15px;
-        border-bottom: 1px solid #ddd; /* Đường kẻ ngăn cách */
-        cursor: pointer;
-        transition: background-color 0.2s ease;
-    }
-
-    .user-item:hover {
-        background-color: #f0f0f0;
-    }
-    .user-item.active {
-        background-color: #e9e9e9; /* Màu nền khi active */
-    }
-
-    .user-avatar {
-        width: 50px;
-        height: 50px;
-        border-radius: 50%; /* Hình tròn */
-        overflow: hidden; /* Cắt ảnh nếu cần */
-        margin-right: 15px;
-         display: flex;
-         justify-content: center;
-         align-items: center;
-
-    }
-   .user-avatar img {
-      max-width: 100%;
-      max-height: 100%;
-      object-fit: cover;  /* Căn chỉnh ảnh cho vừa khung */
-   }
-   .user-avatar i {
-    font-size: 24px;  /* Kích thước icon nếu không có ảnh */
-     color: #888;  /* Màu icon */
-   }
-
-    .user-info {
-        flex: 1; /* Chiếm phần còn lại */
-    }
-
-    .user-name {
-        font-weight: bold;
-        margin-bottom: 3px;
-    }
-
-    .user-role {
-        font-size: 0.9em;
-        color: #777;
-    }
-     /* Ẩn bảng */
-    table{
-       display: none;
-    }
-    .search-bar {
-        padding: 10px 15px;
-        border-bottom: 1px solid #ddd;
-         display: flex;
-         align-items: center;
-
-    }
-
-    .search-input {
-        flex: 1;
-        padding: 8px;
-        border: 1px solid #ccc;
-        border-radius: 20px; /* Bo tròn */
-         outline: none;
-    }
-    /* Thêm icon search */
-     .search-icon {
-        margin-right: 8px;
-        color: #aaa;
-     }
-
-    </style>
+    <link rel="stylesheet" href="../../assets/css/admin_user_list.css">
 </head>
 <body>
 <?php include 'layout/header.php'; ?>
@@ -153,11 +58,9 @@ $conn->close();
         </main>
     </div>
 
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <!-- Bootstrap JS (optional) -->
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
-<script src="../../assets/js/main.js"></script>
-<script src="../../assets/js/search.js"></script>
+<?php include 'layout/js.php'; ?>
 <script>
 // ... (JavaScript giữ nguyên như trước) ...
 $(document).ready(function() {

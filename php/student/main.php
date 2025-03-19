@@ -7,7 +7,10 @@ if (session_start() === PHP_SESSION_NONE) {
 if (!isset($_SESSION['username']) || $_SESSION['role'] !== 'student') {
     header("Location: ../php/login.php");
     exit();
-}?>
+}
+$studentId = $_SESSION['user_id'];
+$adminId = 1;
+?>
 
 <!DOCTYPE html>
 <html lang="vi">
@@ -28,44 +31,13 @@ if (!isset($_SESSION['username']) || $_SESSION['role'] !== 'student') {
         <?php include 'layout/header.php'; ?>
 
         <div class="content">
-            <div class="card-container">
-                <div class="card">
-                    <i class="fas fa-user-graduate card-icon"></i>
-                    <h3>Thông tin cá nhân</h3>
-                    <p>Xem và cập nhật thông tin.</p>
-                    <a href="profile.php" class="btn">Xem ngay</a>
-                </div>
-                <div class="card">
-                    <i class="fas fa-door-open card-icon"></i>
-                    <h3>Phòng ở</h3>
-                    <p>Xem thông tin phòng.</p>
-                    <a href="room_info.php" class="btn">Xem ngay</a>
-                </div>
-                <div class="card">
-                    <i class="fas fa-file-contract card-icon"></i>
-                    <h3>Hợp đồng</h3>
-                    <p>Xem chi tiết hợp đồng.</p>
-                    <a href="contract.php" class="btn">Xem ngay</a>
-                </div>
-                <div class="card">
-                    <i class="fas fa-money-bill-wave card-icon"></i>
-                    <h3>Thanh toán</h3>
-                    <p>Xem lịch sử hóa đơn.</p>
-                    <a href="payments.php" class="btn">Xem ngay</a>
-                </div>
-                <div class="card">
-                    <i class="fas fa-tools card-icon"></i>
-                    <h3>Cơ sở vật chất</h3>
-                    <p>Kiểm tra và báo cáo sự cố.</p>
-                    <a href="facilities.php" class="btn">Xem ngay</a>
-                </div>
-                <div class="card">
-                    <i class="fas fa-info-circle card-icon"></i>
-                    <h3>Tình trạng phòng</h3>
-                    <p>Theo dõi lịch sử phòng.</p>
-                    <a href="room_status.php" class="btn">Xem ngay</a>
-                </div>
-            </div>
+
+            <!-- Các card chức năng (giữ nguyên) -->
+            <?php include 'layout/card-container.php'; ?>
+
+            <!-- Phần Tin tức & Thông báo (phiên bản HTML tĩnh) -->
+            <?php include 'layout/news-section.php'; ?>
+
         </div>
     </div>
     <!-- Include Chatbox -->

@@ -42,7 +42,7 @@ while ($row = $result_rooms->fetch_assoc()) {
         <main class="content">
             <div class="add-student-container">
                 <h2>Thêm Sinh viên Mới</h2>
-                <form action="process_add_student.php" method="POST" id="add-student-form">
+                <form action="ajax/process_add_student.php" method="POST" id="add-student-form">
                     <div class="form-group">
                         <label for="student_code">Mã sinh viên *</label>
                         <input type="text" name="student_code" id="student_code" required>
@@ -80,9 +80,7 @@ while ($row = $result_rooms->fetch_assoc()) {
     <!-- Thông báo -->
     <div id="notification" class="notification"></div>
 
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <script src="../../assets/js/main.js"></script>
-    <script src="../../assets/js/search.js"></script>
+    <?php include 'layout/js.php'; ?>
     <script src="../../assets/js/manage_students.js"></script>
     <script>
         $(document).ready(function() {

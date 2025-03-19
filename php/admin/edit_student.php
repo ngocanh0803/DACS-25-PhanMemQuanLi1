@@ -69,7 +69,7 @@ if (isset($_GET['student_id'])) {
         <main class="content">
             <div class="edit-student-container">
                 <h2>Chỉnh sửa Sinh viên</h2>
-                <form action="process_edit_student.php" method="POST" id="edit-student-form">
+                <form action="ajax/process_edit_student.php" method="POST" id="edit-student-form">
                     <input type="hidden" name="student_id" value="<?php echo htmlspecialchars($student['student_id']); ?>">
                     <div class="form-group">
                         <label for="student_code">Mã sinh viên *</label>
@@ -108,9 +108,7 @@ if (isset($_GET['student_id'])) {
     <!-- Thông báo -->
     <div id="notification" class="notification"></div>
 
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <script src="../../assets/js/main.js"></script>
-    <script src="../../assets/js/search.js"></script>
+    <?php include 'layout/js.php'; ?>
     <script src="../../assets/js/manage_students.js"></script>
     <script>
         $(document).ready(function() {

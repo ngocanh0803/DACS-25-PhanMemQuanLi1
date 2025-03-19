@@ -1,44 +1,100 @@
-/* contract_student.css */
 
-.content h2 {
-    text-align: center;
-    margin-bottom: 20px;
-    color: #333;
+body {
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background-color: #f2f2f2;
 }
-
 .contract-container {
-    background: #fff;
-    padding: 20px;
-    margin: 0 auto 20px auto;
-    border-radius: 6px;
-    box-shadow: 0 0 8px rgba(0, 0, 0, 0.1);
-    max-width: 700px;
+  background-color: #fff;
+  padding: 30px;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  margin-bottom: 30px; /* Khoảng cách giữa các hợp đồng */
 }
 
 .contract-detail {
-    display: flex;
-    padding: 10px 0;
-    border-bottom: 1px solid #eee;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 10px;
+  padding-bottom: 10px;
+  border-bottom: 1px solid #eee;
+}
+.contract-detail:last-child{
+ border-bottom: none;
 }
 
-.contract-detail:last-child {
-    border-bottom: none;
+.label {
+  font-weight: bold;
+  color: #333;
+  margin-right: 10px; /* Khoảng cách giữa label và value */
+   width: 40%; /* Cố định chiều rộng cho label */
 }
 
-.contract-detail .label {
-    width: 180px;
-    font-weight: bold;
-    color: #555;
+.value {
+  color: #555;
+    width: 60%;
+   text-align: right;
+}
+.value.available {
+  color: green;
 }
 
-.contract-detail .value {
-    color: #333;
-    word-break: break-word;
+.value.occupied {
+  color: orange;
+}
+
+.value.maintenance {
+  color: red;
 }
 
 .no-contract {
-    text-align: center;
-    color: #b00;
-    font-size: 16px;
-    margin-top: 20px;
+  padding: 20px;
+  background-color: #f8d7da;
+  border: 1px solid #f5c6cb;
+  color: #721c24;
+  border-radius: 5px;
+  text-align: center;
+}
+
+/* Nút yêu cầu */
+.request-btn {
+  display: inline-block; /* Để các nút trên cùng 1 hàng */
+  padding: 10px 15px;
+  background-color: #007bff; /* Màu xanh */
+  color: #fff;
+  text-decoration: none;
+  border-radius: 5px;
+  margin-right: 10px; /* Khoảng cách giữa các nút */
+  transition: background-color 0.3s ease;
+
+}
+.request-btn:last-child{
+   margin-right: 0; /* Loại bỏ margin ở nút cuối */
+}
+
+.request-btn:hover {
+  background-color: #0056b3;
+}
+.action-bar{
+  text-align: center;
+}
+/* Responsive */
+@media (max-width: 768px) {
+  .contract-container {
+      padding: 15px;
+  }
+
+  .contract-detail {
+      flex-direction: column; /* Xếp chồng lên nhau trên mobile */
+      align-items: flex-start; /* Căn trái */
+  }
+
+  .label {
+      margin-bottom: 5px; /* Khoảng cách với value */
+  }
+   .label,
+  .value {
+      width: 100%;
+      text-align: left;
+  }
 }

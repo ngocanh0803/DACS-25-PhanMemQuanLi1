@@ -1,6 +1,6 @@
 <?php
 // process_edit_contract.php
-include '../config/db_connect.php';
+include '../../config/db_connect.php';
 session_start();
 
 // (Tuỳ chọn) Kiểm tra quyền
@@ -24,7 +24,7 @@ $terms       = $_POST['terms'] ?? '';
 $status      = $_POST['status'] ?? 'active'; // "active", "terminated", "expired"...
 
 if ($contract_id <= 0) {
-    header("Location: contracts_list.php?message=Thiếu contract_id&type=error");
+    header("Location: ../contracts_list.php?message=Thiếu contract_id&type=error");
     exit;
 }
 
@@ -87,7 +87,7 @@ try {
         // Bỏ qua logic chuyển phòng
         // Trường hợp user cập nhật "Trạng thái" -> DB đã lưu -> commit
         $conn->commit();
-        header("Location: contracts_list.php?message=Đã cập nhật hợp đồng (không đổi phòng)&type=success");
+        header("Location: ../contracts_list.php?message=Đã cập nhật hợp đồng (không đổi phòng)&type=success");
         exit;
     }
 
@@ -169,12 +169,12 @@ try {
     // Xong => commit
     $conn->commit();
 
-    header("Location: contracts_list.php?message=Đã sửa hợp đồng thành công&type=success");
+    header("Location: ../contracts_list.php?message=Đã sửa hợp đồng thành công&type=success");
     exit;
 } catch (Exception $ex) {
     // Rollback
     $conn->rollback();
     // Quay lại trang edit, kèm message
-    header("Location: edit_contract.php?contract_id=".$contract_id."&message=".urlencode($ex->getMessage())."&type=error");
+    header("Location: ../edit_contract.php?contract_id=".$contract_id."&message=".urlencode($ex->getMessage())."&type=error");
     exit;
 }

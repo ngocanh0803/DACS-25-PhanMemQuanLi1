@@ -14,7 +14,7 @@
         <main class="content">
             <div class="import-container">
                 <h2><i class="fas fa-file-import"></i> Import Sinh Viên từ File Excel</h2>
-                <form action="process_import.php" method="POST" enctype="multipart/form-data" class="import-form">
+                <form action="ajax/process_import.php" method="POST" enctype="multipart/form-data" class="import-form">
                     <div class="form-group">
                         <label for="excel_file">Chọn File Excel:</label>
                         <input type="file" name="excel_file" id="excel_file" accept=".xlsx, .xls" required>
@@ -32,8 +32,6 @@
             </div>
         </main>
     </div>
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <script src="../../assets/js/main.js"></script>
-    <script src="../../assets/js/search.js"></script>
+    <?php include 'layout/js.php'; ?>
 </body>
 </html>

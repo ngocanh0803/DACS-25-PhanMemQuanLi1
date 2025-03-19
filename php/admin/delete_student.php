@@ -34,4 +34,5 @@ if (isset($_GET['student_id'])) {
     header("Location: students_list.php?message=ID sinh viên không hợp lệ.&type=error");
     exit;
 }
+
 ?>

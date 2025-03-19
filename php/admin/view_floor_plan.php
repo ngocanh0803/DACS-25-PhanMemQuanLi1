@@ -95,9 +95,7 @@ while ($row = $result_floor->fetch_assoc()) {
             </div>
         </main>
     </div>
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <script src="../../assets/js/search.js"></script>
-    <script src="../../assets/js/main.js"></script>
+    <?php include 'layout/js.php'; ?>
     <script src="../../assets/js/view_floor_plan.js"></script>
 </body>
 </html>

@@ -32,48 +32,7 @@ $conn->close();
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
     <!-- CSS chung của admin -->
     <link rel="stylesheet" href="../../assets/css/main.css">
-    <style>
-        /* .container1 { padding: 20px; } */
-        h2 { text-align: center; margin-bottom: 20px; }
-        table { width: 100%; border-collapse: collapse; margin-bottom: 20px; }
-        table, th, td { border: 1px solid #ddd; }
-        th, td { padding: 10px; text-align: center; }
-        th { background-color: #007bff; color: #fff; }
-        .action-btn { padding: 5px 10px; border: none; border-radius: 4px; cursor: pointer; margin: 2px; }
-        .approve-btn { background-color: #28a745; color: #fff; }
-        .reject-btn { background-color: #dc3545; color: #fff; }
-        /* Modal styles */
-        .modal {
-            display: none; 
-            position: fixed; 
-            z-index: 1000; 
-            left: 0; top: 0;
-            width: 100%; height: 100%;
-            overflow: auto; 
-            background-color: rgba(0,0,0,0.5);
-        }
-        .modal-content {
-            background-color: #fff;
-            margin: 10% auto;
-            padding: 20px;
-            border-radius: 4px;
-            width: 400px;
-            position: relative;
-        }
-        .modal-content h3 { margin-top: 0; }
-        .close-modal {
-            position: absolute;
-            top: 10px; right: 15px;
-            font-size: 20px;
-            cursor: pointer;
-        }
-        .form-group { margin-bottom: 15px; display: flex; flex-direction: column; }
-        .form-group label { font-weight: bold; margin-bottom: 5px; }
-        .form-group input, .form-group textarea {
-            padding: 8px; font-size: 16px; border: 1px solid #ccc; border-radius: 4px;
-        }
-        .btn-confirm { padding: 8px 16px; background-color: #007bff; color: #fff; border: none; border-radius: 4px; cursor: pointer; }
-    </style>
+    <link rel="stylesheet" href="../../assets/css/admin_departure_requests.css">
 </head>
 <body>
 <?php include 'layout/header.php'; ?>
@@ -103,7 +62,7 @@ $conn->close();
                                     <td><?php echo htmlspecialchars($dep['full_name']); ?></td>
                                     <td><?php echo htmlspecialchars($dep['student_code']); ?></td>
                                     <td><?php echo htmlspecialchars($dep['request_date']); ?></td>
-                                    <td><?php echo nl2br(htmlspecialchars($dep['reason'])); ?></td>
+                                    <td style="word-wrap: break-word; max-width: 200px"><?php echo nl2br(htmlspecialchars($dep['reason'])); ?></td>
                                     <td>
                                         <?php 
                                             switch($dep['status']){
@@ -172,123 +131,7 @@ $conn->close();
             <button class="btn-confirm" id="confirmReject">Xác nhận từ chối</button>
         </div>
     </div>
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <script src="../../assets/js/main.js"></script>
-    <script src="../../assets/js/search.js"></script>>
-    <script src="../../assets/js/main.js"></script>
-    <script>
-        // Xử lý modal duyệt và từ chối
-        document.addEventListener('DOMContentLoaded', function() {
-            let selectedDepartureId = null;
-
-            const approveModal = document.getElementById('approveModal');
-            const rejectModal = document.getElementById('rejectModal');
-
-            const closeApproveModal = document.getElementById('closeApproveModal');
-            const closeRejectModal = document.getElementById('closeRejectModal');
-
-            const confirmApprove = document.getElementById('confirmApprove');
-            const confirmReject = document.getElementById('confirmReject');
-
-            const assignRoomSelect = document.getElementById('assign_room');
-            const rejectReason = document.getElementById('reject_reason');
-
-            // Khi nhấn nút duyệt đơn
-            document.querySelectorAll('.approve-btn').forEach(function(btn) {
-                btn.addEventListener('click', function() {
-                    selectedDepartureId = this.getAttribute('data-id');
-                    approveModal.style.display = 'block';
-                });
-            });
-
-            // Khi nhấn nút từ chối đơn
-            document.querySelectorAll('.reject-btn').forEach(function(btn) {
-                btn.addEventListener('click', function() {
-                    selectedDepartureId = this.getAttribute('data-id');
-                    rejectModal.style.display = 'block';
-                });
-            });
-
-            closeApproveModal.addEventListener('click', function() {
-                approveModal.style.display = 'none';
-                selectedDepartureId = null;
-            });
-            closeRejectModal.addEventListener('click', function() {
-                rejectModal.style.display = 'none';
-                selectedDepartureId = null;
-                rejectReason.value = "";
-            });
-
-            // Xử lý duyệt đơn
-            confirmApprove.addEventListener('click', function() {
-                const room_id = assignRoomSelect.value;
-                if (!room_id) {
-                    alert("Vui lòng chọn phòng bàn giao.");
-                    return;
-                }
-                fetch('ajax/handle_departure_request.php', {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({
-                        departure_id: selectedDepartureId,
-                        action: 'approve',
-                        room_id: room_id
-                    })
-                })
-                .then(response => response.json())
-                .then(data => {
-                    alert(data.message);
-                    if (data.success) {
-                        window.location.reload();
-                    }
-                })
-                .catch(error => {
-                    console.error("Lỗi duyệt đơn:", error);
-                    alert("Lỗi khi xử lý đơn.");
-                });
-            });
-
-            // Xử lý từ chối đơn
-            confirmReject.addEventListener('click', function() {
-                const reason = rejectReason.value.trim();
-                if (!reason) {
-                    alert("Vui lòng nhập lý do từ chối.");
-                    return;
-                }
-                fetch('ajax/handle_departure_request.php', {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({
-                        departure_id: selectedDepartureId,
-                        action: 'reject',
-                        reason: reason
-                    })
-                })
-                .then(response => response.json())
-                .then(data => {
-                    alert(data.message);
-                    if (data.success) {
-                        window.location.reload();
-                    }
-                })
-                .catch(error => {
-                    console.error("Lỗi từ chối đơn:", error);
-                    alert("Lỗi khi xử lý đơn.");
-                });
-            });
-
-            window.addEventListener('click', function(e) {
-                if (e.target == approveModal) {
-                    approveModal.style.display = 'none';
-                    selectedDepartureId = null;
-                }
-                if (e.target == rejectModal) {
-                    rejectModal.style.display = 'none';
-                    selectedDepartureId = null;
-                    rejectReason.value = "";
-                }
-            });
-        });
-    </script>
+    <?php include 'layout/js.php'; ?>
+    <script src="../../assets/js/admin_departure_requests.js"></script>
 </body>
 </html>

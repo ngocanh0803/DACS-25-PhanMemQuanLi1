@@ -19,8 +19,9 @@
     $username = trim($data['username']);
     $role = $data['role'];
     $is_approved = intval($data['is_approved']);
-    $password = isset($data['password']) && !empty($data['password']) ? password_hash($data['password'], PASSWORD_DEFAULT) : null;
-
+    // $password = isset($data['password']) && !empty($data['password']) ? password_hash($data['password'], PASSWORD_DEFAULT) : null;
+    $password = isset($data['password']) && !empty($data['password']) ? $data['password'] : null;
+    
     $sql = "UPDATE Users SET username = ?, role = ?, is_approved = ? ";
     if($password !== null) {
         $sql .= ", password = ?";
@@ -31,7 +32,8 @@
     $stmt = $conn->prepare($sql);
 
     if($password !== null) {
-        $stmt->bind_param("ssis", $username, $role, $is_approved, $password, $user_id);
+        // Sửa chuỗi định dạng kiểu dữ liệu thành "ssisi" (thêm 'i' cho $user_id)
+        $stmt->bind_param("ssisi", $username, $role, $is_approved, $password, $user_id);
 
     } else {
         $stmt->bind_param("ssii", $username, $role, $is_approved, $user_id);

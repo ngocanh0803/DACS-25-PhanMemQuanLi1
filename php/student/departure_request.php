@@ -8,7 +8,7 @@ if (!isset($_SESSION['username']) || $_SESSION['role'] !== 'student') {
 
 $student_code = $_SESSION['username'];
 include '../config/db_connect.php';
-
+$no_contract_warning = ""; // Hoặc NULL nếu bạn muốn kiểm tra isset() thay vì so sánh chuỗi rỗng
 // Lấy thông tin hợp đồng hiện hành của sinh viên (chỉ lấy hợp đồng đang active)
 $sql_contract = "SELECT contract_id, contract_code, start_date, end_date 
                  FROM Contracts 
@@ -23,7 +23,7 @@ if ($result_contract->num_rows > 0) {
     $contract_id = $contract['contract_id'];
 } else {
     // Nếu không có hợp đồng active, sinh viên không thể xin rời phòng
-    die("Bạn không có hợp đồng hiện hành, không thể gửi đơn xin rời phòng.");
+    $no_contract_warning = "Bạn không có hợp đồng hiện hành, không thể gửi đơn xin rời phòng.";
 }
 $stmt->close();
 $conn->close();
@@ -106,6 +106,12 @@ $conn->close();
             padding-top: 5px;
             font-style: italic;
         }
+        .warning {
+            color: red;
+            font-style: italic;
+            text-align: center;
+            margin-top: 10px;
+        }
     </style>
 </head>
 <body>
@@ -122,49 +128,53 @@ $conn->close();
                 <h1>ĐƠN XIN RỜI PHÒNG TRƯỚC HẠN HỢP ĐỒNG</h1>
                 <p style="text-align: center; font-style: italic;">(Mẫu đơn theo phong cách hợp đồng giấy)</p>
                 <!-- Thông tin hợp đồng hiện hành (chỉ hiển thị để tham khảo) -->
-                <div class="section">
-                    <h2>Thông tin hợp đồng hiện hành</h2>
-                    <p><strong>Mã hợp đồng:</strong> <?php echo htmlspecialchars($contract['contract_code']); ?></p>
-                    <p><strong>Ngày nhận phòng:</strong> <?php echo htmlspecialchars($contract['start_date']); ?></p>
-                    <p><strong>Ngày kết thúc dự kiến:</strong> <?php echo htmlspecialchars($contract['end_date']); ?></p>
-                </div>
-                <!-- Form đơn xin rời phòng -->
-                <form id="departureRequestForm" action="process_departure_request.php" method="POST" enctype="multipart/form-data">
-                    <!-- Ẩn contract_id -->
-                    <input type="hidden" name="contract_id" value="<?php echo htmlspecialchars($contract_id); ?>">
+                <?php if ($no_contract_warning): ?>
+                    <p class="warning"><?php echo $no_contract_warning; ?></p>
+                <?php else: ?>
                     <div class="section">
-                        <h2>I. Lý do xin rời phòng</h2>
-                        <div class="form-group">
-                            <label for="reason">Lý do:</label>
-                            <textarea id="reason" name="reason" rows="4" placeholder="Nhập lý do xin rời phòng..." required></textarea>
-                        </div>
-                        <div class="form-group">
-                            <label for="documents">Tài liệu kèm theo (nếu có):</label>
-                            <input type="file" id="documents" name="documents[]" multiple>
-                        </div>
+                        <h2>Thông tin hợp đồng hiện hành</h2>
+                        <p><strong>Mã hợp đồng:</strong> <?php echo htmlspecialchars($contract['contract_code']); ?></p>
+                        <p><strong>Ngày nhận phòng:</strong> <?php echo htmlspecialchars($contract['start_date']); ?></p>
+                        <p><strong>Ngày kết thúc dự kiến:</strong> <?php echo htmlspecialchars($contract['end_date']); ?></p>
                     </div>
-                    <div class="section">
-                        <h2>II. Cam kết</h2>
-                        <p>
-                            Tôi cam kết rằng các thông tin trên là đúng sự thật và tôi hiểu rằng việc xin rời phòng trước hạn hợp đồng sẽ ảnh hưởng đến quyền lợi của mình theo quy định của ký túc xá.
-                        </p>
-                    </div>
-                    <div class="signature">
-                        <div>
-                            Sinh viên<br>
-                            (Ký và ghi rõ họ tên)
+                    <!-- Form đơn xin rời phòng -->
+                    <form id="departureRequestForm" action="process_departure_request.php" method="POST" enctype="multipart/form-data">
+                        <!-- Ẩn contract_id -->
+                        <input type="hidden" name="contract_id" value="<?php echo htmlspecialchars($contract_id); ?>">
+                        <div class="section">
+                            <h2>I. Lý do xin rời phòng</h2>
+                            <div class="form-group">
+                                <label for="reason">Lý do:</label>
+                                <textarea id="reason" name="reason" rows="4" placeholder="Nhập lý do xin rời phòng..." required></textarea>
+                            </div>
+                            <div class="form-group">
+                                <label for="documents">Tài liệu kèm theo (nếu có):</label>
+                                <input type="file" id="documents" name="documents[]" multiple>
+                            </div>
                         </div>
-                        <div>
-                            Ban Công tác Sinh viên<br>
-                            (Ký và ghi rõ họ tên)
+                        <div class="section">
+                            <h2>II. Cam kết</h2>
+                            <p>
+                                Tôi cam kết rằng các thông tin trên là đúng sự thật và tôi hiểu rằng việc xin rời phòng trước hạn hợp đồng sẽ ảnh hưởng đến quyền lợi của mình theo quy định của ký túc xá.
+                            </p>
                         </div>
-                    </div>
-                    <div class="btn-group">
-                        <button type="button" class="btn-submit" id="submitRequest">Gửi đơn xin rời phòng</button>
-                        <button type="button" class="btn-export" id="exportPDF">Xuất PDF</button>
-                        <button type="button" class="btn-export" onclick = "window.location.href='departure_status.php';">Trạng thái đơn</button>
-                    </div>
-                </form>
+                        <div class="signature">
+                            <div>
+                                Sinh viên<br>
+                                (Ký và ghi rõ họ tên)
+                            </div>
+                            <div>
+                                Ban Công tác Sinh viên<br>
+                                (Ký và ghi rõ họ tên)
+                            </div>
+                        </div>
+                        <div class="btn-group">
+                            <button type="button" class="btn-submit" id="submitRequest">Gửi đơn xin rời phòng</button>
+                            <button type="button" class="btn-export" id="exportPDF">Xuất PDF</button>
+                            <button type="button" class="btn-export" onclick = "window.location.href='departure_status.php';">Trạng thái đơn</button>
+                        </div>
+                    </form>
+                <?php endif; ?>
             </div>
         </div>
 
@@ -187,7 +197,6 @@ $conn->close();
             });
         });
 
-        // Gửi đơn xin rời phòng: Sử dụng AJAX để gửi dữ liệu
         document.getElementById('submitRequest').addEventListener('click', function() {
             const formData = new FormData(document.getElementById('departureRequestForm'));
             fetch('ajax/process_departure_request.php', {
@@ -196,14 +205,41 @@ $conn->close();
             })
             .then(response => response.json())
             .then(data => {
-                alert(data.message);
-                if(data.success) {
-                    window.location.href = 'status_dashboard.php';
+                // Xử lý dữ liệu JSON ở đây
+                if (data.success) {
+                    alert(data.message); // Hiển thị thông báo thành công chính
+
+                    // In các thông báo chi tiết ra console (nếu muốn)
+                    if (data.messages && data.messages.length > 0) {
+                        data.messages.forEach(msg => console.log(msg));
+                    }
+                    window.location.href = 'departure_status.php';
+
+                } else {
+                    // Hiển thị lỗi (có thể dùng alert, hoặc tốt hơn là hiển thị trong một phần tử HTML trên trang)
+                // alert("Lỗi khi gửi đơn xin rời phòng.");
+                    if (data.errors && data.errors.length > 0) {
+                        data.errors.forEach(err => console.error(err)); // In lỗi ra console
+                        // Hiển thị lỗi cho người dùng (ví dụ: trong một div)
+                        let errorContainer = document.getElementById('error-messages'); // Giả sử bạn có một div với id="error-messages"
+                        if (!errorContainer) {
+                            errorContainer = document.createElement('div');
+                            errorContainer.id = 'error-messages';
+                            errorContainer.style.color = 'red';
+                            document.getElementById('departureRequestForm').before(errorContainer); // Chèn div lỗi vào trước form
+                        }
+                    errorContainer.innerHTML = ''; // Xóa các lỗi cũ
+                        data.errors.forEach(err => {
+                            const errorElement = document.createElement('p');
+                            errorElement.textContent = err;
+                            errorContainer.appendChild(errorElement);
+                        });
+                    }
                 }
             })
             .catch(error => {
                 console.error("Lỗi gửi đơn:", error);
-                alert("Lỗi khi gửi đơn xin rời phòng.");
+                alert("Lỗi khi gửi đơn xin rời phòng (lỗi kết nối)."); // Lỗi kết nối, server...
             });
         });
     </script>

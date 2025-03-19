@@ -1,6 +1,6 @@
 <?php
-// process_create_contract.php
-include '../config/db_connect.php';
+// process_../create_contract.php
+include '../../config/db_connect.php';
 session_start();
 
 // (Tuỳ chọn) Kiểm tra quyền
@@ -28,7 +28,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $stmt->close();
 
     if ($rs['cnt'] > 0) {
-        header("Location: create_contract.php?message=Sinh viên này đã có hợp đồng active&type=error");
+        header("Location: ../create_contract.php?message=Sinh viên này đã có hợp đồng active&type=error");
         exit;
     }
 
@@ -40,7 +40,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $stmt->close();
 
     if (!$stu || !isset($stu['student_code'])) {
-        header("Location: create_contract.php?message=Không tìm thấy student_code của SV&type=error");
+        header("Location: ../create_contract.php?message=Không tìm thấy student_code của SV&type=error");
         exit;
     }
     $student_code  = $stu['student_code'];
@@ -118,31 +118,30 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         }
         $stmt_up_room->close();
 
-        // (d) Thêm vào Room_Status
-        $sql_rs = "
-            INSERT INTO Room_Status (room_id, student_id, start_date, end_date)
-            VALUES (?, ?, ?, ?)
-        ";
-        $stmt_rs = $conn->prepare($sql_rs);
-        if (!$stmt_rs) {
-            throw new Exception("Lỗi prepare Room_Status: ".$conn->error);
+        // (d) Thêm vào Room_Status *Đây là phần bạn cần thêm*
+        $sql_room_status = "INSERT INTO Room_Status (room_id, student_id, start_date, end_date) VALUES (?, ?, ?, ?)";
+        $stmt_room_status = $conn->prepare($sql_room_status);
+
+        if ($stmt_room_status) {
+            $stmt_room_status->bind_param("iiss", $room_id, $student_id, $start_date, $end_date);
+            if (!$stmt_room_status->execute()) {
+                 throw new Exception("Lỗi khi thêm vào Room_Status: " . $stmt_room_status->error);
+            }
+            $stmt_room_status->close();
+        } else {
+              throw new Exception("Lỗi prepare statement cho Room_Status: " . $conn->error);
         }
-        $stmt_rs->bind_param("iiss", $room_id, $student_id, $start_date, $end_date);
-        if (!$stmt_rs->execute()) {
-            throw new Exception("Lỗi khi thêm Room_Status: ".$stmt_rs->error);
-        }
-        $stmt_rs->close();
 
         // Commit
         $conn->commit();
-        
+
         // Redirect success
-        header("Location: contracts_list.php?message=Hợp đồng đã tạo thành công&type=success");
+        header("Location: ../contracts_list.php?message=Hợp đồng đã tạo thành công&type=success");
         exit;
     } catch (Exception $e) {
         // Rollback
         $conn->rollback();
-        header("Location: create_contract.php?message=".urlencode($e->getMessage())."&type=error");
+        header("Location: ../create_contract.php?message=".urlencode($e->getMessage())."&type=error");
         exit;
     }
 } else {

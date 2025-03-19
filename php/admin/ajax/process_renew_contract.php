@@ -1,18 +1,18 @@
 <?php
-// process_renew_contract.php
-include '../config/db_connect.php';
+// process_../
+include '../../config/db_connect.php';
 session_start();
 
 // if (!isset($_SESSION['...'])) { ... }
 
 if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
-    header("Location: contracts_list.php?message=Phương thức không hợp lệ&type=error");
+    header("Location: ../contracts_list.php?message=Phương thức không hợp lệ&type=error");
     exit;
 }
 
 $contract_id = intval($_POST['contract_id'] ?? 0);
 if ($contract_id <= 0) {
-    header("Location: contracts_list.php?message=Thiếu contract_id&type=error");
+    header("Location: ../contracts_list.php?message=Thiếu contract_id&type=error");
     exit;
 }
 
@@ -59,10 +59,10 @@ try {
     // commit
     $conn->commit();
 
-    header("Location: contracts_list.php?message=Gia hạn thành công&type=success");
+    header("Location: ../contracts_list.php?message=Gia hạn thành công&type=success");
     exit;
 } catch (Exception $ex) {
     $conn->rollback();
-    header("Location: renew_contract.php?contract_id=$contract_id&message=".urlencode($ex->getMessage())."&type=error");
+    header("Location: ../renew_contract.php?contract_id=$contract_id&message=".urlencode($ex->getMessage())."&type=error");
     exit;
 }

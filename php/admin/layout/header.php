@@ -1,7 +1,5 @@
 <?php
-if (session_status() == PHP_SESSION_NONE) {
-    session_start(); // Khởi động session nếu chưa được khởi động
-}
+if(session_status() === PHP_SESSION_NONE) session_start();
 
 // Kiểm tra nếu người dùng chưa đăng nhập
 if (!isset($_SESSION['username']) || !isset($_SESSION['role']) || !isset($_SESSION['user_id']) ) {
@@ -30,7 +28,7 @@ if (isset($_POST['logout'])) {
                 <i class="fas fa-bars"></i>
             </button>
             <div class="logo_header">
-                <div class="img"><img src="../../assets/img/header.png" alt=""></div>
+                <div onclick="window.location.href='main.php'" class="img"><img src="../../assets/img/header.png" alt=""></div>
                 <!-- <div class="logo_text">Quản lí kí túc xá </div> -->
             </div>
         </div>

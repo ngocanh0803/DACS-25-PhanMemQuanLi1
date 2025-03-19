@@ -1,5 +1,9 @@
 <?php
-
+if(session_status() === PHP_SESSION_NONE) session_start();
+if (!isset($_SESSION['username']) || $_SESSION['role'] !== 'student') {
+    header("Location: ../php/login.php");
+    exit();
+} 
 
 // Vì username chính là student_code nên lấy nó từ session
 $student_code = $_SESSION['username'];
@@ -29,6 +33,8 @@ $adminId =1;
 $stmt->close();
 $conn->close();
 ?>
+
+
 <!-- header.php -->
 <div class="header">
     <div class="sidebar-logo">

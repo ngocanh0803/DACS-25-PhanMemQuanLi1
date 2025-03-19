@@ -1,0 +1,467 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nội quy Ký túc xá</title>
+    <style>
+      body {
+          font-family: "Times New Roman", Times, serif; /* Hoặc font serif khác */
+          font-size: 14pt;
+          line-height: 1.6;
+          margin: 2cm; /* Canh lề như trang giấy A4 */
+          color: #000; /* Màu chữ đen */
+          background-color: #fff; /* Nền trắng */
+      }
+
+      h1, h2, h3, h4, h5, h6 {
+          font-family: "Times New Roman", Times, serif; /* Font cho tiêu đề */
+          font-weight: bold;
+          margin-top: 1.5em;
+          margin-bottom: 0.8em;
+          page-break-after: avoid;  /* Tránh ngắt trang sau tiêu đề */
+      }
+      h1{
+          font-size: 20pt;
+          text-align: center;
+
+      }
+
+      h2 {
+          font-size: 16pt;
+      }
+
+      h3 {
+        font-size: 14pt;
+      }
+
+      p {
+          margin-top: 0.5em;
+          margin-bottom: 0.5em;
+          text-align: justify; /* Căn đều hai bên */
+          text-indent: 1.27cm; /* Thụt đầu dòng */
+      }
+
+      .center {
+          text-align: center;
+      }
+
+      .bold {
+          font-weight: bold;
+      }
+
+      .italic {
+          font-style: italic;
+      }
+      .underline {
+          text-decoration: underline;
+      }
+
+      .section {
+          margin-bottom: 1em; /* Khoảng cách giữa các phần */
+      }
+
+      .article {
+          margin-bottom: 0.8em;
+      }
+
+      .sub-article {
+        margin-left: 1.27cm;
+      }
+
+      .signature {
+        margin-top: 3em;
+        text-align: right;
+        font-style: italic;
+      }
+      .signature p {
+        text-indent: 0; /* Loại bỏ thụt đầu dòng */
+      }
+
+      /* Điều chỉnh cho các list (nếu có) */
+      ol, ul {
+        margin-top: 0.5em;
+        margin-bottom: 0.5em;
+        margin-left: 2em; /* Thụt lề danh sách */
+        padding-left: 0; /* Xóa padding mặc định */
+      }
+
+      li {
+        margin-bottom: 0.3em;
+        text-align: justify;
+      }
+      .justify{
+          text-align: justify;
+      }
+
+      /* In đậm số thứ tự điều, khoản */
+      .article-number, .sub-article-number {
+          font-weight: bold;
+      }
+      /* Thêm dòng kẻ ngang */
+      hr {
+        border: none; /* Loại bỏ border mặc định */
+        border-top: 1px solid black; /* Đường kẻ ngang */
+        margin: 1em 0; /* Khoảng cách trên và dưới */
+      }
+        /* Tạo kiểu cho phần quốc hiệu, tiêu ngữ */
+        .header {
+          text-align: center;
+          margin-bottom: 1.5em;
+      }
+
+      .header p {
+          margin: 0.2em 0; /* Khoảng cách nhỏ giữa các dòng */
+          text-indent: 0;
+
+      }
+
+      .header .doc-lap {
+          font-weight: bold;
+      }
+
+      /* ... (Các phần CSS khác giữ nguyên) ... */
+
+      .read-button-container {
+          position: fixed; /* Cố định vị trí */
+          bottom: 20px; /* Cách đáy 20px */
+          right: 20px; /* Cách lề phải 20px */
+          z-index: 999; /* Đảm bảo nổi lên trên */
+      }
+
+      .read-button {
+          display: inline-block; /* Để có thể đặt padding, margin */
+          padding: 10px 20px; /* Kích thước nút */
+          background-color:rgb(76, 104, 175); /* Màu xanh lá */
+          color: white; /* Chữ trắng */
+          text-decoration: none; /* Bỏ gạch chân */
+          border-radius: 27px; /* Bo tròn góc */
+          font-weight: bold;
+          transition: background-color 0.3s ease; /* Hiệu ứng hover */
+          box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2); /* Đổ bóng */
+          cursor: pointer;
+      }
+
+      .read-button:hover {
+          background-color:rgb(54, 57, 124); /* Màu xanh đậm hơn khi hover */
+      }
+        /* Để số trang */
+      @page {
+        size: A4; /* Khổ giấy A4 */
+        margin: 2cm; /* Canh lề */
+
+          @bottom-right { /* Góc dưới bên phải */
+            content: counter(page); /* Số trang */
+            font-size: 12pt;
+          }
+      }
+      .title-decision{
+          font-style: italic;
+          text-align: center;
+
+      }
+    </style>
+</head>
+<body>
+  <div class="header">
+      <p>CỘNG HÒA XÃ HỘI CHỦ NGHĨA VIỆT NAM</p>
+      <p class="doc-lap">Độc lập – Tự do – Hạnh phúc</p>
+      <hr width="30%">  <!-- Đường kẻ ngang ngắn hơn -->
+  </div>
+
+  <h1>NỘI QUY KÝ TÚC XÁ</h1>
+    <p class="title-decision">(Ban hành kèm theo Quyết định số .../.../QĐ-... ngày ... tháng ... năm ... của ...)</p>
+
+  <h2>Chương I: QUY ĐỊNH CHUNG</h2>
+
+  <div class="article">
+      <p><span class="article-number">Điều 1.</span> Phạm vi điều chỉnh và đối tượng áp dụng</p>
+        <div class="sub-article">
+          <p><span class="sub-article-number">1.</span> Nội quy này quy định về quyền và nghĩa vụ của người ở ký túc xá (KTX); các quy định về quản lý, sử dụng KTX; các hành vi bị nghiêm cấm và xử lý vi phạm trong KTX.</p>
+        </div>
+        <div  class="sub-article">
+          <p><span class="sub-article-number">2.</span> Nội quy này áp dụng đối với:</p>
+              <ul>
+                  <li>Sinh viên, học viên, nghiên cứu sinh (sau đây gọi chung là người ở KTX) đang theo học tại \[Tên trường/học viện/cơ sở đào tạo].</li>
+                  <li>Khách đến thăm, làm việc tại KTX (sau đây gọi chung là khách).</li>
+                  <li>Cán bộ, nhân viên, người lao động làm việc tại KTX (sau đây gọi chung là nhân viên KTX).</li>
+                  <li>Các tổ chức, cá nhân có liên quan.</li>
+              </ul>
+        </div>
+
+  </div>
+
+  <div class="article">
+      <p><span class="article-number">Điều 2.</span> Mục đích của KTX</p>
+      <p>KTX là nơi ở, sinh hoạt và học tập của người ở KTX, nhằm tạo môi trường thuận lợi, an toàn, văn minh, góp phần nâng cao chất lượng đào tạo của \[Tên trường/học viện/cơ sở đào tạo].</p>
+  </div>
+
+  <h2>Chương II: QUYỀN VÀ NGHĨA VỤ CỦA NGƯỜI Ở KTX</h2>
+
+  <div class="article">
+      <p><span class="article-number">Điều 3.</span> Quyền của người ở KTX</p>
+      <div  class="sub-article">
+        <p><span class="sub-article-number">1.</span> Được bố trí chỗ ở và các trang thiết bị kèm theo (giường, tủ, bàn ghế,...) theo quy định của KTX.</p>
+      </div>
+      <div  class="sub-article">
+        <p><span class="sub-article-number">2.</span> Được sử dụng các dịch vụ công cộng của KTX (điện, nước, internet, vệ sinh,...). Việc sử dụng phải đảm bảo tiết kiệm, hiệu quả, đúng quy định.</p>
+      </div>
+      <div  class="sub-article">
+          <p><span class="sub-article-number">3.</span> Được tham gia các hoạt động văn hóa, văn nghệ, thể dục, thể thao, và các hoạt động khác do KTX tổ chức hoặc cho phép.</p>
+      </div>
+      <div  class="sub-article">
+        <p><span class="sub-article-number">4.</span> Được kiến nghị, phản ánh, khiếu nại với Ban Quản lý KTX (BQL KTX) về các vấn đề liên quan đến quyền lợi và nghĩa vụ của mình.</p>
+      </div>
+      <div  class="sub-article">
+        <p><span class="sub-article-number">5.</span> Được bảo vệ an toàn về tính mạng, tài sản và các quyền lợi hợp pháp khác trong thời gian ở KTX.</p>
+      </div>
+
+  </div>
+
+  <div class="article">
+      <p><span class="article-number">Điều 4.</span> Nghĩa vụ của người ở KTX</p>
+      <div  class="sub-article">
+        <p><span class="sub-article-number">1.</span> Chấp hành nghiêm chỉnh Nội quy KTX, các quy định của \[Tên trường/học viện/cơ sở đào tạo] và pháp luật của Nhà nước.</p>
+      </div>
+      <div  class="sub-article">
+          <p><span class="sub-article-number">2.</span> Nộp đầy đủ, đúng hạn các khoản phí KTX theo quy định.</p>
+      </div>
+      <div  class="sub-article">
+          <p><span class="sub-article-number">3.</span> Giữ gìn vệ sinh chung, bảo vệ tài sản của KTX và của cá nhân.</p>
+      </div>
+      <div  class="sub-article">
+          <p><span class="sub-article-number">4.</span> Có ý thức tiết kiệm điện, nước, internet và các dịch vụ công cộng khác.</p>
+      </div>
+      <div  class="sub-article">
+          <p><span class="sub-article-number">5.</span> Tôn trọng, hòa nhã với mọi người; có thái độ ứng xử văn minh, lịch sự.</p>
+      </div>
+      <div  class="sub-article">
+        <p><span class="sub-article-number">6.</span> Tham gia tích cực các hoạt động chung của KTX.</p>
+      </div>
+      <div  class="sub-article">
+          <p><span class="sub-article-number">7.</span> Kịp thời báo cáo với BQL KTX khi phát hiện các hành vi vi phạm Nội quy KTX, các sự cố về an ninh, trật tự, an toàn, cháy nổ, hư hỏng tài sản,...</p>
+      </div>
+      <div  class="sub-article">
+        <p><span class="sub-article-number">8.</span> Chịu trách nhiệm trước BQL KTX, trước pháp luật về hành vi vi phạm của mình.</p>
+      </div>
+
+      <div  class="sub-article">
+          <p><span class="sub-article-number">9.</span> Bồi thường thiệt hại do mình gây ra cho KTX hoặc cho người khác.</p>
+      </div>
+  </div>
+
+  <h2>Chương III: QUY ĐỊNH VỀ QUẢN LÝ VÀ SỬ DỤNG KTX</h2>
+
+    <div class="article">
+      <p><span class="article-number">Điều 5.</span> Đăng ký và làm thủ tục vào/ra KTX</p>
+      <div  class="sub-article">
+          <p><span class="sub-article-number">1.</span> Người có nhu cầu ở KTX phải đăng ký và làm thủ tục theo quy định của BQL KTX.</p>
+      </div>
+      <div  class="sub-article">
+          <p><span class="sub-article-number">2.</span> Khi vào/ra KTX, người ở KTX phải xuất trình thẻ KTX hoặc giấy tờ tùy thân hợp lệ.</p>
+      </div>
+      <div  class="sub-article">
+        <p><span class="sub-article-number">3.</span> Việc chấm dứt hợp đồng ở KTX phải được thực hiện theo quy định của BQL KTX và hợp đồng đã ký kết.</p>
+      </div>
+
+  </div>
+
+  <div class="article">
+      <p><span class="article-number">Điều 6.</span> Thời gian đóng, mở cửa KTX</p>
+      <div  class="sub-article">
+        <p><span class="sub-article-number">1.</span> Giờ mở cửa: \[Thời gian cụ thể] (Ví dụ: 5h30 sáng)</p>
+      </div>
+      <div  class="sub-article">
+          <p><span class="sub-article-number">2.</span> Giờ đóng cửa: \[Thời gian cụ thể] (Ví dụ: 23h00 tối)</p>
+      </div>
+      <p>Ngoài thời gian trên, người ở KTX muốn ra vào KTX phải có lý do chính đáng và được sự đồng ý của BQL KTX.</p>
+  </div>
+
+  <div class="article">
+      <p><span class="article-number">Điều 7.</span> Quy định về tiếp khách</p>
+        <div  class="sub-article">
+          <p><span class="sub-article-number">1.</span> Khách đến thăm người ở KTX phải đăng ký và xuất trình giấy tờ tùy thân tại phòng bảo vệ.</p>
+        </div>
+        <div  class="sub-article">
+          <p><span class="sub-article-number">2.</span> Thời gian tiếp khách: \[Thời gian cụ thể] (Ví dụ: từ 8h00 đến 21h00 hàng ngày).</p>
+        </div>
+        <div  class="sub-article">
+          <p><span class="sub-article-number">3.</span> Địa điểm tiếp khách: \[Địa điểm cụ thể] (Ví dụ: phòng khách chung, khu vực sảnh,...).</p>
+        </div>
+        <div  class="sub-article">
+          <p><span class="sub-article-number">4.</span> Nghiêm cấm khách ở lại qua đêm trong KTX (trừ trường hợp đặc biệt được BQL KTX cho phép).</p>
+        </div>
+  </div>
+
+  <div class="article">
+      <p><span class="article-number">Điều 8.</span> Quy định về vệ sinh, môi trường</p>
+      <div  class="sub-article">
+        <p><span class="sub-article-number">1.</span> Người ở KTX có trách nhiệm giữ gìn vệ sinh phòng ở, hành lang, cầu thang, nhà vệ sinh, và các khu vực công cộng khác.</p>
+      </div>
+      <div  class="sub-article">
+        <p><span class="sub-article-number">2.</span> Rác thải phải được phân loại và bỏ vào đúng nơi quy định.</p>
+      </div>
+      <div  class="sub-article">
+          <p><span class="sub-article-number">3.</span> Không phơi quần áo, chăn màn, đồ dùng cá nhân ở hành lang, ban công, cửa sổ, hoặc các nơi không được phép.</p>
+      </div>
+      <div  class="sub-article">
+        <p><span class="sub-article-number">4.</span> Không nuôi gia súc, gia cầm, vật nuôi trong KTX.</p>
+      </div>
+      <div  class="sub-article">
+        <p><span class="sub-article-number">5.</span> Không trồng cây, hoa, rau,... ở những nơi không được phép.</p>
+      </div>
+  </div>
+
+  <div class="article">
+      <p><span class="article-number">Điều 9.</span> Quy định về an ninh, trật tự</p>
+      <div  class="sub-article">
+          <p><span class="sub-article-number">1.</span> Nghiêm cấm mọi hành vi gây rối, đánh nhau, gây mất trật tự công cộng trong KTX.</p>
+      </div>
+      <div  class="sub-article">
+          <p><span class="sub-article-number">2.</span> Không tàng trữ, sử dụng, mua bán, vận chuyển trái phép vũ khí, chất nổ, chất cháy, chất độc hại, ma túy, các chất kích thích, văn hóa phẩm đồi trụy, và các vật phẩm cấm khác.</p>
+      </div>
+      <div  class="sub-article">
+        <p><span class="sub-article-number">3.</span> Không tổ chức, tham gia đánh bạc, cá độ, số đề, và các hoạt động trái pháp luật khác.</p>
+      </div>
+      <div  class="sub-article">
+          <p><span class="sub-article-number">4.</span> Không tự ý thay đổi, di chuyển, tháo lắp, sửa chữa các trang thiết bị của KTX.</p>
+      </div>
+      <div  class="sub-article">
+        <p><span class="sub-article-number">5.</span> Không tự ý đổi phòng, chuyển nhượng phòng.</p>
+      </div>
+      <div  class="sub-article">
+        <p><span class="sub-article-number">6.</span> Không đưa người lạ vào phòng ở khi chưa được sự đồng ý của BQL KTX và bạn cùng phòng.</p>
+      </div>
+      <div  class="sub-article">
+        <p><span class="sub-article-number">7.</span> Khi ra khỏi phòng phải khóa cửa, tắt điện, nước, và các thiết bị khác.</p>
+      </div>
+      <div  class="sub-article">
+        <p><span class="sub-article-number">8.</span> Phải có trách nhiệm bảo vệ tài sản cá nhân.</p>
+      </div>
+  </div>
+
+  <div class="article">
+      <p><span class="article-number">Điều 10.</span> Quy định về phòng cháy, chữa cháy (PCCC)</p>
+      <div  class="sub-article">
+          <p><span class="sub-article-number">1.</span> Nghiêm chỉnh chấp hành các quy định về PCCC.</p>
+      </div>
+      <div  class="sub-article">
+        <p><span class="sub-article-number">2.</span> Không sử dụng lửa, các thiết bị sinh nhiệt (bếp điện, bàn là,...) trong phòng ở (trừ khu vực bếp chung, nếu có).</p>
+      </div>
+      <div  class="sub-article">
+        <p><span class="sub-article-number">3.</span> Không câu, mắc, sử dụng điện tùy tiện, trái quy định.</p>
+      </div>
+      <div  class="sub-article">
+          <p><span class="sub-article-number">4.</span> Khi phát hiện cháy, nổ, phải báo động ngay và tham gia chữa cháy, cứu người, cứu tài sản.</p>
+      </div>
+  </div>
+
+  <div class="article">
+      <p><span class="article-number">Điều 11.</span> Quy định về sử dụng điện, nước, internet</p>
+      <div  class="sub-article">
+        <p><span class="sub-article-number">1.</span> Sử dụng điện, nước, internet tiết kiệm, hiệu quả.</p>
+      </div>
+      <div  class="sub-article">
+          <p><span class="sub-article-number">2.</span> Không tự ý câu, mắc, đấu nối, sửa chữa hệ thống điện, nước, internet.</p>
+      </div>
+      <div  class="sub-article">
+          <p><span class="sub-article-number">3.</span> Không sử dụng các thiết bị tiêu thụ điện, nước, internet vượt quá công suất, dung lượng cho phép.</p>
+      </div>
+      <div  class="sub-article">
+        <p><span class="sub-article-number">4.</span> Không sử dụng chung tài khoản wifi.</p>
+      </div>
+      <div  class="sub-article">
+          <p><span class="sub-article-number">5.</span> Chịu hoàn toàn trách nhiệm nếu xảy ra sự cố, hỏng hóc liên quan đến việc dùng chung tài khoản.</p>
+      </div>
+
+  </div>
+
+  <h2>Chương IV: CÁC HÀNH VI BỊ NGHIÊM CẤM</h2>
+
+  <div class="article">
+    <p><span class="article-number">Điều 12.</span> Các hành vi bị nghiêm cấm</p>
+    <p>
+      Ngoài các hành vi bị cấm đã nêu tại các điều khoản khác trong Nội quy này, người ở KTX, khách và nhân viên KTX không được thực hiện các hành vi sau:
+    </p>
+    <div  class="sub-article">
+        <p><span class="sub-article-number">1.</span> Xâm phạm đến sức khỏe, danh dự, nhân phẩm của người khác.</p>
+    </div>
+    <div  class="sub-article">
+        <p><span class="sub-article-number">2.</span> Trộm cắp, lừa đảo, chiếm đoạt tài sản của người khác.</p>
+    </div>
+    <div  class="sub-article">
+      <p><span class="sub-article-number">3.</span> Sử dụng KTX vào mục đích trái pháp luật.</p>
+    </div>
+    <div  class="sub-article">
+      <p><span class="sub-article-number">4.</span> Truyền bá các thông tin, hình ảnh, âm thanh trái với thuần phong mỹ tục, đạo đức, pháp luật.</p>
+    </div>
+    <div  class="sub-article">
+      <p><span class="sub-article-number">5.</span> Cản trở, gây khó khăn cho việc quản lý, điều hành KTX.</p>
+    </div>
+    <div  class="sub-article">
+      <p><span class="sub-article-number">6.</span> Che dấu, bao che cho các hành vi vi phạm nội quy KTX, quy định của pháp luật.</p>
+    </div>
+    <div  class="sub-article">
+        <p><span class="sub-article-number">7.</span> Các hành vi vi phạm khác theo quy định của pháp luật.</p>
+    </div>
+  </div>
+
+  <h2>Chương V: XỬ LÝ VI PHẠM</h2>
+
+  <div class="article">
+      <p><span class="article-number">Điều 13.</span> Hình thức xử lý vi phạm</p>
+      <div  class="sub-article">
+          <p><span class="sub-article-number">1.</span> Tùy theo tính chất, mức độ vi phạm, người vi phạm Nội quy KTX có thể bị xử lý bằng các hình thức sau:</p>
+          <ul>
+              <li>Nhắc nhở, phê bình.</li>
+              <li>Cảnh cáo.</li>
+              <li>Tạm đình chỉ việc ở KTX.</li>
+              <li>Buộc thôi không được ở KTX.</li>
+              <li>Chuyển cơ quan có thẩm quyền xử lý theo quy định của pháp luật (nếu vi phạm nghiêm trọng).</li>
+          </ul>
+      </div>
+      <div  class="sub-article">
+          <p><span class="sub-article-number">2.</span> Ngoài ra, người vi phạm còn phải bồi thường thiệt hại (nếu có) do hành vi vi phạm gây ra.</p>
+      </div>
+
+  </div>
+  <div class="article">
+    <p><span class="article-number">Điều 14.</span> Thẩm quyền và trình tự xử lý vi phạm</p>
+    <div  class="sub-article">
+      <p><span class="sub-article-number">1.</span> BQL KTX có thẩm quyền xử lý các hành vi vi phạm Nội quy KTX.</p>
+    </div>
+    <div  class="sub-article">
+      <p><span class="sub-article-number">2.</span> Trình tự xử lý vi phạm được thực hiện theo quy định của BQL KTX và pháp luật hiện hành.</p>
+    </div>
+  </div>
+
+  <h2>Chương VI: ĐIỀU KHOẢN THI HÀNH</h2>
+
+  <div class="article">
+    <p><span class="article-number">Điều 15.</span> Hiệu lực thi hành</p>
+    <p>Nội quy này có hiệu lực kể từ ngày ... tháng ... năm ...</p>
+  </div>
+
+    <div class="article">
+      <p><span class="article-number">Điều 16.</span> Trách nhiệm thi hành</p>
+      <div  class="sub-article">
+        <p><span class="sub-article-number">1.</span> BQL KTX có trách nhiệm phổ biến, hướng dẫn, kiểm tra, đôn đốc việc thực hiện Nội quy này.</p>
+      </div>
+      <div  class="sub-article">
+        <p><span class="sub-article-number">2.</span> Người ở KTX, khách và nhân viên KTX có trách nhiệm thực hiện nghiêm chỉnh Nội quy này.</p>
+      </div>
+      <div  class="sub-article">
+        <p><span class="sub-article-number">3.</span> Trong quá trình thực hiện, nếu có vướng mắc, đề nghị phản ánh kịp thời về BQL KTX để xem xét, giải quyết.</p>
+      </div>
+    </div>
+
+  <div class="signature">
+      <p>BAN QUẢN LÝ KÝ TÚC XÁ</p>
+      <p>(Ký tên, đóng dấu)</p>
+  </div>
+
+  <div class="read-button-container">
+    <a href="main.php" class="read-button">Đã đọc</a>
+  </div>
+</body>
+</html>

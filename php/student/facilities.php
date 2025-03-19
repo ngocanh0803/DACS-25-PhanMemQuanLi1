@@ -1,18 +1,13 @@
 <?php
 session_start();
-
-// Kiểm tra đăng nhập và role: chỉ cho phép sinh viên truy cập
 if (!isset($_SESSION['username']) || $_SESSION['role'] !== 'student') {
     header("Location: ../php/login.php");
     exit();
 }
 
 $student_code = $_SESSION['username'];
-
-// Kết nối CSDL
 include '../config/db_connect.php';
 
-// Lấy thông tin sinh viên để biết room_id
 $sql_student = "SELECT student_id, room_id FROM Students WHERE student_code = ?";
 $stmt = $conn->prepare($sql_student);
 $stmt->bind_param("s", $student_code);
@@ -30,7 +25,6 @@ $stmt->close();
 
 $facilities = [];
 if ($room_id) {
-    // Truy vấn lấy danh sách cơ sở vật chất từ bảng Facilities theo room_id
     $sql_facilities = "SELECT facility_id, facility_code, facility_name, quantity, status FROM Facilities WHERE room_id = ?";
     $stmt = $conn->prepare($sql_facilities);
     $stmt->bind_param("i", $room_id);
@@ -43,15 +37,14 @@ if ($room_id) {
 }
 $conn->close();
 
-// Hàm chuyển đổi trạng thái sang tiếng Việt
 function convertFacilityStatus($status) {
     switch ($status) {
         case 'good':
-            return 'Tốt';
+            return '<span class="status-badge good">Tốt</span>';
         case 'broken':
-            return 'Hỏng';
+            return '<span class="status-badge broken">Hỏng</span>';
         default:
-            return $status;
+            return htmlspecialchars($status);
     }
 }
 ?>
@@ -62,68 +55,74 @@ function convertFacilityStatus($status) {
     <meta charset="UTF-8">
     <title>Cơ sở vật chất - Sinh viên</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
-    <!-- CSS chung cho giao diện sinh viên -->
     <link rel="stylesheet" href="../../assets/css/main_student.css">
-    <!-- CSS riêng cho trang cơ sở vật chất -->
     <link rel="stylesheet" href="../../assets/css/facilities_student.css">
+    <style>
+        .facilities-table tr {
+        /* display: flex; Sử dụng flexbox cho mỗi hàng            */
+        /* width: 100%;   Hàng chiếm toàn bộ chiều rộng */
+        /* justify-content: space-between; Quan trọng: Căn chỉnh các ô con                                       */
+        }
+    </style>
 </head>
 <body>
 
-    <!-- Include Sidebar -->
-    <?php include 'layout/sidebar.php'; ?>
+<?php include 'layout/sidebar.php'; ?>
 
-    <!-- Nội dung chính -->
-    <div class="main-content">
-        <!-- Include Header -->
-        <?php include 'layout/header.php'; ?>
+<div class="main-content">
+    <?php include 'layout/header.php'; ?>
 
-        <div class="content">
-            <h2>Cơ sở vật chất trong phòng</h2>
-            <!-- Nút liên kết tới trang yêu cầu thiết bị -->
-            <div class="action-bar">
-                <a href="equipment_request.php" class="btn request-btn">
-                    <i class="fas fa-plus-circle"></i> Yêu cầu thiết bị
-                </a>
-            </div>
-            <?php if(count($facilities) > 0): ?>
-                <table class="facilities-table">
-                    <thead>
+    <div class="content">
+      <div class="facilities-container">
+        <h2><i class="fas fa-tools"></i> Cơ sở vật chất trong phòng</h2>
+        <?php if(count($facilities) > 0): ?>
+            <table class="facilities-table">
+                <thead>
+                    <tr>
+                        <th class = "hide-on-mobile"><i class="fas fa-barcode"></i> Mã</th>
+                        <th><i class="fas fa-couch"></i> Tên thiết bị</th>
+                        <th class = "hide-on-mobile"><i class="fas fa-sort-numeric-up"></i> Số lượng</th>
+                        <th><i class="fas fa-info-circle"></i> Tình trạng</th>
+                        <th><i class="fas fa-cog"></i> Hành động</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <?php foreach($facilities as $facility): ?>
                         <tr>
-                            <th>Mã thiết bị</th>
-                            <th>Tên thiết bị</th>
-                            <th>Số lượng</th>
-                            <th>Tình trạng</th>
-                            <th>Hành động</th>
+                            <td class = "hide-on-mobile"><?php echo htmlspecialchars($facility['facility_code']); ?></td>
+                            <td><?php echo htmlspecialchars($facility['facility_name']); ?></td>
+                             <!-- Thêm class để lấy giá trị số lượng -->
+                            <td class="hide-on-mobile quantity-value"><?php echo htmlspecialchars($facility['quantity']); ?></td>
+                            <td><?php echo convertFacilityStatus($facility['status']); ?></td>
+                            <td>
+                                <button class="btn report-btn" data-facility-id="<?php echo htmlspecialchars($facility['facility_id']); ?>" data-facility-code="<?php echo htmlspecialchars($facility['facility_code']); ?>"><i class="fas fa-exclamation-triangle"></i> Báo cáo</button>
+                            </td>
                         </tr>
-                    </thead>
-                    <tbody>
-                        <?php foreach($facilities as $facility): ?>
-                            <tr>
-                                <td><?php echo htmlspecialchars($facility['facility_code']); ?></td>
-                                <td><?php echo htmlspecialchars($facility['facility_name']); ?></td>
-                                <td><?php echo htmlspecialchars($facility['quantity']); ?></td>
-                                <td><?php echo convertFacilityStatus($facility['status']); ?></td>
-                                <td>
-                                    <!-- Luôn hiển thị nút báo cáo -->
-                                    <button class="btn report-btn" data-facility-id="<?php echo htmlspecialchars($facility['facility_id']); ?>" data-facility-code="<?php echo htmlspecialchars($facility['facility_code']); ?>">Báo cáo sự cố</button>
-                                </td>
-                            </tr>
-                        <?php endforeach; ?>
-                    </tbody>
-                </table>
-            <?php else: ?>
-                <p class="no-facilities">Không có thông tin cơ sở vật chất nào.</p>
-            <?php endif; ?>
+                    <?php endforeach; ?>
+                </tbody>
+            </table>
+            <div class="action-bar">
+            <a href="#" class="btn request-btn" id="request-equipment-btn">
+                <i class="fas fa-plus-circle"></i> Yêu cầu thiết bị
+            </a>
+             <a href="status_dashboard.php" class="btn request-btn">
+                <i class="fas fa-clipboard-list"></i> Trạng thái YC/BC
+            </a>
         </div>
+        <?php else: ?>
+            <p class="no-facilities">Không có thông tin cơ sở vật chất nào.</p>
+        <?php endif; ?>
+       </div>
     </div>
 
     <!-- Modal báo cáo sự cố -->
     <div id="reportModal" class="modal">
         <div class="modal-content">
-            <span class="close">&times;</span>
-            <h3>Báo cáo sự cố</h3>
-            <form id="reportForm">
+            <span class="close">×</span>
+            <h3><i class="fas fa-exclamation-triangle"></i> Báo cáo sự cố</h3>
+            <form id="reportForm" action="process_report.php" method="POST">
                 <input type="hidden" name="facility_id" id="facility_id">
+                <input type="hidden" name="student_id" value="<?php echo $student_id; ?>">
                 <div class="form-group">
                     <label for="facility_code">Mã thiết bị:</label>
                     <input type="text" id="facility_code" name="facility_code" readonly>
@@ -140,8 +139,40 @@ function convertFacilityStatus($status) {
             </form>
         </div>
     </div>
-
-    <!-- File JS dành cho trang cơ sở vật chất -->
-    <script src="../../assets/js/facilities_student.js"></script>
+    <!-- Modal yêu cầu thiết bị -->
+    <div id="requestModal" class="modal">
+        <div class="modal-content">
+            <span class="close" id="closeRequestModal">×</span>
+            <h3><i class="fas fa-plus-square"></i> Yêu cầu thiết bị</h3>
+            <form id="requestForm" action="process_request.php" method="POST">
+                <input type="hidden" name="student_id" value="<?php echo htmlspecialchars($student_id); ?>">
+                <input type="hidden" name="room_id" value="<?php echo htmlspecialchars($room_id); ?>">
+                <div class="form-group">
+                    <label for="request_type">Loại yêu cầu:</label>
+                    <select name="request_type" id="request_type" required>
+                        <option value="additional">Thêm thiết bị chung</option>
+                        <option value="personal">Chuyển thêm thiết bị cá nhân</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="facility_name">Tên thiết bị:</label>
+                    <input type="text" name="facility_name" id="facility_name" required>
+                </div>
+                <div class="form-group">
+                    <label for="quantity">Số lượng:</label>
+                    <input type="number" name="quantity" id="quantity" required min="1">
+                </div>
+                <div class="form-group">
+                    <label for="description">Lý do / Mô tả yêu cầu:</label>
+                    <textarea name="description" id="description" rows="4" required></textarea>
+                </div>
+                <button type="submit" class="btn">Gửi yêu cầu</button>
+            </form>
+        </div>
+    </div>
+</div>
+ <!-- Include Chatbox -->
+ <?php include 'chatbox.php'; ?>
+ <script src="../../assets/js/facilities_student.js"></script>
 </body>
 </html>

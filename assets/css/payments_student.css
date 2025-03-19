@@ -1,40 +1,82 @@
-/* payments_student.css */
-
-.content h2 {
-    text-align: center;
-    margin-bottom: 20px;
-    color: #333;
+body {
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background-color: #f2f2f2;
+}
+.payments-container {
+  background-color: #fff;
+  padding: 30px;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  width: 100%; /* Tăng độ rộng tối đa */
+  margin: 20px auto; /* Căn giữa, thêm margin top */
+}
+.payments-container h2{
+color: #333;
+  margin-bottom: 20px;
+  border-bottom: 2px solid #ddd;
+  padding-bottom: 10px;
 }
 
 .payments-table {
-    width: 100%;
-    border-collapse: collapse;
-    margin: 0 auto;
-    background: #fff;
-    border-radius: 6px;
-    overflow: hidden;
-    box-shadow: 0 0 8px rgba(0, 0, 0, 0.1);
+  width: 100%;
+  border-collapse: collapse;
 }
 
-.payments-table thead {
-    background-color: #007bff;
-    color: #fff;
+.payments-table th,
+.payments-table td {
+  padding: 12px 15px;
+  text-align: left;
+  border-bottom: 1px solid #ddd;
 }
 
-.payments-table th, .payments-table td {
-    padding: 12px 15px;
-    text-align: center;
-    border-bottom: 1px solid #ddd;
+.payments-table th {
+  background-color: #f0f0f0;
+  font-weight: bold;
+}
+.payments-table tr:nth-child(even) {
+  background-color: #f9f9f9;
+}
+.payments-table tr:hover {
+   background-color: #f0f0f0;
 }
 
-.payments-table tbody tr:hover {
-    background-color: #f1f1f1;
+.status-badge {
+  display: inline-block;
+  padding: 5px 10px;
+  border-radius: 4px;
+  font-weight: bold;
 }
 
+.paid {
+  background-color: #28a745; /* Xanh lá */
+  color: #fff;
+}
+
+.unpaid {
+  background-color: #dc3545; /* Đỏ */
+  color: #fff;
+}
 .no-payment {
-    text-align: center;
-    font-size: 16px;
-    color: #b00;
-    margin-top: 20px;
+text-align: center;
+padding: 20px;
+color: #777;
 }
+/* Responsive */
+@media (max-width: 768px) {
+  .payments-container {
+      padding: 15px;
+  }
 
+  .payments-table {
+      font-size: 14px; /* Chữ nhỏ hơn trên mobile */
+  }
+
+  .payments-table th,
+  .payments-table td {
+      padding: 8px 10px; /* Padding nhỏ hơn */
+  }
+  /* Ẩn cột không cần thiết trên mobile */
+  .hide-on-mobile {
+      display: none;
+  }
+}

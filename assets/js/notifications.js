@@ -126,4 +126,11 @@ document.addEventListener('DOMContentLoaded', function() {
             .catch(error => console.error('Error marking notification as read:', error));
         }
     });
+    
+    // Đóng dropdown khi click ra bên ngoài
+    document.addEventListener('click', function(event) {
+    if (!notificationBell.contains(event.target) && !notificationDropdown.contains(event.target)) {
+        notificationDropdown.classList.remove('active');
+    }
+    });
 });

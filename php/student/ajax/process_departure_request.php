@@ -28,22 +28,70 @@ if (empty($reason)) {
 // Xử lý file upload (nếu có)
 $documentPaths = [];
 if (isset($_FILES['documents']) && $_FILES['documents']['error'][0] != UPLOAD_ERR_NO_FILE) {
-    $uploadDir = '../uploads/departure_documents/';
-    if (!is_dir($uploadDir)) {
-        mkdir($uploadDir, 0777, true);
+    $uploadDir = 'uploads/departure_documents/';
+    // $absoluteUploadDir = realpath(dirname(__FILE__)) . '/' . $uploadDir;
+    $absoluteUploadDir = realpath(dirname(__FILE__) . '/../') . '/uploads/departure_documents/';
+
+    if (!is_dir($absoluteUploadDir)) {
+        mkdir($absoluteUploadDir, 0755, true);
+         $response['messages'][] = "Đã tạo thư mục: " . $absoluteUploadDir; // Thêm vào mảng messages
+
     }
+    $response['messages'][] = "Bắt đầu quá trình upload...";
+
+
     foreach ($_FILES['documents']['tmp_name'] as $key => $tmpName) {
-        // Kiểm tra lỗi upload file
         if ($_FILES['documents']['error'][$key] === UPLOAD_ERR_OK) {
             $filename = basename($_FILES['documents']['name'][$key]);
-            // Tạo tên file độc nhất để tránh trùng lặp
-            $targetFile = $uploadDir . time() . '_' . $filename;
-            if (move_uploaded_file($tmpName, $targetFile)) {
-                $documentPaths[] = $targetFile;
+            $extension = pathinfo($filename, PATHINFO_EXTENSION);
+            $newFileName = bin2hex(random_bytes(16)) . '.' . $extension;
+            $targetFile = $uploadDir . $newFileName;
+            $absoluteTargetFile = $absoluteUploadDir . $newFileName;
+
+            $finfo = finfo_open(FILEINFO_MIME_TYPE);
+            $mime = finfo_file($finfo, $tmpName);
+            finfo_close($finfo);
+
+            $allowedTypes = ['image/jpeg', 'image/png', 'image/gif', 'application/pdf', 'application/msword', 'application/vnd.openxmlformats-officedocument.wordprocessingml.document'];
+
+            if (in_array($mime, $allowedTypes)) {
+                $maxFileSize = 5 * 1024 * 1024; // 5MB
+                if($_FILES['documents']['size'][$key] <= $maxFileSize){
+                    if (move_uploaded_file($tmpName, $absoluteTargetFile)) {
+                        // $documentPaths[] = $targetFile;
+                        // $documentPaths[] = 'php/student/uploads/departure_documents/' . $newFileName; // Đường dẫn tương đối TỪ THƯ MỤC GỐC
+                        $documentPaths[] = 'uploads/departure_documents/' . $newFileName; //["uploads\/departure_documents\/019569a0941ff0275ee03c11208c983f.docx"]
+                        // $documentPaths[] = 'php/student/uploads/departure_documents/' . $newFileName;
+                        $response['messages'][] = "Đã upload file: " . $filename . " thành công. Đường dẫn tuyệt đối: " . $absoluteTargetFile;
+                    } else {
+                       $response['errors'][] = "Lỗi khi di chuyển file: " . $filename;
+                    }
+                } else {
+                   $response['errors'][] = "Lỗi: File " . $filename . " quá lớn. Kích thước tối đa: " . $maxFileSize/1024/1024 . "MB.";
+                }
+            } else {
+               $response['errors'][] = "Lỗi: Loại file " . $filename . " (" . $mime . ") không được phép.";
             }
         }
+        else { // Xử lý các lỗi upload khác
+            $error_messages = [
+                UPLOAD_ERR_INI_SIZE   => 'File vượt quá upload_max_filesize trong php.ini.',
+                UPLOAD_ERR_FORM_SIZE  => 'File vượt quá MAX_FILE_SIZE trong form HTML.',
+                UPLOAD_ERR_PARTIAL    => 'File chỉ được upload một phần.',
+                UPLOAD_ERR_NO_TMP_DIR => 'Thiếu thư mục tạm.',
+                UPLOAD_ERR_CANT_WRITE => 'Không thể ghi file lên đĩa.',
+                UPLOAD_ERR_EXTENSION  => 'Một extension PHP đã dừng việc upload file.',
+            ];
+            $error_code = $_FILES['documents']['error'][$key];
+            $error_message = $error_messages[$error_code] ?? 'Lỗi không xác định.';  // Nếu không có trong mảng $error_messages, thì trả về "Lỗi không xác định."
+             $response['errors'][] = "Lỗi upload file " . basename($_FILES['documents']['name'][$key]) . ": " . $error_message;
+        }
     }
+     $response['messages'][] = "Quá trình upload kết thúc.";
+} else {
+    $response['messages'][] = "Không có file nào được chọn để upload."; // Thêm thông báo vào mảng
 }
+
 $documents_json = !empty($documentPaths) ? json_encode($documentPaths) : null;
 
 // Lấy student_id từ bảng Students dựa trên student_code (student_code = username)

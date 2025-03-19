@@ -93,5 +93,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             <a href="login.php">Quay lại Đăng Nhập</a>
         </div>
     </div>
+    
 </body>
 </html>

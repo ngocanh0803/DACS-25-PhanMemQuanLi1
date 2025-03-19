@@ -3,7 +3,7 @@ session_start();
 
 header('Content-Type: application/json');
 
-include 'db_connect.php';
+include '../config/db_connect.php';
 
 // Nhận dữ liệu từ request
 $data = json_decode(file_get_contents('php://input'), true);

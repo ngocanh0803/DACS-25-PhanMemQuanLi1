@@ -1,7 +1,7 @@
 <?php
 header('Content-Type: application/json');
 session_start();
-include '../../config/db_connect.php';
+include '../../../config/db_connect.php';
 
 // Kiểm tra quyền admin
 if (!isset($_SESSION['username']) || !in_array($_SESSION['role'], ['admin', 'manager', 'student_manager', 'accountant'])) {

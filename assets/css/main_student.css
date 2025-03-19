@@ -417,3 +417,289 @@ body {
     color: #999;
 }
 
+/* css tin tức */
+
+/* CSS cho chatbox */
+.chatbox-icon {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  background-color: #007bff; /* Màu xanh */
+  color: #fff;
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 24px;
+  cursor: pointer;
+  z-index: 1000; /* Đảm bảo nổi lên trên */
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+  transition: background-color 0.3s ease;
+}
+
+.chatbox-icon:hover {
+  background-color: #0056b3; /* Màu xanh đậm hơn khi hover */
+}
+
+.chatbox-popup {
+  position: fixed;
+  bottom: 80px; /* Cách icon một khoảng */
+  right: 20px;
+  width: 400px; /* Chiều rộng popup */
+  height: 500px; /* Chiều cao popup */
+  background-color: #fff;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  z-index: 1001; /* Cao hơn icon */
+  display: none; /* Ẩn ban đầu */
+  overflow: hidden; /* Để scrollbar hoạt động */
+}
+.chatbox-popup.active {
+    display: flex; /* Hiện khi active */
+}
+/* Thêm CSS để ẩn phần chat-container khi ở trong popup */
+.chatbox-popup .chat-container {
+  margin-top: 0; /* Loại bỏ margin top */
+  height: 100%; /* Chiếm toàn bộ chiều cao của popup */
+  width: 100%;
+
+}
+/* Nút đóng popup */
+.chatbox-close {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  font-size: 20px;
+  color: #888;
+  cursor: pointer;
+  z-index: 1002; /* Cao nhất */
+}
+.chat-header-status {
+font-size: 0.9em;
+color: #777;
+/* Thêm "Đang hoạt động" - cập nhật bằng JS nếu có trạng thái online */
+}
+.chat-header-title {
+font-weight: bold;
+margin-bottom: 2px; /* Khoảng cách với dòng trạng thái */
+}
+.chat-header-avatar {
+width: 40px;
+height: 40px;
+border-radius: 50%;
+overflow: hidden;
+margin-right: 15px;
+display: flex;
+justify-content: center;
+align-items: center;
+}
+
+.chat-header-avatar img {
+max-width: 100%;
+max-height: 100%;
+object-fit: cover; /* Căn giữa và cắt ảnh nếu cần */
+}
+.chat-header-avatar i {
+font-size: 20px;
+color:#888;
+}
+.chat-message.right small{
+text-align: right;
+}
+.chat-message.left small{
+text-align: left;
+}
+.chat-message p {
+white-space: pre-wrap;
+word-break: break-word;
+}
+.chat-input button:hover {
+background-color: #075e54;
+}
+@media (max-width: 768px){
+.chat-container{
+width: 100%;
+height: 100vh;
+border-radius: 0;
+}
+.chat-message {
+max-width: 90%;
+}
+}
+body {
+font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+background-color: #f0f2f5;
+}
+
+.chat-container {
+width: 70%;
+max-width: 800px;
+background-color: #fff;
+border-radius: 10px;
+box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+overflow: hidden;
+display: flex;
+flex-direction: column;
+margin: 0 auto;
+margin-top: 100px;
+margin-bottom: 20px;
+height: 90vh; /* Chiếm 90% chiều cao viewport */
+justify-content: center;
+}
+
+.chat-header {
+background-color: #f0f0f0;
+padding: 15px;
+display: flex;
+align-items: center;
+border-bottom: 1px solid #ddd;
+}
+.chat-header-info {
+flex: 1; /* Chiếm phần còn lại của header */
+}
+.chat-box {
+flex: 1; /* Chiếm phần lớn diện tích */
+overflow-y: auto;
+padding: 20px;
+background-color: #e5ddd5;
+/* background-image: url('../../assets/img/chat-background.png'); */
+background-repeat: repeat;
+}
+
+.chat-message {
+margin-bottom: 15px;
+clear: both;
+padding: 10px 15px;
+border-radius: 18px;
+max-width: 70%;
+word-wrap: break-word;
+overflow-wrap: break-word;
+hyphens: auto;
+position: relative; /* Để định vị thời gian */
+
+}
+
+.chat-message.right {
+float: right;
+background-color: #dcf8c6; /* Màu nền tin nhắn của sinh viên */
+text-align: right;
+}
+
+.chat-message.left {
+float: left;
+background-color: #fff;
+text-align: left;
+}
+
+.chat-message small {
+display: block; /* Hiển thị thời gian trên một dòng riêng */
+font-size: 0.8em;
+color: #888;
+margin-top: 5px;
+}
+.chat-input {
+display: flex;
+padding: 10px 15px;
+background-color: #f0f0f0;
+border-top: 1px solid #ddd;
+}
+
+.chat-input textarea {
+flex: 1;
+padding: 10px;
+border: none;
+border-radius: 20px;
+resize: none; /* Không cho phép thay đổi kích thước */
+outline: none;
+margin-right: 10px;
+}
+
+.chat-input button {
+background-color: #128c7e;
+color: #fff;
+border: none;
+border-radius: 50%;
+width: 45px;
+height: 45px;
+font-size: 20px;
+cursor: pointer;
+display: flex; /* Để căn giữa icon */
+justify-content: center;
+align-items: center;
+transition: background-color 0.2s;
+}
+/* Thêm CSS cho phần tin tức */
+.news-section {
+margin-top: 30px; /* Khoảng cách với phần trên */
+padding: 20px;
+background-color: #fff;
+border-radius: 8px;
+box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.news-section h2 {
+border-bottom: 2px solid #ddd;
+padding-bottom: 10px;
+margin-bottom: 15px;
+color: #333;
+}
+
+.news-list {
+/* Có thể dùng grid hoặc flexbox để bố cục */
+}
+
+.news-item {
+margin-bottom: 15px;
+padding-bottom: 10px;
+border-bottom: 1px solid #eee;
+}
+.news-item:last-child{
+border-bottom: none;
+}
+
+.news-item h4 {
+margin: 0 0 5px 0;
+}
+
+.news-item h4 a {
+color: #007bff; /* Màu link */
+text-decoration: none;
+}
+
+.news-item h4 a:hover {
+text-decoration: underline;
+}
+
+.news-item p {
+margin: 0;
+color: #555;
+font-size: 0.9em;
+}
+
+.news-item small {
+color: #888;
+font-size: 0.8em;
+}
+.news-item {
+display: flex; /* Sử dụng flexbox để dễ dàng bố cục */
+margin-bottom: 15px;
+padding-bottom: 10px;
+border-bottom: 1px solid #eee;
+}
+.news-item:last-child{
+border-bottom: none;
+}
+.news-image {
+  width: 150px; /* Kích thước ảnh */
+  height: 100px;
+  object-fit: cover; /* Cắt ảnh nếu cần */
+  margin-right: 15px; /* Khoảng cách với nội dung */
+  border-radius: 4px; /* Bo tròn góc (tùy chọn) */
+  flex-shrink: 0;
+}
+
+.news-content {
+flex-grow: 1;
+}

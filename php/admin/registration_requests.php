@@ -29,48 +29,9 @@ $conn->close();
 <head>
     <meta charset="UTF-8">
     <title>Quản lý Đơn đăng ký ở</title>
-    <link rel="stylesheet" href="../../assets/css/main.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
-    <style>
-        .container1 { padding: 20px; }
-        h2 { text-align: center; margin-bottom: 20px; }
-        table { width: 100%; border-collapse: collapse; margin-bottom: 20px; }
-        table, th, td { border: 1px solid #ddd; }
-        th, td { padding: 10px; text-align: center; }
-        th { background-color: #007bff; color: #fff; }
-        .action-btn { padding: 5px 10px; border: none; border-radius: 4px; cursor: pointer; }
-        .approve-btn { background-color: #28a745; color: #fff; }
-        .reject-btn { background-color: #dc3545; color: #fff; }
-        /* Modal style */
-        .modal {
-            display: none; 
-            position: fixed; 
-            z-index: 1000; 
-            left: 0; top: 0;
-            width: 100%; height: 100%;
-            overflow: auto; 
-            background-color: rgba(0,0,0,0.5);
-        }
-        .modal-content {
-            background-color: #fff;
-            margin: 10% auto;
-            padding: 20px;
-            border-radius: 4px;
-            width: 400px;
-            position: relative;
-        }
-        .modal-content h3 { margin-top: 0; }
-        .close-modal {
-            position: absolute;
-            top: 10px; right: 15px;
-            font-size: 20px;
-            cursor: pointer;
-        }
-        .form-group { margin-bottom: 15px; display: flex; flex-direction: column; }
-        .form-group label { font-weight: bold; margin-bottom: 5px; }
-        .form-group select, .form-group input, .form-group textarea { padding: 8px; font-size: 16px; border: 1px solid #ccc; border-radius: 4px; }
-        .btn-confirm { padding: 8px 16px; background-color: #007bff; color: #fff; border: none; border-radius: 4px; cursor: pointer; }
-    </style>
+    <link rel="stylesheet" href="../../assets/css/main.css">
+    <link rel="stylesheet" href="../../assets/css/admin_registration_requests.css">
 </head>
 <body>
 <?php include 'layout/header.php'; ?>
@@ -140,17 +101,53 @@ $conn->close();
                 <select id="assign_room">
                     <option value="">Chọn phòng</option>
                     <?php
-                    // Lấy danh sách phòng có trạng thái available từ bảng Rooms
+                    // Kết nối database
                     include '../config/db_connect.php';
-                    $sqlRooms = "SELECT room_id, room_code FROM Rooms WHERE status = 'available'";
-                    $resultRooms = $conn->query($sqlRooms);
-                    if ($resultRooms && $resultRooms->num_rows > 0) {
-                        while ($room = $resultRooms->fetch_assoc()) {
-                            echo "<option value='{$room['room_id']}'>{$room['room_code']}</option>";
+
+                    // Truy vấn danh sách phòng kèm số lượng sinh viên hiện tại
+                    $sql_rooms = "
+                        SELECT r.room_id, r.building, r.room_number, r.capacity, r.status,
+                            (SELECT COUNT(*) FROM Students s WHERE s.room_id = r.room_id) AS current_occupancy
+                        FROM Rooms r
+                        WHERE r.status IN ('available', 'occupied') OR r.room_id = ?
+                        ORDER BY r.building, r.room_number
+                    ";
+
+                    // Chuẩn bị truy vấn
+                    $stmt_rooms = $conn->prepare($sql_rooms);
+                    $stmt_rooms->bind_param("i", $student['room_id']);
+                    $stmt_rooms->execute();
+                    $result_rooms = $stmt_rooms->get_result();
+
+                    $rooms = [];
+
+                    while ($row = $result_rooms->fetch_assoc()) {
+                        // Tính số chỗ trống còn lại
+                        $remaining_capacity = $row['capacity'] - $row['current_occupancy'];
+
+                        // Nếu là phòng hiện tại của sinh viên, cho phép hiển thị dù đã đầy
+                        if ($row['room_id'] == $student['room_id'] || $remaining_capacity > 0) {
+                            $rooms[] = [
+                                'room_id' => $row['room_id'],
+                                'building' => $row['building'],
+                                'room_number' => $row['room_number'],
+                                'remaining_capacity' => $remaining_capacity + ($row['room_id'] == $student['room_id'] ? 1 : 0)
+                            ];
                         }
                     }
+
+                    // Đóng statement
+                    $stmt_rooms->close();
                     $conn->close();
+
+                    // Hiển thị danh sách phòng dưới dạng <option>
+                    foreach ($rooms as $room):
+                        $selected = ($student['room_id'] == $room['room_id']) ? 'selected' : '';
                     ?>
+                        <option value="<?php echo htmlspecialchars($room['room_id']); ?>" <?php echo $selected; ?>>
+                            <?php echo "Tòa " . htmlspecialchars($room['building']) . " - Phòng " . htmlspecialchars($room['room_number']) . " (Còn " . $room['remaining_capacity'] . " chỗ)"; ?>
+                        </option>
+                    <?php endforeach; ?>
                 </select>
             </div>
             <button class="btn-confirm" id="confirmApprove">Xác nhận duyệt</button>
@@ -169,126 +166,7 @@ $conn->close();
             <button class="btn-confirm" id="confirmReject">Xác nhận từ chối</button>
         </div>
     </div>
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <script src="../../assets/js/main.js"></script>
-    <script src="../../assets/js/search.js"></script>
-    <script>
-        // JavaScript xử lý modal duyệt/từ chối
-        document.addEventListener('DOMContentLoaded', function() {
-            let selectedApplicationId = null;
-
-            // Approve Modal
-            const approveModal = document.getElementById('approveModal');
-            const closeApproveModal = document.getElementById('closeApproveModal');
-            const confirmApprove = document.getElementById('confirmApprove');
-            const assignRoomSelect = document.getElementById('assign_room');
-
-            // Reject Modal
-            const rejectModal = document.getElementById('rejectModal');
-            const closeRejectModal = document.getElementById('closeRejectModal');
-            const confirmReject = document.getElementById('confirmReject');
-            const rejectReason = document.getElementById('reject_reason');
-
-            // Khi nhấn nút duyệt đơn
-            document.querySelectorAll('.approve-btn').forEach(function(btn) {
-                btn.addEventListener('click', function() {
-                    selectedApplicationId = this.getAttribute('data-id');
-                    // Mở modal duyệt
-                    approveModal.style.display = 'block';
-                });
-            });
-
-            // Khi nhấn nút từ chối đơn
-            document.querySelectorAll('.reject-btn').forEach(function(btn) {
-                btn.addEventListener('click', function() {
-                    selectedApplicationId = this.getAttribute('data-id');
-                    // Mở modal từ chối
-                    rejectModal.style.display = 'block';
-                });
-            });
-
-            closeApproveModal.addEventListener('click', function() {
-                approveModal.style.display = 'none';
-                selectedApplicationId = null;
-            });
-            closeRejectModal.addEventListener('click', function() {
-                rejectModal.style.display = 'none';
-                selectedApplicationId = null;
-                rejectReason.value = "";
-            });
-
-            // Xử lý duyệt đơn
-            confirmApprove.addEventListener('click', function() {
-                const room_id = assignRoomSelect.value;
-                if (!room_id) {
-                    alert("Vui lòng chọn phòng.");
-                    return;
-                }
-                // Gửi yêu cầu duyệt qua AJAX
-                fetch('ajax/handle_registration_request.php', {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({
-                        application_id: selectedApplicationId,
-                        action: 'approve',
-                        room_id: room_id
-                    })
-                })
-                .then(response => response.json())
-                .then(data => {
-                    alert(data.message);
-                    if(data.success) {
-                        window.location.reload();
-                    }
-                })
-                .catch(error => {
-                    console.error("Lỗi duyệt đơn:", error);
-                    alert("Lỗi khi xử lý đơn.");
-                });
-            });
-
-            // Xử lý từ chối đơn
-            confirmReject.addEventListener('click', function() {
-                const reason = rejectReason.value.trim();
-                if (!reason) {
-                    alert("Vui lòng nhập lý do từ chối.");
-                    return;
-                }
-                fetch('ajax/handle_registration_request.php', {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({
-                        application_id: selectedApplicationId,
-                        action: 'reject',
-                        reason: reason
-                    })
-                })
-                .then(response => response.json())
-                .then(data => {
-                    alert(data.message);
-                    if(data.success) {
-                        window.location.reload();
-                    }
-                })
-                .catch(error => {
-                    console.error("Lỗi từ chối đơn:", error);
-                    alert("Lỗi khi xử lý đơn.");
-                });
-            });
-
-            // Đóng modal khi click ngoài nội dung modal
-            window.addEventListener('click', function(e) {
-                if(e.target == approveModal) {
-                    approveModal.style.display = 'none';
-                    selectedApplicationId = null;
-                }
-                if(e.target == rejectModal) {
-                    rejectModal.style.display = 'none';
-                    selectedApplicationId = null;
-                    rejectReason.value = "";
-                }
-            });
-        });
-    </script>
+    <?php include 'layout/js.php'; ?>
+    <script src="../../assets/js/admin_registration_requests.js"></script>
 </body>
 </html>

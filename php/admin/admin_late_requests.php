@@ -27,36 +27,7 @@ $conn->close();
     <title>Quản Lý Yêu Cầu Về Muộn</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
     <link rel="stylesheet" href="../../assets/css/main.css">
-    <style>
-        .container1 {
-            padding: 20px;
-        }
-        h2 { text-align: center; margin-bottom: 20px; }
-        table {
-            width: 100%; 
-            border-collapse: collapse; 
-            margin-bottom: 20px;
-        }
-        th, td {
-            border: 1px solid #ddd;
-            padding: 10px; 
-            text-align: center;
-        }
-        th {
-            background-color: #007bff; 
-            color: #fff;
-        }
-        .action-btn {
-            padding: 5px 10px; 
-            border: none; 
-            border-radius: 4px; 
-            cursor: pointer; 
-            margin: 2px;
-        }
-        .approve-btn { background-color: #28a745; color: #fff; }
-        .reject-btn { background-color: #dc3545; color: #fff; }
-        .violation-btn { background-color: #ffc107; color: #000; }
-    </style>
+    <link rel="stylesheet" href="../../assets/css/admin_late_requests.css">
 </head>
 <body>
 <?php include 'layout/header.php'; ?>
@@ -116,17 +87,15 @@ $conn->close();
                 </table>
             </div>
         </main>
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-<script src="../../assets/js/main.js"></script>
-<script src="../../assets/js/search.js"></script>>
-<script src="../../assets/js/main.js"></script>
+
+<?php include 'layout/js.php'; ?>
 <script>
 document.addEventListener('DOMContentLoaded', function() {
     function handleAction(requestId, action, reason=null) {
         const data = { late_request_id: requestId, action: action };
         if (reason) data['reject_reason'] = reason;
 
-        fetch('handle_late_request.php', {
+        fetch('ajax/handle_late_request.php', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify(data)

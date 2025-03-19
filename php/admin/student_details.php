@@ -22,4 +22,5 @@ if (isset($_GET['student_id']) && is_numeric($_GET['student_id'])) {
 } else {
     echo json_encode(['success' => false, 'message' => 'ID sinh viên không hợp lệ']);
 }
+
 ?>

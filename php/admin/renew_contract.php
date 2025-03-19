@@ -122,7 +122,7 @@ $result_rooms = $conn->query($sql_rooms);
             </div>
         <?php endif; ?>
 
-        <form action="process_edit_contract.php" method="POST" id="edit-contract-form">
+        <form action="ajax/process_edit_contract.php" method="POST" id="edit-contract-form">
             <!-- Ẩn contract_id để POST -->
             <input type="hidden" name="contract_id" value="<?php echo $contract_id; ?>">
 
@@ -228,9 +228,7 @@ $result_rooms = $conn->query($sql_rooms);
         </form>
     </main>
 </div>
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <script src="../../assets/js/search.js"></script>
-    <script src="../../assets/js/main.js"></script>
+    <?php include 'layout/js.php'; ?>
     <script src="../../assets/js/manage_contracts.js"></script>
 </body>
 </html>

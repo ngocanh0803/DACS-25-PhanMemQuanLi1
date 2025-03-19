@@ -1,6 +1,6 @@
 <?php
 // process_terminate_contract.php
-include '../config/db_connect.php';
+include '../../config/db_connect.php';
 session_start();
 
 // (Tùy chọn) Kiểm tra quyền
@@ -11,14 +11,14 @@ session_start();
 
 if ($_SERVER['REQUEST_METHOD'] !== 'GET') {
     // Nếu không phải GET, chuyển hướng về list
-    header("Location: contracts_list.php?message=Phương thức không hợp lệ&type=error");
+    header("Location: ../contracts_list.php?message=Phương thức không hợp lệ&type=error");
     exit;
 }
 
 $contract_id = intval($_GET['contract_id'] ?? 0);
 if ($contract_id <= 0) {
     // Thiếu/không hợp lệ contract_id
-    header("Location: contracts_list.php?message=Thiếu contract_id&type=error");
+    header("Location: ../contracts_list.php?message=Thiếu contract_id&type=error");
     exit;
 }
 
@@ -103,12 +103,12 @@ try {
 
     // Cuối cùng: chuyển hướng về trang danh sách, kèm thông báo
     $msg = "Hợp đồng ID $contract_id đã được chấm dứt thành công.";
-    header("Location: contracts_list.php?message=" . urlencode($msg) . "&type=success");
+    header("Location: ../contracts_list.php?message=" . urlencode($msg) . "&type=success");
     exit;
 } catch (Exception $ex) {
     // Rollback nếu có lỗi
     $conn->rollback();
     // Quay lại list kèm thông báo lỗi
-    header("Location: contracts_list.php?message=" . urlencode($ex->getMessage()) . "&type=error");
+    header("Location: ../contracts_list.php?message=" . urlencode($ex->getMessage()) . "&type=error");
     exit;
 }

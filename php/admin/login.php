@@ -111,7 +111,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 this.classList.toggle("fa-eye-slash");
             });
         });
-
     </script>
 </body>
 </html>

@@ -171,9 +171,7 @@ while ($row = $result_floor->fetch_assoc()) {
 
     <div id="notification" class="notification"></div>
 
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <script src="../../assets/js/main.js"></script>
-    <script src="../../assets/js/search.js"></script>
+    <?php include 'layout/js.php'; ?>
     <script src="../../assets/js/manage_facilities.js"></script>
 </body>
 </html>

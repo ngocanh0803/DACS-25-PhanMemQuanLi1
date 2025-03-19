@@ -77,9 +77,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $payment_code = 'HD' . $room_id . '_' . $month_number . '_' . $year_number;
 
     // Thêm hóa đơn vào bảng Payments
-    $sql_insert = "INSERT INTO Payments (payment_code, room_id, electricity_usage, water_usage, total_amount, payment_status) VALUES (?, ?, ?, ?, ?, 'unpaid')";
+    // $sql_insert = "INSERT INTO Payments (payment_code, room_id, electricity_usage, water_usage, total_amount, payment_status) VALUES (?, ?, ?, ?, ?, 'unpaid')";
+    $sql_insert = "INSERT INTO Payments (payment_code, room_id, electricity_usage, water_usage, total_amount, payment_status, payment_date) VALUES (?, ?, ?, ?, ?, 'unpaid', ?)";
     $stmt_insert = $conn->prepare($sql_insert);
-    $stmt_insert->bind_param("siidd", $payment_code, $room_id, $electricity_usage, $water_usage, $total_amount);
+    // $stmt_insert->bind_param("siidd", $payment_code, $room_id, $electricity_usage, $water_usage, $total_amount);
+    $stmt_insert->bind_param("siidds", $payment_code, $room_id, $electricity_usage, $water_usage, $total_amount, $month);
     
     if ($stmt_insert->execute()) {
         // Lưu thông báo cho các sinh viên trong phòng

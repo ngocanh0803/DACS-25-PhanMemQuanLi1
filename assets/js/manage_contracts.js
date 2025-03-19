@@ -27,7 +27,7 @@ $(document).ready(function() {
     // Khi click vào nút xác nhận chấm dứt
     confirmBtn.on('click', function() {
         if (currentContractId) {
-            window.location.href = 'process_terminate_contract.php?contract_id=' + currentContractId;
+            window.location.href = 'ajax/process_terminate_contract.php?contract_id=' + currentContractId;
         }
     });
 

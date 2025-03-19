@@ -89,7 +89,7 @@ $result_rooms = $conn->query($sql_rooms);
         <main class="content">
             <div class="create-contract-container">
                 <h2>Tạo Hợp đồng Mới</h2>
-                <form action="process_create_contract.php" method="POST" id="create-contract-form">
+                <form action="ajax/process_create_contract.php" method="POST" id="create-contract-form">
                     
                     <!-- CHỌN SINH VIÊN -->
                     <div class="form-group">
@@ -194,9 +194,7 @@ $result_rooms = $conn->query($sql_rooms);
     <div id="notification" class="notification"></div>
 
     <!-- JS -->
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <script src="../../assets/js/search.js"></script>
-    <script src="../../assets/js/main.js"></script>
+    <?php include 'layout/js.php'; ?>
     <script src="../../assets/js/manage_contracts.js"></script>
     <script>
     $(document).ready(function() {
