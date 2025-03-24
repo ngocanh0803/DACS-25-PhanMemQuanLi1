@@ -1,13 +1,14 @@
 <?php
 // Kết nối đến cơ sở dữ liệu
-include '../config/db_connect.php';
+include '../config/db_connect.php'; // KIỂM TRA KỸ FILE NÀY
 
 // Xử lý khi người dùng bấm nút "Đăng ký"
+$stmt = null; // Khởi tạo $stmt
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $username = $_POST['username'];
     $password = $_POST['password'];
     $confirm_password = $_POST['confirm_password'];
-    $role = $_POST['role'];
+    // $role = $_POST['role']; // Không cần lấy role nữa
 
     // Kiểm tra mật khẩu và xác nhận mật khẩu
     if ($password !== $confirm_password) {
@@ -16,31 +17,46 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         // Kiểm tra xem tên người dùng đã tồn tại chưa
         $sql_check = "SELECT * FROM Users WHERE username = ?";
         $stmt_check = $conn->prepare($sql_check);
+         if ($stmt_check === false) {
+            die("Lỗi prepare statement (check): " . $conn->error); // Xử lý lỗi prepare
+        }
         $stmt_check->bind_param("s", $username);
         $stmt_check->execute();
         $result_check = $stmt_check->get_result();
 
+        // Đóng $stmt_check NGAY SAU KHI lấy result
+        $stmt_check->close();
+
         if ($result_check->num_rows > 0) {
             $error = "Tên đăng nhập đã tồn tại. Vui lòng chọn tên khác.";
+            // Không cần đóng $stmt_check ở đây nữa
         } else {
             // Thêm người dùng mới vào cơ sở dữ liệu
-            // $sql = "INSERT INTO Users (username, password, role) VALUES (?, ?, ?)";
-            $sql = "INSERT INTO Users (username, password, role, is_approved) VALUES (?, ?, ?, 0)";
+            $sql = "INSERT INTO Users (username, password, role, is_approved) VALUES (?, ?, 'student', 0)"; // Gán 'student' trực tiếp
             $stmt = $conn->prepare($sql);
-            $stmt->bind_param("sss", $username, $password, $role);
+             if ($stmt === false) {
+                die("Lỗi prepare statement (insert): " . $conn->error); // Xử lý lỗi prepare
+            }
+            $stmt->bind_param("ss", $username, $password); // Chỉ bind 2 tham số (username, password)
 
             if ($stmt->execute()) {
-                // Đăng ký thành công, hiển thị thông báo
-                // $success = "Đăng ký thành công! Bạn có thể đăng nhập ngay bây giờ.";
                 // Đăng ký thành công, chuyển hướng đến trang trạng thái tài khoản
+                $_SESSION["username"] = $username; // THIẾT LẬP SESSION
                 header("Location: account_status.php");
-                exit();
+                exit(); // Rất quan trọng! Dừng script sau khi chuyển hướng.
+
             } else {
-                $error = "Có lỗi xảy ra. Vui lòng thử lại.";
+                $error = "Có lỗi xảy ra: " . $stmt->error; // Hiển thị lỗi chi tiết
+                 error_log("Lỗi execute: " . $stmt->error); // Ghi log (tùy chọn).
             }
+            $stmt->close(); // Đóng $stmt ở đây, TRONG khối else này
         }
+        // Không đóng $stmt_check ở đây nữa
+
     }
+
 }
+$conn->close();
 ?>
 
 <!DOCTYPE html>
@@ -72,23 +88,13 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 <input type="password" id="confirm_password" name="confirm_password" required placeholder="Nhập lại mật khẩu">
                 <i id="toggleConfirmPassword" class="fa fa-eye"></i>
             </div>
-            <div class="input-group">
-                <label for="role">Vai trò</label>
-                <select id="role" name="role" required>
-                    <option value="student">Sinh viên</option>
-                    <option value="manager">Quản lý phòng</option>
-                    <option value="student_manager">Quản lý sinh viên</option>
-                    <option value="accountant">Kế toán</option>
-                </select>
-            </div>
+           <!-- Xóa phần role -->
             <button type="submit" class="btn">Đăng Ký</button>
             <?php
             if (isset($error)) {
                 echo "<p class='error'>$error</p>";
             }
-            if (isset($success)) {
-                echo "<p class='success'>$success</p>";
-            }
+
             ?>
         </form>
         <div class="links">
@@ -110,7 +116,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             this.classList.toggle("fa-eye");
             this.classList.toggle("fa-eye-slash");
         });
-            
+
         toggleConfirmPassword.addEventListener("click", function() {
             const type = confirmPasswordInput.type === "password" ? "text" : "password";
             confirmPasswordInput.type = type;
@@ -127,6 +133,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         });
     });
     </script>
-    
+
 </body>
 </html>

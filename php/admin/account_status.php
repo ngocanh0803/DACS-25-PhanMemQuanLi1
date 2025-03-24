@@ -1,15 +1,3 @@
-<?php
-session_start();
-
-// Nếu người dùng chưa đăng nhập, chuyển về trang đăng nhập
-if (!isset($_SESSION["username"])) {
-    header("Location: login.php");
-    exit();
-}
-
-// Nội dung thông báo trạng thái tài khoản
-?>
-
 <!DOCTYPE html>
 <html lang="vi">
 <head>
@@ -64,7 +52,7 @@ if (!isset($_SESSION["username"])) {
         }
 
         .btn:hover {
-            background: #74b9ff;
+            background:rgb(58, 157, 255);
             box-shadow: 0 6px 15px rgba(9, 132, 227, 0.6);
         }
 

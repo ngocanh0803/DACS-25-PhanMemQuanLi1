@@ -8,22 +8,27 @@ include '../config/db_connect.php';
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $username = $_POST['username'];
     $password = $_POST['password'];
-    $role = $_POST['role'];
+    // $role = $_POST['role']; // Không cần lấy role từ POST
 
-    // Truy vấn kiểm tra thông tin người dùng
-    $sql = "SELECT * FROM Users WHERE username = ? AND password = ? AND role = ?";
+    // Truy vấn kiểm tra thông tin người dùng (chỉ username và password)
+    $sql = "SELECT * FROM Users WHERE username = ? AND password = ?";
     $stmt = $conn->prepare($sql);
-    $stmt->bind_param("sss", $username, $password, $role);
+
+     if ($stmt === false) {
+        die("Lỗi prepare statement: " . $conn->error); // Xử lý lỗi prepare (quan trọng)
+    }
+
+    $stmt->bind_param("ss", $username, $password); // Chỉ bind 2 tham số
     $stmt->execute();
     $result = $stmt->get_result();
 
     // Kiểm tra kết quả truy vấn
     if ($result->num_rows > 0) {
         $user = $result->fetch_assoc();
-        $_SESSION["user_id"] = $user["user_id"]; 
+        $_SESSION["user_id"] = $user["user_id"];
         $_SESSION["username"] = $username;
-        $_SESSION["role"] = $user["role"];
-        $_SESSION["is_approved"] = $user["is_approved"];
+        $_SESSION["role"] = $user["role"]; // Lấy role từ kết quả truy vấn
+        $_SESSION["is_approved"] = $user["is_approved"]; // Lấy is_approved
 
         if ($user["is_approved"] == 1) {
             // Tài khoản đã được duyệt
@@ -44,7 +49,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         // Sai thông tin đăng nhập
         $error = "Tên đăng nhập hoặc mật khẩu không chính xác.";
     }
+    $stmt->close();
 }
+$conn->close(); // Đóng kết nối ở cuối file, sau khi đã sử dụng xong.
 ?>
 
 <!DOCTYPE html>
@@ -72,7 +79,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 <i id="togglePassword" class="fa fa-eye"></i>
             </div>
 
-            <div class="input-group">
+           <!-- Xóa phần này nếu không cần select role -->
+            <!-- <div class="input-group">
                 <label for="role">Vai trò</label>
                 <select id="role" name="role" required>
                     <option value="student">Sinh viên</option>
@@ -81,7 +89,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                     <option value="accountant">Kế toán</option>
                     <option value="admin">Admin</option>
                 </select>
-            </div>
+            </div> -->
             <button type="submit" class="btn">Đăng Nhập</button>
             <?php
             // Hiển thị thông báo lỗi nếu có
