@@ -11,24 +11,24 @@ $student_code = $_SESSION['username'];
 include '../config/db_connect.php';
 
 // Lấy student_id
-$sql = "SELECT student_id FROM Students WHERE student_code = ?";
-$stmt = $conn->prepare($sql);
-$stmt->bind_param("s", $student_code);
-$stmt->execute();
-$result = $stmt->get_result();
+$sqlStudent = "SELECT student_id FROM Students WHERE student_code = ?";
+$stmtStudent = $conn->prepare($sqlStudent);
+$stmtStudent->bind_param("s", $student_code);
+$stmtStudent->execute();
+$resultStudent = $stmtStudent->get_result();
 
-if ($result->num_rows == 0) {
-    die("Không tìm thấy thông tin sinh viên.");  // Hoặc chuyển hướng đến trang lỗi
+if ($resultStudent->num_rows == 0) {
+    die("Không tìm thấy thông tin sinh viên.");
 }
 
-$student = $result->fetch_assoc();
+$student = $resultStudent->fetch_assoc();
 $student_id = $student['student_id'];
-$stmt->close();
+$stmtStudent->close();
 
-// Lấy danh sách đơn xin rời phòng
-$sqlDep = "SELECT departure_id, request_date, reason, documents, status, processed_date 
-           FROM Departure_Requests 
-           WHERE student_id = ? 
+// Lấy danh sách đơn xin rời phòng và deposit_refund_status
+$sqlDep = "SELECT departure_id, request_date, reason, documents, status, processed_date, deposit_refund_status
+           FROM Departure_Requests
+           WHERE student_id = ?
            ORDER BY request_date DESC";
 $stmtDep = $conn->prepare($sqlDep);
 $stmtDep->bind_param("i", $student_id);
@@ -49,96 +49,33 @@ $conn->close();
     <title>Trạng thái Đơn xin rời phòng</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
     <link rel="stylesheet" href="../../assets/css/main_student.css">
+    <link rel="stylesheet" href="../../assets/css/student_departure_status.css">
     <style>
-        /* General Styles */
-        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
-        .container {
-            background-color: #fff;
-            border-radius: 8px;
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-            margin: 20px auto;
-            /* max-width: 1000px; Increased max-width */
-            width: 100%;
-            padding: 30px; /* Increased padding */
-            overflow-x: auto; /* Horizontal scroll for table */
+        .refund-status {
+            font-weight: bold;
         }
-        h2 {
-            color: #333;
-            font-size: 1.8em;  /* Larger font size */
-            margin-bottom: 30px;
-            text-align: center;
-            border-bottom: 2px solid #007bff; /* Added underline */
-            padding-bottom: 10px;
+        .refund-confirmed {
+            color: green;
         }
-        /* Table Styles */
-        table {
-            border-collapse: collapse;
-            width: 100%;
+        .refund-pending-admin {
+            color: orange;
         }
-        th, td {
-            border: 1px solid #ddd;
-            padding: 12px 15px; /* More padding */
-            text-align: left;
+        .refund-initiated {
+            color: blue;
         }
-        th {
-            background-color: #007bff;
-            color: #fff;
-            font-weight: 600; /* Bolder font weight */
+        .btn-confirm-refund {
+            background-color: #28a745; /* Màu xanh lá cây */
+            color: white;
+            border: none;
+            padding: 8px 12px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 0.9em;
         }
-        tr:nth-child(even) { background-color: #f2f2f2; }
-        tr:hover { background-color: #ddd; }
-
-        /* Link Styles */
-        a {
-            color: #007bff;
-            display: inline-block;  /* Allows padding/margin */
-            margin-bottom: 5px; /* Space between links */
-            text-decoration: none;
+        .btn-confirm-refund:hover {
+            background-color: #218838;
         }
 
-        /* Status Colors */
-        .status-pending { color: #ffc107; font-weight: bold; }
-        .status-approved { color: #28a745; font-weight: bold; }
-        .status-rejected { color: #dc3545; font-weight: bold; }
-
-        /* No Request Message */
-        .no-request {
-            color: #666;
-            font-size: 1.1em;
-            margin-top: 20px;
-            text-align: center;
-        }
-         /* Responsive Table */
-        @media (max-width: 768px) {
-            table, thead, tbody, th, td, tr {
-                display: block;
-            }
-            thead tr {
-                position: absolute;
-                top: -9999px;
-                left: -9999px;
-            }
-            td {
-                border: none;
-                border-bottom: 1px solid #eee;
-                position: relative;
-                padding-left: 50%;
-                text-align: right; /* Align data to right */
-
-            }
-           td:before {
-                position: absolute;
-                top: 6px;
-                left: 6px;
-                width: 45%;
-                padding-right: 10px;
-                white-space: nowrap;
-                text-align: left; /* Align labels to left */
-                font-weight: bold;
-            }
-           /* Label the data */
-            td:before { content: attr(data-label); }
-        }
     </style>
 </head>
 <body>
@@ -158,12 +95,42 @@ $conn->close();
                             <th>Ngày gửi</th>
                             <th>Lý do</th>
                             <th>Tài liệu</th>
-                            <th>Trạng thái</th>
-                            <th>Ngày xử lý</th>
+                            <th>Trạng thái đơn</th>
+                            <th>Ngày xử lý</th> <!-- **Ngày xử lý - RE-ADDED** -->
+                            <th>Trạng thái cọc</th>
+                            <th>Hành động</th>
                         </tr>
                     </thead>
                     <tbody>
-                        <?php foreach ($requests as $req): ?>
+                        <?php foreach ($requests as $req):
+                            $refundStatusText = '';
+                            $refundConfirmationButton = '';
+                            $refundStatusClass = '';
+
+                            switch ($req['deposit_refund_status']) {
+                                case 'pending_admin_action':
+                                    $refundStatusText = 'Chờ duyệt cọc';
+                                    $refundStatusClass = 'refund-pending-admin';
+                                    break;
+                                case 'refund_initiated':
+                                    $refundStatusText = 'Đã gửi yêu cầu trả cọc';
+                                    $refundStatusClass = 'refund-initiated';
+                                    $refundConfirmationButton = '<button class="btn-confirm-refund" data-id="' . htmlspecialchars($req['departure_id']) . '">Xác nhận nhận cọc</button>';
+                                    break;
+                                case 'refund_confirmed_student':
+                                    $refundStatusText = 'Đã nhận cọc';
+                                    $refundStatusClass = 'refund-confirmed';
+                                    break;
+                                case 'refunded':
+                                    $refundStatusText = 'Đã hoàn cọc';
+                                    $refundStatusClass = 'refund-confirmed'; // or a different class if you want
+                                    break;
+                                default:
+                                    $refundStatusText = htmlspecialchars($req['deposit_refund_status']);
+                            }
+
+
+                            ?>
                             <tr>
                                 <td data-label="Mã đơn"><?php echo htmlspecialchars($req['departure_id']); ?></td>
                                 <td data-label="Ngày gửi"><?php echo htmlspecialchars($req['request_date']); ?></td>
@@ -183,7 +150,7 @@ $conn->close();
                                     }
                                     ?>
                                 </td>
-                                <td data-label="Trạng thái">
+                                <td data-label="Trạng thái đơn">
                                     <?php
                                     $statusClass = '';
                                     switch ($req['status']) {
@@ -204,7 +171,11 @@ $conn->close();
                                     }
                                     ?>
                                 </td>
-                                <td data-label="Ngày xử lý"><?php echo htmlspecialchars($req['processed_date'] ?? 'Chưa xử lý'); ?></td>
+                                 <td data-label="Ngày xử lý"><?php echo htmlspecialchars($req['processed_date'] ?? 'Chưa xử lý'); ?></td> <!-- **Ngày xử lý - RE-ADDED** -->
+                                 <td data-label="Trạng thái cọc"><span class="refund-status <?php echo $refundStatusClass; ?>"><?php echo $refundStatusText; ?></span></td>
+                                <td data-label="Hành động">
+                                    <?php echo $refundConfirmationButton; ?>
+                                </td>
                             </tr>
                         <?php endforeach; ?>
                     </tbody>
@@ -214,5 +185,32 @@ $conn->close();
             <?php endif; ?>
         </div>
     </div>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script>
+        $(document).ready(function(){
+            // Event listener for "Confirm Refund Received" buttons
+            $(document).on('click', '.btn-confirm-refund', function() {
+                const departureId = $(this).data('id');
+                if (confirm("Bạn xác nhận đã nhận được tiền cọc trả lại?")) {
+                    $.ajax({
+                        url: 'ajax/process_deposit_refund_confirmation.php', // Adjust URL if needed
+                        type: 'POST',
+                        data: { departure_id: departureId },
+                        dataType: 'json',
+                        success: function(response) {
+                            alert(response.message);
+                            if (response.success) {
+                                window.location.reload(); // Reload page to update status
+                            }
+                        },
+                        error: function(xhr, status, error) {
+                            console.error("Error confirming refund:", error);
+                            alert("Lỗi xác nhận nhận cọc. Vui lòng thử lại.");
+                        }
+                    });
+                }
+            });
+        });
+    </script>
 </body>
 </html>

@@ -102,6 +102,9 @@ $conn->close();
                     <div class="form-group">
                         <label for="documents">Giấy tờ kèm theo (Ảnh CCCD) (Upload file scan):</label>
                         <input type="file" id="documents" name="documents[]" multiple>
+                        <p class="file-limit-info" style="font-size: 0.9em; color: #777; margin-top: 5px;">
+                            (Các file được phép: jpg, png, gif, pdf, doc, docx. Kích thước tối đa mỗi file: 5MB)
+                        </p>
                     </div>
                 </div>
                 <!-- Phần IV: Điều khoản & Cam kết -->

@@ -1,0 +1,89 @@
+/* General Styles */
+body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
+.container {
+    background-color: #fff;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    margin: 20px auto;
+    /* max-width: 1000px; Increased max-width */
+    width: 100%;
+    padding: 30px; /* Increased padding */
+    overflow-x: auto; /* Horizontal scroll for table */
+}
+h2 {
+    color: #333;
+    font-size: 1.8em;  /* Larger font size */
+    margin-bottom: 30px;
+    text-align: center;
+    border-bottom: 2px solid #007bff; /* Added underline */
+    padding-bottom: 10px;
+}
+/* Table Styles */
+table {
+    border-collapse: collapse;
+    width: 100%;
+}
+th, td {
+    border: 1px solid #ddd;
+    padding: 12px 15px; /* More padding */
+    text-align: left;
+}
+th {
+    background-color: #007bff;
+    color: #fff;
+    font-weight: 600; /* Bolder font weight */
+}
+tr:nth-child(even) { background-color: #f2f2f2; }
+tr:hover { background-color: #ddd; }
+
+/* Link Styles */
+a {
+    color: #007bff;
+    display: inline-block;  /* Allows padding/margin */
+    margin-bottom: 5px; /* Space between links */
+    text-decoration: none;
+}
+
+/* Status Colors */
+.status-pending { color: #ffc107; font-weight: bold; }
+.status-approved { color: #28a745; font-weight: bold; }
+.status-rejected { color: #dc3545; font-weight: bold; }
+
+/* No Request Message */
+.no-request {
+    color: #666;
+    font-size: 1.1em;
+    margin-top: 20px;
+    text-align: center;
+}
+ /* Responsive Table */
+@media (max-width: 768px) {
+    table, thead, tbody, th, td, tr {
+        display: block;
+    }
+    thead tr {
+        position: absolute;
+        top: -9999px;
+        left: -9999px;
+    }
+    td {
+        border: none;
+        border-bottom: 1px solid #eee;
+        position: relative;
+        padding-left: 50%;
+        text-align: right; /* Align data to right */
+
+    }
+   td:before {
+        position: absolute;
+        top: 6px;
+        left: 6px;
+        width: 45%;
+        padding-right: 10px;
+        white-space: nowrap;
+        text-align: left; /* Align labels to left */
+        font-weight: bold;
+    }
+   /* Label the data */
+    td:before { content: attr(data-label); }
+}

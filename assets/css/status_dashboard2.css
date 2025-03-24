@@ -66,6 +66,21 @@ tr:hover {
   padding: 20px;
   color: #777;
 }
+
+.file-links {
+  display: flex;
+  flex-direction: column;
+  gap: 5px; /* Khoảng cách giữa các link */
+}
+.file-links a {
+  color: #007bff; /* Màu link */
+  text-decoration: none;
+  word-break: break-all; /* Xuống dòng nếu link quá dài */
+}
+.file-links a:hover {
+  text-decoration: underline;
+}
+
 /* Responsive */
 @media (max-width: 768px) {
   .dashboard-container {

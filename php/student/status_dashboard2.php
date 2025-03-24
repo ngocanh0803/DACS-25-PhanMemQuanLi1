@@ -19,13 +19,19 @@ $student = $resultStudent->fetch_assoc();
 $student_id = $student['student_id'];
 $stmtStudent->close();
 
-$sqlApps = "SELECT * FROM Applications WHERE student_id = ? ORDER BY created_at DESC";
+// Sửa câu truy vấn SQL để lấy cả cột 'documents'
+$sqlApps = "SELECT application_id, created_at, desired_start_date, desired_end_date, deposit, status, documents
+            FROM Applications
+            WHERE student_id = ?
+            ORDER BY created_at DESC";
 $stmtApps = $conn->prepare($sqlApps);
 $stmtApps->bind_param("i", $student_id);
 $stmtApps->execute();
 $resultApps = $stmtApps->get_result();
 $applications = [];
 while ($row = $resultApps->fetch_assoc()) {
+    // Giải mã JSON documents thành mảng PHP
+    $row['documents'] = json_decode($row['documents'], true);
     $applications[] = $row;
 }
 $stmtApps->close();
@@ -56,6 +62,7 @@ $conn->close();
                         <th class="hide-on-mobile"><i class="fas fa-calendar-check"></i> Ngày vào</th>
                         <th class="hide-on-mobile"><i class="fas fa-calendar-times"></i> Ngày ra</th>
                         <th><i class="fas fa-donate"></i> Tiền cọc</th>
+                        <th><i class="fas fa-paperclip"></i> Tài liệu</th> <!-- Cột mới cho tài liệu -->
                         <th><i class="fas fa-info-circle"></i> Trạng thái</th>
                     </tr>
                 </thead>
@@ -86,6 +93,20 @@ $conn->close();
                             <td class="hide-on-mobile"><?php echo htmlspecialchars($app['desired_start_date']); ?></td>
                             <td class="hide-on-mobile"><?php echo htmlspecialchars($app['desired_end_date']); ?></td>
                             <td><?php echo number_format($app['deposit'], 0, ',', '.'); ?> VND</td>
+                            <td>
+                                <?php
+                                    if (is_array($app['documents'])) { // Kiểm tra chắc chắn là mảng trước khi loop
+                                        echo '<div class="file-links">';
+                                        foreach ($app['documents'] as $documentPath) {
+                                            $fileName = basename($documentPath); // Lấy tên file từ đường dẫn
+                                            echo '<a href="' . htmlspecialchars($documentPath) . '" target="_blank">' . htmlspecialchars($fileName) . '</a>';
+                                        }
+                                        echo '</div>';
+                                    } else {
+                                        echo 'Không có'; // Hoặc có thể để trống nếu không có file
+                                    }
+                                ?>
+                            </td>
                             <td><span class="status <?php echo $statusClass; ?>"><?php echo $statusText; ?></span></td>
                         </tr>
                     <?php endforeach; ?>

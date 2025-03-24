@@ -242,6 +242,9 @@ CREATE TABLE Departure_Requests (
     request_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     status ENUM('pending', 'approved', 'rejected') DEFAULT 'pending',
     processed_date TIMESTAMP NULL,
+    refund_amount DECIMAL(10, 2) NULL,
+    deposit_refund_status ENUM('pending_admin_action', 'refund_initiated', 'refund_confirmed_student', 'refunded') DEFAULT 'pending_admin_action',
+    refund_reduction_reason TEXT,
     FOREIGN KEY (student_id) REFERENCES Students(student_id) ON DELETE CASCADE,
     FOREIGN KEY (contract_id) REFERENCES Contracts(contract_id) ON DELETE CASCADE
 );

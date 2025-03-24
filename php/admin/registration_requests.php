@@ -22,7 +22,26 @@ if ($result && $result->num_rows > 0) {
         $applications[] = $row;
     }
 }
+
+// Truy vấn danh sách đơn đăng ký và lấy cột 'documents'
+$sql = "SELECT a.application_id, a.desired_start_date, a.desired_end_date, a.deposit, a.documents, a.status, a.created_at,
+               s.student_code, s.full_name
+        FROM Applications a
+        JOIN Students s ON a.student_id = s.student_id
+        ORDER BY a.created_at DESC";
+$result = $conn->query($sql);
+$applications = [];
+if ($result && $result->num_rows > 0) {
+    while ($row = $result->fetch_assoc()) {
+        // Giải mã JSON documents
+        $row['documents'] = json_decode($row['documents'], true);
+        $applications[] = $row;
+    }
+}
 $conn->close();
+
+// Define the correct base URL for file downloads
+$baseURL = '/php/student/'; // Adjust this if your structure is different
 ?>
 <!DOCTYPE html>
 <html lang="vi">
@@ -32,6 +51,21 @@ $conn->close();
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <link rel="stylesheet" href="../../assets/css/main.css">
     <link rel="stylesheet" href="../../assets/css/admin_registration_requests.css">
+    <style>
+        .file-links {
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+        }
+        .file-links a {
+            color: #007bff;
+            text-decoration: none;
+            word-break: break-all;
+        }
+        .file-links a:hover {
+            text-decoration: underline;
+        }
+    </style>
 </head>
 <body>
 <?php include 'layout/header.php'; ?>
@@ -45,12 +79,17 @@ $conn->close();
                         <thead>
                             <tr>
                                 <th>Mã đơn</th>
-                                <th>Họ tên sinh viên</th>
+                                <th>Họ tên SV</th>
                                 <th>Mã SV</th>
                                 <th>Ngày gửi</th>
                                 <th>Ngày nhận phòng</th>
                                 <th>Ngày kết thúc</th>
-                                <th>Tiền đặt cọc</th>
+                                <th>Tiền cọc</th>
+                                <th style="  width: 150px !important;
+                                white-space: nowrap !important;
+                                overflow: hidden !important;
+                                text-overflow: ellipsis !important;">
+                                Tài liệu</th> <!-- Cột mới: Tài liệu -->
                                 <th>Trạng thái</th>
                                 <th>Hành động</th>
                             </tr>
@@ -66,7 +105,23 @@ $conn->close();
                                     <td><?php echo htmlspecialchars($app['desired_end_date']); ?></td>
                                     <td><?php echo number_format($app['deposit'], 2); ?></td>
                                     <td>
-                                        <?php 
+                                        <?php
+                                            if (is_array($app['documents'])) {
+                                                echo '<div class="file-links">';
+                                                foreach ($app['documents'] as $documentPath) {
+                                                    $fileName = basename($documentPath);
+                                                    // Construct the correct file URL by prepending the base URL
+                                                    $fileURL = $baseURL . htmlspecialchars($documentPath);
+                                                    echo '<a href="' . $fileURL . '" target="_blank">' . htmlspecialchars($fileName) . '</a>';
+                                                }
+                                                echo '</div>';
+                                            } else {
+                                                echo 'Không có';
+                                            }
+                                        ?>
+                                    </td>
+                                    <td>
+                                        <?php
                                             if($app['status'] == 'pending') echo 'Chờ duyệt';
                                             elseif($app['status'] == 'approved') echo 'Đã duyệt';
                                             elseif($app['status'] == 'rejected') echo 'Bị từ chối';
@@ -166,6 +221,7 @@ $conn->close();
             <button class="btn-confirm" id="confirmReject">Xác nhận từ chối</button>
         </div>
     </div>
+
     <?php include 'layout/js.php'; ?>
     <script src="../../assets/js/admin_registration_requests.js"></script>
 </body>

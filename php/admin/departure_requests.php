@@ -1,24 +1,26 @@
 <?php
 session_start();
 
-// Kiểm tra quyền admin
-if (!isset($_SESSION['username']) || !in_array($_SESSION['role'], ['admin', 'manager', 'student_manager', 'accountant'])) {
+// Kiểm tra quyền: chỉ admin/manager/student_manager/accountant
+if (!isset($_SESSION['username']) || !in_array($_SESSION['role'], ['admin','manager','student_manager','accountant'])) {
     header("Location: ../php/login.php");
     exit();
 }
 
 include '../config/db_connect.php';
 
-// Lấy danh sách đơn xin rời phòng từ bảng Departure_Requests, kết hợp thông tin sinh viên
-$sql = "SELECT dr.departure_id, dr.request_date, dr.reason, dr.status, dr.processed_date,
-               s.student_code, s.full_name, dr.documents
+// Lấy danh sách đơn rời phòng do hết hạn hợp đồng
+$sql = "SELECT dr.departure_id, dr.request_date, dr.reason, dr.status, dr.processed_date, dr.documents, dr.deposit_refund_status,
+               s.student_code, s.full_name, c.contract_code
         FROM Departure_Requests dr
         JOIN Students s ON dr.student_id = s.student_id
+        JOIN Contracts c ON dr.contract_id = c.contract_id
         ORDER BY dr.request_date DESC";
+
 $result = $conn->query($sql);
 $departures = [];
 if ($result && $result->num_rows > 0) {
-    while ($row = $result->fetch_assoc()){
+    while ($row = $result->fetch_assoc()) {
         $departures[] = $row;
     }
 }
@@ -28,11 +30,21 @@ $conn->close();
 <html lang="vi">
 <head>
     <meta charset="UTF-8">
-    <title>Quản lý đơn xin rời phòng</title>
+    <title>Quản lý Đơn rời phòng (Hết hạn HĐ)</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
     <!-- CSS chung của admin -->
     <link rel="stylesheet" href="../../assets/css/main.css">
-    <link rel="stylesheet" href="../../assets/css/admin_departure_requests.css">
+    <link rel="stylesheet" href="../../assets/css/departure_requests_expired.css">
+    <style>
+        /* Thêm CSS nếu cần thiết để style checkbox */
+        .modal-content .form-group {
+            margin-bottom: 15px; /* Tăng khoảng cách dưới checkbox */
+        }
+        .modal-content .form-group label {
+            display: inline-block; /* Để label và checkbox trên cùng dòng */
+            margin-left: 5px; /* Khoảng cách giữa checkbox và label */
+        }
+    </style>
 </head>
 <body>
 <?php include 'layout/header.php'; ?>
@@ -40,54 +52,82 @@ $conn->close();
         <?php include 'layout/menu.php'; ?>
         <main class="content">
             <div class="container1">
-                <h2>Danh sách đơn xin rời phòng</h2>
+                <h2>Danh sách Đơn rời phòng do Hết hạn Hợp đồng</h2>
                 <?php if(count($departures) > 0): ?>
                     <table>
-                        <thead>
-                            <tr>
-                                <th>Mã đơn</th>
-                                <th>Sinh viên</th>
-                                <th>Mã SV</th>
-                                <th>Ngày gửi</th>
-                                <th>Lý do</th>
-                                <th>Trạng thái</th>
-                                <th>Ngày xử lý</th>
-                                <th>Hành động</th>
-                            </tr>
-                        </thead>
+                    <thead>
+                        <tr>
+                            <th>Mã đơn</th>
+                            <th>Sinh viên</th>
+                            <th>Mã SV</th>
+                            <th>Mã HĐ</th>
+                            <th>Ngày gửi</th>
+                            <th>Lý do</th>
+                            <th>Tài liệu</th>
+                            <th>Trạng thái</th>
+                            <th>Ngày xử lý</th>
+                            <th>Trạng thái cọc</th>
+                            <th>Hành động</th>
+                        </tr>
+                    </thead>
                         <tbody>
                             <?php foreach($departures as $dep): ?>
-                                <tr>
-                                    <td><?php echo htmlspecialchars($dep['departure_id']); ?></td>
-                                    <td><?php echo htmlspecialchars($dep['full_name']); ?></td>
-                                    <td><?php echo htmlspecialchars($dep['student_code']); ?></td>
-                                    <td><?php echo htmlspecialchars($dep['request_date']); ?></td>
-                                    <td style="word-wrap: break-word; max-width: 200px"><?php echo nl2br(htmlspecialchars($dep['reason'])); ?></td>
-                                    <td>
-                                        <?php 
-                                            switch($dep['status']){
-                                                case 'pending': echo 'Chờ xử lý'; break;
-                                                case 'approved': echo 'Đã duyệt'; break;
-                                                case 'rejected': echo 'Bị từ chối'; break;
-                                                default: echo $dep['status'];
+                            <tr>
+                                <td><?php echo htmlspecialchars($dep['departure_id']); ?></td>
+                                <td><?php echo htmlspecialchars($dep['full_name']); ?></td>
+                                <td><?php echo htmlspecialchars($dep['student_code']); ?></td>
+                                <td><?php echo htmlspecialchars($dep['contract_code']); ?></td>
+                                <td><?php echo htmlspecialchars($dep['request_date']); ?></td>
+                                <td style="word-wrap: break-word; max-width: 200px"><?php echo nl2br(htmlspecialchars($dep['reason'])); ?></td>
+                                <td>
+                                    <?php
+                                        if (is_array($dep['documents'])) {
+                                            echo '<div class="file-links">';
+                                            foreach ($dep['documents'] as $documentPath) {
+                                                $fileName = basename($documentPath);
+                                                $fileURL = '/php/student/' . htmlspecialchars($documentPath); // Đảm bảo đường dẫn đúng
+                                                echo '<a href="' . $fileURL . '" target="_blank">' . htmlspecialchars($fileName) . '</a>';
                                             }
-                                        ?>
-                                    </td>
-                                    <td><?php echo htmlspecialchars($dep['processed_date'] ?? ''); ?></td>
-                                    <td>
-                                        <?php if($dep['status'] == 'pending'): ?>
-                                            <button class="action-btn approve-btn" data-id="<?php echo $dep['departure_id']; ?>">Duyệt</button>
-                                            <button class="action-btn reject-btn" data-id="<?php echo $dep['departure_id']; ?>">Từ chối</button>
-                                        <?php else: ?>
-                                            --
-                                        <?php endif; ?>
-                                    </td>
-                                </tr>
+                                            echo '</div>';
+                                        } else {
+                                            echo 'Không có';
+                                        }
+                                    ?>
+                                </td>
+                                <td>
+                                    <?php
+                                        if($dep['status'] == 'pending') echo 'Chờ xử lý';
+                                        elseif($dep['status'] == 'approved') echo 'Đã duyệt';
+                                        elseif($dep['status'] == 'rejected') echo 'Từ chối';
+                                    ?>
+                                </td>
+                                <td><?php echo htmlspecialchars($dep['processed_date'] ?? ''); ?></td>
+                                <td>
+                                    <?php
+                                        // Hiển thị Trạng thái Cọc
+                                        switch($dep['deposit_refund_status']){
+                                            case 'pending_admin_action': echo 'Chờ duyệt cọc'; break;
+                                            case 'refund_initiated': echo 'Đã gửi yêu cầu trả cọc'; break;
+                                            case 'refund_confirmed_student': echo 'SV đã nhận cọc'; break;
+                                            case 'refunded': echo 'Đã hoàn cọc'; break;
+                                            default: echo htmlspecialchars($dep['deposit_refund_status']);
+                                        }
+                                    ?>
+                                </td>
+                                <td>
+                                    <?php if($dep['status'] == 'pending'): ?>
+                                        <button class="action-btn approve-btn" data-id="<?php echo $dep['departure_id']; ?>">Duyệt</button>
+                                        <button class="action-btn reject-btn" data-id="<?php echo $dep['departure_id']; ?>">Từ chối</button>
+                                    <?php else: ?>
+                                        --
+                                    <?php endif; ?>
+                                </td>
+                            </tr>
                             <?php endforeach; ?>
                         </tbody>
                     </table>
                 <?php else: ?>
-                    <p>Không có đơn xin rời phòng nào.</p>
+                    <p>Không có đơn rời phòng nào do hết hạn hợp đồng.</p>
                 <?php endif; ?>
             </div>
         </main>
@@ -95,35 +135,23 @@ $conn->close();
     <!-- Modal duyệt đơn -->
     <div id="approveModal" class="modal">
         <div class="modal-content">
-            <span class="close-modal" id="closeApproveModal">&times;</span>
-            <h3>Duyệt đơn xin rời phòng</h3>
+            <span class="close-modal" id="closeApproveModal">×</span>
+            <h3>Duyệt đơn rời phòng (Hết hạn HĐ)</h3>
+            <p>Chọn xử lý phòng và hợp đồng khi sinh viên rời:</p>
+            <!-- Thêm checkbox "Khởi tạo yêu cầu trả cọc" vào Modal -->
             <div class="form-group">
-                <label for="assign_room">Chọn phòng bàn giao:</label>
-                <select id="assign_room">
-                    <option value="">Chọn phòng</option>
-                    <?php
-                    // Lấy danh sách phòng có trạng thái 'occupied' (hoặc theo yêu cầu)
-                    include '../config/db_connect.php';
-                    $sqlRooms = "SELECT room_id, room_code FROM Rooms WHERE status = 'occupied'";
-                    $resultRooms = $conn->query($sqlRooms);
-                    if ($resultRooms && $resultRooms->num_rows > 0) {
-                        while ($room = $resultRooms->fetch_assoc()) {
-                            echo "<option value='{$room['room_id']}'>{$room['room_code']}</option>";
-                        }
-                    }
-                    $conn->close();
-                    ?>
-                </select>
+                <input type="checkbox" id="initiate_refund" name="initiate_refund" value="1">
+                <label for="initiate_refund">Khởi tạo yêu cầu trả cọc?</label>
             </div>
-            <button class="btn-confirm" id="confirmApprove">Xác nhận duyệt</button>
+            <div class="btn-confirm" id="confirmApprove">Xác nhận</div>
         </div>
     </div>
 
     <!-- Modal từ chối đơn -->
     <div id="rejectModal" class="modal">
         <div class="modal-content">
-            <span class="close-modal" id="closeRejectModal">&times;</span>
-            <h3>Từ chối đơn xin rời phòng</h3>
+            <span class="close-modal" id="closeRejectModal">×</span>
+            <h3>Từ chối đơn rời phòng</h3>
             <div class="form-group">
                 <label for="reject_reason">Lý do từ chối:</label>
                 <textarea id="reject_reason" rows="4" placeholder="Nhập lý do từ chối"></textarea>
@@ -132,6 +160,6 @@ $conn->close();
         </div>
     </div>
     <?php include 'layout/js.php'; ?>
-    <script src="../../assets/js/admin_departure_requests.js"></script>
+    <script src="../../assets/js/departure_requests_expired.php.js"></script>
 </body>
 </html>

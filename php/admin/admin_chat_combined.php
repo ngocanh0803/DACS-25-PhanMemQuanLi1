@@ -1,8 +1,11 @@
 <?php
 session_start();
 if (!isset($_SESSION['user_id']) || $_SESSION['role'] !== 'admin') {
-    die("Chỉ admin mới truy cập.");
+    // Thay vì die(), chuyển hướng đến trang login hoặc trang lỗi
+    header("Location: login.php"); // Hoặc header("Location: error_page.php?message=Không có quyền truy cập.");
+    exit(); // Dừng thực thi script sau khi chuyển hướng
 }
+// ... (phần code còn lại của admin_chat_combined.php) ...
 $adminId = $_SESSION['user_id'];
 
 include '../config/db_connect.php';
