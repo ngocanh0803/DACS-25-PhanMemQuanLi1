@@ -8,7 +8,7 @@ CREATE TABLE Users (
     user_id INT AUTO_INCREMENT PRIMARY KEY,
     username VARCHAR(255) NOT NULL,
     password VARCHAR(255) NOT NULL,
-    role ENUM('manager', 'student_manager', 'accountant', 'admin', 'student') NOT NULL,
+    role ENUM('admin', 'student') NOT NULL,
     is_approved TINYINT(1) DEFAULT 0,
     activation_token  VARCHAR(255) NOT NULL,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
