@@ -1,0 +1,228 @@
+body {
+    font-family: "Times New Roman", Times, serif;
+    font-size: 14pt;
+    line-height: 1.5;
+    color: #000;
+    background-color: #fff;
+}
+
+h1, h2, h3 {
+    font-family: "Times New Roman", Times, serif;
+    font-weight: bold;
+    margin-top: 1em;
+    margin-bottom: 0.5em;
+    text-align: center; /* Căn giữa tiêu đề */
+}
+
+h1 {
+    font-size: 18pt;
+}
+
+h2 {
+    font-size: 16pt;
+}
+
+p {
+    margin-top: 0.5em;
+    margin-bottom: 0.5em;
+    text-align: justify;
+    text-indent: 1.27cm; /* Thụt đầu dòng */
+}
+
+.center {
+    text-align: center;
+}
+
+.bold {
+    font-weight: bold;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse; /* Gộp đường viền */
+    margin-top: 1em;
+    margin-bottom: 1em;
+}
+
+th, td {
+    border: 1px solid #000; /* Đường viền đen */
+    padding: 8px; /* Khoảng cách trong ô */
+    text-align: left; /* Căn trái nội dung */
+}
+
+th {
+    background-color: #f0f0f0; /* Màu nền cho header */
+    font-weight: bold;
+}
+
+.signature {
+    margin-top: 2em;
+    text-align: right;
+    font-style: italic;
+}
+
+.signature p {
+    margin: 0; /* Loại bỏ margin mặc định của <p> */
+    text-indent: 0;
+}
+.read-button-container {
+position: fixed; /* Cố định vị trí */
+bottom: 20px; /* Cách đáy 20px */
+right: 20px; /* Cách lề phải 20px */
+z-index: 999; /* Đảm bảo nổi lên trên */
+}
+
+.read-button {
+display: inline-block; /* Để có thể đặt padding, margin */
+padding: 10px 20px; /* Kích thước nút */
+background-color:rgb(76, 104, 175); /* Màu xanh lá */
+color: white; /* Chữ trắng */
+text-decoration: none; /* Bỏ gạch chân */
+border-radius: 27px; /* Bo tròn góc */
+font-weight: bold;
+transition: background-color 0.3s ease; /* Hiệu ứng hover */
+box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2); /* Đổ bóng */
+cursor: pointer;
+}
+
+.read-button:hover {
+background-color:rgb(54, 57, 124); /* Màu xanh đậm hơn khi hover */
+}
+/* Để số trang */
+@page {
+    size: A4;
+    margin: 2cm;
+
+    @bottom-right {
+        content: counter(page);
+        font-size: 12pt;
+    }
+}
+/* Thêm dòng kẻ ngang */
+hr {
+border: none; /* Loại bỏ border mặc định */
+border-top: 1px solid black; /* Đường kẻ ngang */
+margin: 1em 0; /* Khoảng cách trên và dưới */
+}
+    /* Tạo kiểu cho phần quốc hiệu, tiêu ngữ */
+.header {
+    text-align: center;
+    margin-bottom: 1.5em;
+}
+
+.header p {
+    margin: 0.2em 0; /* Khoảng cách nhỏ giữa các dòng */
+    text-indent: 0;
+
+}
+
+.header .doc-lap {
+    font-weight: bold;
+}
+.title-time{
+    font-style: italic;
+    text-align: center;
+}
+.action-buttons {
+    display: flex;
+    gap: 5px;
+}
+.edit-button, .delete-button {
+    padding: 5px 10px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+.edit-button {
+    background-color: #4CAF50; /* Màu xanh lá */
+    color: white;
+}
+.delete-button {
+    background-color: #f44336; /* Màu đỏ */
+    color: white;
+}
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 1;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgba(0,0,0,0.4);
+}
+
+.modal-content {
+    background-color: #fefefe;
+    margin: 10% auto; /* Thay đổi margin */
+    padding: 20px;
+    border: 1px solid #888;
+    width: 80%; /* Thay đổi width */
+    max-width: 600px; /* Thêm max-width */
+    border-radius: 5px;
+}
+.close {
+    color: #aaa;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.close:hover,
+.close:focus {
+    color: black;
+    text-decoration: none;
+}
+.modal-buttons{
+    text-align: center;
+    margin-top: 20px;
+}
+.modal-buttons button, .add-update-button { /* Thêm class cho nút Thêm/Cập nhật */
+    padding: 10px 20px;
+    margin: 0 5px;
+    cursor: pointer;
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    border-radius: 4px; /* Thêm border-radius */
+}
+.modal-buttons .cancel-button{
+
+    background-color: #f44336;
+
+}
+label {
+    display: block;
+    margin-bottom: 5px;
+}
+
+input[type="text"],
+input[type="date"],
+select,
+textarea {
+    width: 100%;
+    padding: 8px;
+    margin-bottom: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box;
+}
+#addUpdateButton{
+    background-color: #4CAF50;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    color: white;
+}
+.search-box input {
+    background: none;
+    border: none;
+    color: var(--text-color);
+    margin-left: 10px;
+    width: 200px;
+    outline: none;
+    padding: 0;
+    margin-bottom: 0;
+}

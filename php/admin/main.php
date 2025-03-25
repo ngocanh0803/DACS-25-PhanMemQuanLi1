@@ -7,6 +7,7 @@
     <title>Quản Lý Ký Túc Xá</title>
     <link rel="stylesheet" href="../../assets/css/main.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="stylesheet" href="../../assets/css/management_schedule.css">
 </head>
 <body>
     <?php include 'layout/header.php'; ?>  <!-- Include phần header -->
@@ -15,7 +16,7 @@
         <main class="content">
             <!-- <h1>Chào mừng đến với phần mềm quản lý ký túc xá</h1> -->
             <!-- <img src="../../assets/img/welcome2.webp" alt="Welcome" class="welcome-image"> -->
-            <?php include 'layout/management_schedule.html'; ?>  <!-- Include phần menu -->
+            <?php include 'management_schedule.php'; ?>  <!-- Include phần menu -->
         </main>
     </div>
 

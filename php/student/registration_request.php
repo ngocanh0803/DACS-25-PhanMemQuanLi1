@@ -140,6 +140,7 @@ $conn->close();
                 </div>
             </div>
         </div>
+        <?php include 'chatbox.php'; ?>
     <script src="../../assets/js/student_registration_request.js"></script>
 </body>
 </html>

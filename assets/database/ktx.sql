@@ -265,6 +265,35 @@ CREATE TABLE LateRequests (
     FOREIGN KEY (student_id) REFERENCES Students(student_id) ON DELETE CASCADE
 );
 
+CREATE TABLE IF NOT EXISTS duty_schedule (
+    id INT PRIMARY KEY AUTO_INCREMENT,
+    duty_date DATE NOT NULL,  -- 'ngay' -> 'duty_date'
+    duty_day VARCHAR(20),     -- 'thu' -> 'duty_day' (optional, can be calculated)
+    shift VARCHAR(50) NOT NULL,     -- 'ca_truc' -> 'shift'
+    staff_name VARCHAR(255) NOT NULL, -- 'can_bo_truc' -> 'staff_name'
+    position VARCHAR(255),          -- 'chuc_vu' -> 'position'
+    note TEXT,                     -- 'ghi_chu' -> 'note'
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+);
+
+INSERT INTO duty_schedule (duty_date, duty_day, shift, staff_name, position, note) VALUES
+('2024-03-25', 'Thứ Hai', 'Sáng (7:00 - 11:30)', 'Nguyễn Văn A', 'Quản lý khu A', 'Ca trực đầu tuần.'),
+('2024-03-25', 'Thứ Hai', 'Chiều (13:30 - 17:00)', 'Trần Thị B', 'Quản lý khu B', ''),
+('2024-03-25', 'Thứ Hai', 'Tối (17:00 - 22:00)', 'Lê Văn C', 'Quản lý khu C', 'Ca trực tối.'),
+('2024-03-26', 'Thứ Ba', 'Sáng (7:00 - 11:30)', 'Phạm Thị D', 'Quản lý khu D', 'Ca trực thường.'),
+('2024-03-26', 'Thứ Ba', 'Chiều (13:30 - 17:00)', 'Nguyễn Văn A', 'Quản lý khu A', 'Trực thay đồng nghiệp.'),
+('2024-03-27', 'Thứ Tư', 'Sáng (7:00 - 11:30)', 'Hoàng Văn E', 'Quản lý khu B', ''),
+('2024-03-27', 'Thứ Tư', 'Tối (17:00 - 22:00)', 'Ngô Thị F', 'Quản lý khu C', 'Kiểm tra tất cả các thiết bị.'),
+('2024-03-28', 'Thứ Năm', 'Sáng (7:00 - 11:30)', 'Trần Thị B', 'Quản lý khu B', 'Ca trực thường.'),
+('2024-03-29', 'Thứ Sáu', 'Chiều (13:30 - 17:00)', 'Lê Văn C', 'Quản lý khu C', ''),
+('2024-03-30', 'Thứ Bảy', 'Tối (17:00 - 22:00)', 'Phạm Thị D', 'Quản lý khu D', 'Ca trực cuối tuần.'),
+('2024-03-31', 'Chủ Nhật', 'Sáng (7:00 - 11:30)', 'Đinh Văn G', 'Quản lý khu A', 'Ca trực sáng Chủ Nhật.'),
+('2024-03-31', 'Chủ Nhật', 'Chiều (13:30 - 17:00)', 'Vũ Thị H', 'Quản lý khu B', ''),
+('2024-04-01', 'Thứ Hai', 'Tối (17:00 - 22:00)', 'Nguyễn Văn A', 'Quản lý khu A', 'Đầu tháng.'),
+('2024-04-01', 'Thứ Hai', 'Sáng (7:00-11:30)', 'Lý Văn I', 'Quản lí khu C', 'Bàn giao ca trực'),
+('2024-04-02', 'Thứ Ba', 'Chiều (13:30 - 17:00)', 'Trần văn K', 'Quản lí khu B', '');
+
 -- Bảng LateRequests (Đơn xin về muộn)
 -- INSERT INTO LateRequests (student_id, reason, is_violation, note, status) VALUES
 -- (1, 'Tham gia hoạt động ngoại khóa của trường.', 0, 'Có giấy xác nhận của CLB.', 'approved'),

@@ -48,7 +48,7 @@
                     <li><a href="./contracts_list.php"><i class="fas fa-file-alt"></i>Danh sách Hợp đồng</a></li>
                     <li><a href="./create_contract.php"><i class="fas fa-file-signature"></i>Thêm Hợp đồng</a></li>
                     <li><a href="./registration_requests.php"><i class="fas fa-file-import"></i>Duyệt Y/C vào KTX</a></li>
-                    <li><a href="./departure_requests.php"><i class="fas fa-file-export"></i>Y/C rời KTX</a></li>
+                    <!-- <li><a href="./departure_requests.php"><i class="fas fa-file-export"></i>Y/C rời KTX</a></li> -->
                       <li><a href="./departure_requests_expired.php"><i class="fas fa-file-export"></i>Y/C rời KTX hết hạn</a></li>
                 </ul>
             </div>

@@ -94,9 +94,7 @@ if (!$result) {
                         <input type="password" id="password" name="password">
                         <label for="role">Vai trò:</label>
                         <select id="role" name="role" required>
-                            <option value="manager">Quản lý</option>
-                            <option value="student_manager">Quản lý sinh viên</option>
-                             <option value="accountant">Kế toán</option>
+                            <option value="student">Sinh viên</option>
                             <option value="admin">Admin</option>
                         </select>
                          <label for="is_approved">Trạng thái:</label>
