@@ -11,7 +11,7 @@ CREATE TABLE Users (
     password VARCHAR(255) NOT NULL,
     role ENUM('admin', 'student') NOT NULL,
     is_approved TINYINT(1) DEFAULT 0,
-    activation_token  VARCHAR(255) NOT NULL,
+    activation_token  VARCHAR(255) DEFAULT NULL,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
