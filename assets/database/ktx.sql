@@ -1,7 +1,8 @@
 -- Tạo cơ sở dữ liệu
-drop database if exists dormitory_management;
-CREATE DATABASE dormitory_management;
-USE dormitory_management;
+CREATE DATABASE dormitory_management2;
+
+-- Sử dụng cơ sở dữ liệu vừa tạo
+USE dormitory_management2;
 
 -- Bảng Users (Tài khoản người dùng)
 CREATE TABLE Users (
