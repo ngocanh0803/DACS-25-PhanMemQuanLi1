@@ -1,8 +1,8 @@
 -- Tạo cơ sở dữ liệu
-CREATE DATABASE dormitory_management2;
+CREATE DATABASE dormitory_management;
 
 -- Sử dụng cơ sở dữ liệu vừa tạo
-USE dormitory_management2;
+USE dormitory_management;
 
 -- Bảng Users (Tài khoản người dùng)
 CREATE TABLE Users (
