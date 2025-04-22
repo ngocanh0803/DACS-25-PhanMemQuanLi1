@@ -1,6 +1,7 @@
 -- Tạo cơ sở dữ liệu
-drop database if exists dormitory_management;
 CREATE DATABASE dormitory_management;
+
+-- Sử dụng cơ sở dữ liệu vừa tạo
 USE dormitory_management;
 
 -- Bảng Users (Tài khoản người dùng)
@@ -10,7 +11,7 @@ CREATE TABLE IF NOT EXISTS Users (
     password VARCHAR(255) NOT NULL,
     role ENUM('admin', 'student') NOT NULL,
     is_approved TINYINT(1) DEFAULT 0,
-    activation_token  VARCHAR(255) NOT NULL,
+    activation_token  VARCHAR(255) DEFAULT NULL,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
@@ -880,13 +881,13 @@ VALUES
 
 -- Thêm tình trạng phòng cho các sinh viên, sử dụng room_id và student_id từ bảng Rooms và Students
 INSERT INTO Room_Status (room_id, student_id, start_date, end_date) VALUES
-((SELECT room_id FROM Rooms WHERE room_code = 'A102'), (SELECT student_id FROM Students WHERE student_code = 'SV20240001'), '2024-01-15', 2024-08-15),
-((SELECT room_id FROM Rooms WHERE room_code = 'A201'), (SELECT student_id FROM Students WHERE student_code = 'SV20240002'), '2024-01-15', 2024-08-15),
-((SELECT room_id FROM Rooms WHERE room_code = 'A301'), (SELECT student_id FROM Students WHERE student_code = 'SV20240003'), '2024-01-15', 2024-08-15),
-((SELECT room_id FROM Rooms WHERE room_code = 'B102'), (SELECT student_id FROM Students WHERE student_code = 'SV20240004'), '2024-01-15', 2024-08-15),
-((SELECT room_id FROM Rooms WHERE room_code = 'B201'), (SELECT student_id FROM Students WHERE student_code = 'SV20240005'), '2024-01-15', 2024-08-15),
-((SELECT room_id FROM Rooms WHERE room_code = 'B301'), (SELECT student_id FROM Students WHERE student_code = 'SV20240006'), '2024-01-15', 2024-08-15),
-((SELECT room_id FROM Rooms WHERE room_code = 'C102'), (SELECT student_id FROM Students WHERE student_code = 'SV20240007'), '2024-01-15', 2024-08-15),
-((SELECT room_id FROM Rooms WHERE room_code = 'C202'), (SELECT student_id FROM Students WHERE student_code = 'SV20240008'), '2024-01-15', 2024-08-15),
-((SELECT room_id FROM Rooms WHERE room_code = 'C303'), (SELECT student_id FROM Students WHERE student_code = 'SV20240009'), '2024-01-15', 2024-08-15);
+((SELECT room_id FROM Rooms WHERE room_code = 'A102'), (SELECT student_id FROM Students WHERE student_code = 'SV20240001'), '2024-01-15', '2024-08-15'),
+((SELECT room_id FROM Rooms WHERE room_code = 'A201'), (SELECT student_id FROM Students WHERE student_code = 'SV20240002'), '2024-01-15', '2024-08-15'),
+((SELECT room_id FROM Rooms WHERE room_code = 'A301'), (SELECT student_id FROM Students WHERE student_code = 'SV20240003'), '2024-01-15', '2024-08-15'),
+((SELECT room_id FROM Rooms WHERE room_code = 'B102'), (SELECT student_id FROM Students WHERE student_code = 'SV20240004'), '2024-01-15', '2024-08-15'),
+((SELECT room_id FROM Rooms WHERE room_code = 'B201'), (SELECT student_id FROM Students WHERE student_code = 'SV20240005'), '2024-01-15', '2024-08-15'),
+((SELECT room_id FROM Rooms WHERE room_code = 'B301'), (SELECT student_id FROM Students WHERE student_code = 'SV20240006'), '2024-01-15', '2024-08-15'),
+((SELECT room_id FROM Rooms WHERE room_code = 'C102'), (SELECT student_id FROM Students WHERE student_code = 'SV20240007'), '2024-01-15', '2024-08-15'),
+((SELECT room_id FROM Rooms WHERE room_code = 'C202'), (SELECT student_id FROM Students WHERE student_code = 'SV20240008'), '2024-01-15', '2024-08-15'),
+((SELECT room_id FROM Rooms WHERE room_code = 'C303'), (SELECT student_id FROM Students WHERE student_code = 'SV20240009'), '2024-01-15', '2024-08-15');
 

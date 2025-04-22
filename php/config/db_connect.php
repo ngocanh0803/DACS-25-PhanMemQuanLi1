@@ -2,7 +2,7 @@
 // Thông tin kết nối cơ sở dữ liệu
 $servername = "localhost";
 $username = "root";
-$password = "";
+$password = "phong12";
 $dbname = "dormitory_management";
 
 // Tạo kết nối
