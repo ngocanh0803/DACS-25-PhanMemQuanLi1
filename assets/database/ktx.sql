@@ -4,7 +4,7 @@ CREATE DATABASE dormitory_management;
 USE dormitory_management;
 
 -- Bảng Users (Tài khoản người dùng)
-CREATE TABLE Users (
+CREATE TABLE IF NOT EXISTS Users (
     user_id INT AUTO_INCREMENT PRIMARY KEY,
     username VARCHAR(255) NOT NULL,
     password VARCHAR(255) NOT NULL,
@@ -15,7 +15,7 @@ CREATE TABLE Users (
 );
 
 -- Bảng Rooms (Phòng ở)
-CREATE TABLE Rooms (
+CREATE TABLE IF NOT EXISTS Rooms (
     room_id INT AUTO_INCREMENT PRIMARY KEY,
     room_code VARCHAR(50) UNIQUE NOT NULL,
     building VARCHAR(1) NOT NULL,
@@ -26,7 +26,7 @@ CREATE TABLE Rooms (
     price DECIMAL(10,2) NOT NULL
 );
 
-CREATE TABLE Students (
+CREATE TABLE IF NOT EXISTS Students (
     student_id INT AUTO_INCREMENT PRIMARY KEY,
     student_code VARCHAR(50) UNIQUE NOT NULL,
     full_name VARCHAR(255) NOT NULL,
@@ -46,7 +46,7 @@ CREATE TABLE Students (
 
 
 -- Bảng Facilities (Cơ sở vật chất)
-CREATE TABLE Facilities (
+CREATE TABLE IF NOT EXISTS Facilities (
     facility_id INT AUTO_INCREMENT PRIMARY KEY,
     facility_code VARCHAR(50) UNIQUE NOT NULL,
     room_id INT,
@@ -58,7 +58,7 @@ CREATE TABLE Facilities (
 );
 
 -- Bảng Payments (Thanh toán)
-CREATE TABLE Payments (
+CREATE TABLE IF NOT EXISTS Payments (
     payment_id INT AUTO_INCREMENT PRIMARY KEY,
     payment_code VARCHAR(50) UNIQUE NOT NULL,
     room_id INT,
@@ -72,7 +72,7 @@ CREATE TABLE Payments (
 );
 
 -- Bảng Room_Status (Tình trạng phòng)
-CREATE TABLE Room_Status (
+CREATE TABLE IF NOT EXISTS Room_Status (
     room_status_id INT AUTO_INCREMENT PRIMARY KEY,
     room_id INT,
     student_id INT,
@@ -82,7 +82,7 @@ CREATE TABLE Room_Status (
     FOREIGN KEY (student_id) REFERENCES Students(student_id) ON DELETE CASCADE
 );
 
-CREATE TABLE MenuItems (
+CREATE TABLE IF NOT EXISTS MenuItems (
     id INT AUTO_INCREMENT PRIMARY KEY,
     name VARCHAR(255) NOT NULL,        -- Tên chức năng
     url VARCHAR(255) NOT NULL,         -- Đường dẫn đến chức năng
@@ -91,7 +91,7 @@ CREATE TABLE MenuItems (
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
-CREATE TABLE Contracts (
+CREATE TABLE IF NOT EXISTS Contracts (
     contract_id INT AUTO_INCREMENT PRIMARY KEY,
     contract_code VARCHAR(50) UNIQUE NOT NULL,
     student_id INT NOT NULL,
@@ -138,7 +138,7 @@ CREATE TABLE IF NOT EXISTS Messages (
 -- (1, 2, 1, 'Chào admin, tôi muốn hỏi về hóa đơn phòng tháng này.', 'text', 0),
 -- (1, 1, 2, 'Chào bạn, bạn cần hỗ trợ gì về hóa đơn phòng?', 'text', 0);
 
-CREATE TABLE Notifications (
+CREATE TABLE IF NOT EXISTS Notifications (
     notification_id INT AUTO_INCREMENT PRIMARY KEY,
     user_id INT NOT NULL,
     title VARCHAR(255) NOT NULL,
@@ -154,7 +154,7 @@ CREATE TABLE Notifications (
 -- (2, 'Thông báo về hóa đơn', 'Hóa đơn tháng 03/2025 của bạn đã được tạo. Vui lòng kiểm tra chi tiết.', 'payment', 0),
 -- (2, 'Thông báo chung', 'Ký túc xá sẽ tổ chức buổi họp mặt sinh viên vào cuối tuần này.', 'general', 0);
 
-CREATE TABLE Feedbacks (
+CREATE TABLE IF NOT EXISTS Feedbacks (
     feedback_id INT AUTO_INCREMENT PRIMARY KEY,
     user_id INT NOT NULL,
     subject VARCHAR(255),
@@ -169,7 +169,7 @@ CREATE TABLE Feedbacks (
 -- INSERT INTO Feedbacks (user_id, subject, message, status) VALUES
 -- (2, 'Vấn đề về cơ sở vật chất', 'Đèn học trong phòng của tôi bị hỏng, mong được sửa chữa.', 'pending');
 
-CREATE TABLE Activity_Log (
+CREATE TABLE IF NOT EXISTS Activity_Log (
     log_id INT AUTO_INCREMENT PRIMARY KEY,
     user_id INT NOT NULL,
     activity VARCHAR(255) NOT NULL,
@@ -182,7 +182,7 @@ CREATE TABLE Activity_Log (
 -- (2, 'Đăng nhập vào hệ thống.'),
 -- (2, 'Xem thông tin hóa đơn.');
 
-CREATE TABLE Equipment_Reports (
+CREATE TABLE IF NOT EXISTS Equipment_Reports (
     report_id INT AUTO_INCREMENT PRIMARY KEY,
     facility_id INT NOT NULL,
     student_id INT NOT NULL,
@@ -198,7 +198,7 @@ CREATE TABLE Equipment_Reports (
 -- INSERT INTO Equipment_Reports (facility_id, student_id, reported_quantity, reported_condition, status) VALUES
 -- ((SELECT facility_id FROM Facilities WHERE facility_code = 'TB001' AND room_id = 2 LIMIT 1), 2, 1, 'Bàn học bị lung lay.', 'pending');
 
-CREATE TABLE Equipment_Requests (
+CREATE TABLE IF NOT EXISTS Equipment_Requests (
     request_id INT AUTO_INCREMENT PRIMARY KEY,
     student_id INT NOT NULL,
     room_id INT NOT NULL,
@@ -217,7 +217,7 @@ CREATE TABLE Equipment_Requests (
 -- (2, 2, 'additional', 'Quạt trần', 1, 'Phòng hơi nóng, cần thêm quạt trần.', 'pending'),
 -- (2, 2, 'personal', 'Đèn học', 1, 'Đèn học cá nhân bị hỏng.', 'pending');
 
-CREATE TABLE Applications (
+CREATE TABLE IF NOT EXISTS Applications (
     application_id INT AUTO_INCREMENT PRIMARY KEY,
     student_id INT NOT NULL,
     desired_start_date DATE,           -- Ngày dự kiến nhận phòng
@@ -233,7 +233,7 @@ CREATE TABLE Applications (
 -- INSERT INTO Applications (student_id, desired_start_date, desired_end_date, deposit, documents, status) VALUES
 -- (2, '2025-01-15', '2025-07-15', 1000000, '["/path/to/document1.pdf", "/path/to/document2.jpg"]', 'approved');
 
-CREATE TABLE Departure_Requests (
+CREATE TABLE IF NOT EXISTS Departure_Requests (
     departure_id INT AUTO_INCREMENT PRIMARY KEY,
     student_id INT NOT NULL,
     contract_id INT, -- Nếu đã có hợp đồng được tạo, liên kết với bảng Contracts
@@ -253,7 +253,7 @@ CREATE TABLE Departure_Requests (
 -- INSERT INTO Departure_Requests (student_id, contract_id, reason, documents, status) VALUES
 -- (1, (SELECT contract_id FROM Contracts WHERE student_id = 1 LIMIT 1), 'Hết hạn hợp đồng.', '["/path/to/departure_document.pdf"]', 'pending');
 
-CREATE TABLE LateRequests (
+CREATE TABLE IF NOT EXISTS LateRequests (
     late_request_id INT AUTO_INCREMENT PRIMARY KEY,
     student_id INT NOT NULL,
     reason TEXT,
